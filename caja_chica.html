@@ -1,0 +1,132 @@
+<style>
+  .caja-container-box *, .caja-modal-overlay * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+  .caja-container-box label { font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px; }
+  .caja-container-box input, .caja-container-box select { width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none; }
+  
+  .caja-btn-main { background: #0f172a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
+  .caja-btn-secundario { background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+  
+  .caja-card { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-top: 10px; }
+  .caja-mov-item { background: #fff; border: 1px solid #e2e8f0; padding: 8px 10px; border-radius: 8px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .caja-btn-del { background: #fee2e2; color: #ef4444; border: none; padding: 4px 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.75rem; }
+</style>
+
+<div class="caja-container-box">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 2px;">
+    <div style="display: flex; flex-direction: column; justify-content: space-between; height: 44px;">
+      <h3 style="font-size: 1.05rem; color: #0f172a; font-weight: 800; margin: 0; line-height: 1;">💵 Caja Chica</h3>
+      <div id="lblFechaTrabajoCaja" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
+    </div>
+    <button onclick="cerrarVentanaModalCajaGen()" style="background: none; border: none; cursor: pointer; padding: 0;">
+      <img src="icono.png" alt="Logo" style="width: 44px; height: 44px; object-fit: contain;">
+    </button>
+  </div>
+
+  <div id="cajaBloqueSaldoInicial" class="caja-card">
+    <!-- Se carga dinámicamente con JS -->
+  </div>
+
+  <div style="background: #0f172a; color: white; border-radius: 12px; padding: 12px; margin-top: 8px; text-align: center;">
+    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">Saldo Total en Caja</span>
+    <div id="cajaSaldoActual" style="font-size: 1.4rem; font-weight: 800; margin-top: 2px;">$0</div>
+  </div>
+
+  <div class="caja-card">
+    <strong style="font-size: 0.85rem; color: #0f172a; display: block; margin-bottom: 6px;">Nuevo Movimiento</strong>
+    <select id="cajaTipo">
+      <option value="Ingreso">📥 Ingreso</option>
+      <option value="Egreso">📤 Egreso</option>
+    </select>
+    <input type="text" id="cajaConcepto" placeholder="Concepto (ej: Vuelto, Gasto)">
+    <input type="number" id="cajaMonto" placeholder="Monto ($)">
+    <button class="caja-btn-main" style="background:#475569;" onclick="agregarMovimientoCaja()">➕ Registrar</button>
+  </div>
+
+  <div class="caja-card">
+    <strong style="font-size: 0.85rem; color: #0f172a; display: block; margin-bottom: 6px;">Movimientos</strong>
+    <div id="listaMovimientosCaja" style="max-height: 150px; overflow-y: auto;"></div>
+  </div>
+
+  <button onclick="cerrarVentanaModalCajaGen()" class="caja-btn-secundario">Volver</button>
+</div>
+
+<script>
+  function cerrarVentanaModalCajaGen() { typeof cerrarModalDinamico === 'function' ? cerrarModalDinamico() : window.location.href = 'menu.html'; }
+  
+  const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
+  let movimientosCajaList = JSON.parse(localStorage.getItem('bma_cajachica')) || [];
+  let saldoInicialData = JSON.parse(localStorage.getItem('bma_saldo_inicial_data')) || {};
+
+  function habilitarEdicionSaldo() {
+    document.getElementById('cajaBloqueSaldoInicial').innerHTML = `
+      <label>Saldo Inicial de hoy ($):</label>
+      <div style="display: flex; gap: 8px;">
+        <input type="number" id="cajaInputSaldo" placeholder="Ej: 5000" style="margin-top:0;">
+        <button class="caja-btn-main" style="margin-top:0; width: auto;" onclick="guardarSaldoInicial()">OK</button>
+      </div>
+    `;
+  }
+
+  function guardarSaldoInicial() {
+    const val = parseFloat(document.getElementById('cajaInputSaldo').value);
+    if (isNaN(val)) return alert('Ingresá un número válido');
+    saldoInicialData[fechaSesion] = val;
+    localStorage.setItem('bma_saldo_inicial_data', JSON.stringify(saldoInicialData));
+    renderizarCajaChica();
+  }
+
+  function agregarMovimientoCaja() {
+    const tipo = document.getElementById('cajaTipo').value;
+    const concepto = document.getElementById('cajaConcepto').value.trim();
+    const monto = parseFloat(document.getElementById('cajaMonto').value) || 0;
+    if (!concepto || monto <= 0) return alert('Completá los datos.');
+    
+    movimientosCajaList.unshift({ id: Date.now(), fecha: fechaSesion, tipo, concepto, monto });
+    localStorage.setItem('bma_cajachica', JSON.stringify(movimientosCajaList));
+    document.getElementById('cajaConcepto').value = '';
+    document.getElementById('cajaMonto').value = '';
+    renderizarCajaChica();
+  }
+
+  function eliminarMovimientoCaja(id) {
+    movimientosCajaList = movimientosCajaList.filter(m => m.id !== id);
+    localStorage.setItem('bma_cajachica', JSON.stringify(movimientosCajaList));
+    renderizarCajaChica();
+  }
+
+  function renderizarCajaChica() {
+    document.getElementById('lblFechaTrabajoCaja').innerText = `Fecha de Trabajo: ${fechaSesion.split('-').reverse().join('/')}`;
+    
+    const saldoIni = saldoInicialData[fechaSesion] || 0;
+    if (saldoInicialData[fechaSesion] !== undefined) {
+      document.getElementById('cajaBloqueSaldoInicial').innerHTML = `
+        <p style="font-size:0.8rem; text-align:center; margin:5px 0;">
+           Saldo inicial fijado: <strong>$${saldoIni.toLocaleString('es-AR')}</strong> 
+           <button onclick="habilitarEdicionSaldo()" style="background:none; border:none; color:#3b82f6; text-decoration:underline; cursor:pointer; font-size:0.8rem; font-weight:700;">Editar</button>
+        </p>`;
+    } else {
+      habilitarEdicionSaldo();
+    }
+
+    const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
+    let saldoCalculado = saldoIni;
+    let html = '';
+
+    movimientosJornada.forEach(m => {
+      saldoCalculado += (m.tipo === 'Ingreso' ? m.monto : -m.monto);
+      html += `
+        <div class="caja-mov-item">
+          <div><strong style="font-size:0.8rem">${m.concepto}</strong><br><small>${m.tipo}</small></div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-weight:700; color:${m.tipo==='Ingreso'?'#16a34a':'#dc2626'}">$${m.monto.toLocaleString('es-AR')}</span>
+            <button class="caja-btn-del" onclick="eliminarMovimientoCaja(${m.id})">✕</button>
+          </div>
+        </div>`;
+    });
+
+    document.getElementById('listaMovimientosCaja').innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.75rem;">Sin movimientos.</p>';
+    document.getElementById('cajaSaldoActual').innerText = `$${saldoCalculado.toLocaleString('es-AR')}`;
+  }
+
+  renderizarCajaChica();
+</script>

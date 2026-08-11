@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+  <title>Cierre Z y Auditoría - B. M. A. Artesanías</title>
+
+  <style>
+    :root { --primary-color: #111827; }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    
+    body { background: transparent; margin: 0; padding: 12px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+    
+    .container { background: transparent; width: 100%; max-width: 410px; padding: 0; }
+    .card-internal { background: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+    .dia-banner { background: #f1f5f9; color: #1e293b; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; margin-bottom: 12px; border: 1px solid #cbd5e1; text-transform: capitalize; }
+
+    .seccion-box { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 12px; }
+    .seccion-titulo { font-size: 0.85rem; font-weight: 800; color: #0f172a; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+
+    .lista-scroll { max-height: 140px; overflow-y: auto; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; padding: 5px 4px; border-bottom: 1px solid #e2e8f0; }
+    .item-row:last-child { border-bottom: none; }
+
+    .badge-stock { padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 0.7rem; background: #e2e8f0; color: #334155; }
+
+    .btn-main { width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; border: none; margin-bottom: 6px; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn-print { background: #1e293b; color: white; }
+    .btn-volver { background: #334155; color: white; }
+    .btn-volver img { width: 20px; height: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card-internal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">⚡ Cierre Z & Auditoría</h2>
+        <img src="icono.png" alt="Icono" style="width: 32px; height: 32px; object-fit: contain;">
+      </div>
+      
+      <div class="dia-banner" id="txtFechaCierre">Cargando...</div>
+
+      <!-- RESUMEN DE CAJA -->
+      <div class="seccion-box">
+        <div class="seccion-titulo">💵 Resumen de Caja del Día</div>
+        <div style="font-size: 0.8rem; display: flex; justify-content: space-between; padding: 3px 0;">
+          <span>Total Vendido:</span> <strong id="lblCierreVentas">$0</strong>
+        </div>
+        <div style="font-size: 0.8rem; display: flex; justify-content: space-between; padding: 3px 0;">
+          <span>Operaciones:</span> <strong id="lblCierreOps">0</strong>
+        </div>
+      </div>
+
+      <!-- AUDITORÍA DE VENTAS POR ARTÍCULO -->
+      <div class="seccion-box">
+        <div class="seccion-titulo">
+          <span>📊 Artículos Vendidos Hoy</span>
+          <span id="lblTotalUnidades" style="font-size: 0.75rem; color: #475569; font-weight: normal;">0 u. total</span>
+        </div>
+        <div class="lista-scroll" id="listaVentasArticulos">
+          <!-- Se llena por JS -->
+        </div>
+      </div>
+
+      <!-- AUDITORÍA DE STOCK RESTANTE -->
+      <div class="seccion-box">
+        <div class="seccion-titulo">
+          <span>📦 Stock Restante</span>
+        </div>
+        <div class="lista-scroll" id="listaAuditoriaStock">
+          <!-- Se llena por JS -->
+        </div>
+      </div>
+
+      <button class="btn-main btn-print" onclick="window.print()">🖨️ Imprimir Cierre Z</button>
+      <a href="menu.html" class="btn-main btn-volver"><img src="volver.png" alt="Volver"> Volver al Menú</a>
+    </div>
+  </div>
+
+  <script>
+    const ahora = new Date();
+    const hoyStr = ahora.toISOString().slice(0, 10);
+    document.getElementById('txtFechaCierre').innerText = ahora.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    function cargarCierreZ() {
+      // 1. Ventas del día y desglose por artículo
+      const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || [];
+      const ventasDia = ventas.filter(v => v.fecha === hoyStr);
+      const totalVentasDinero = ventasDia.reduce((s, v) => s + (v.total || 0), 0);
+
+      document.getElementById('lblCierreVentas').innerText = `$${totalVentasDinero.toLocaleString('es-AR')}`;
+      document.getElementById('lblCierreOps').innerText = ventasDia.length;
+
+      let totalUnidades = 0;
+      const mapaArticulos = {};
+
+      ventasDia.forEach(v => {
+        if (v.items && Array.isArray(v.items)) {
+          v.items.forEach(i => {
+            const cant = i.cant || i.cantidad || 1;
+            const nombre = i.nombre || i.descripcion || 'Artículo sin nombre';
+            totalUnidades += cant;
+            mapaArticulos[nombre] = (mapaArticulos[nombre] || 0) + cant;
+          });
+        }
+      });
+
+      document.getElementById('lblTotalUnidades').innerText = `${totalUnidades} u. total`;
+
+      let htmlVentasArt = '';
+      const keysArticulos = Object.keys(mapaArticulos);
+      if (keysArticulos.length === 0) {
+        htmlVentasArt = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hubo ventas de artículos hoy.</p>';
+      } else {
+        keysArticulos.forEach(art => {
+          htmlVentasArt += `
+            <div class="item-row">
+              <span>${art}</span>
+              <strong>${mapaArticulos[art]} u.</strong>
+            </div>`;
+        });
+      }
+      document.getElementById('listaVentasArticulos').innerHTML = htmlVentasArt;
+
+      // 2. Stock Restante
+      const productos = JSON.parse(localStorage.getItem('bma_productos')) || JSON.parse(localStorage.getItem('bma_stock')) || [];
+      
+      let htmlStock = '';
+      if (productos.length === 0) {
+        htmlStock = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hay productos cargados en el sistema.</p>';
+      } else {
+        productos.forEach(p => {
+          const stockActual = p.stock !== undefined ? p.stock : (p.cantidad || 0);
+          htmlStock += `
+            <div class="item-row">
+              <span>${p.nombre || p.descripcion || 'Sin nombre'}</span>
+              <span class="badge-stock">${stockActual} un.</span>
+            </div>`;
+        });
+      }
+      document.getElementById('listaAuditoriaStock').innerHTML = htmlStock;
+    }
+
+    cargarCierreZ();
+  </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!-- Encabezado Limpio del Modal -->
+<div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 2px;">
+  <div style="display: flex; flex-direction: column; justify-content: space-between; height: 44px;">
+    <h3 id="lblTituloForm" style="font-size: 1.05rem; color: #0f172a; font-weight: 800; margin: 0; line-height: 1;">👥 Registrar Cliente</h3>
+    <div id="lblFechaTrabajo" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
+  </div>
+  
+  <button onclick="cerrarVentanaModal()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+    <img src="icono.png" alt="Logo BMA" style="width: 44px; height: 44px; object-fit: contain;">
+  </button>
+</div>
+
+<!-- VISTA 1: FORMULARIO -->
+<div id="vista-formulario">
+  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">Nombre y Apellido / Razón Social:</label>
+  <input type="text" id="txtNombre" placeholder="Ej: Juan Pérez" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+
+  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">Teléfono / WhatsApp:</label>
+  <input type="text" id="txtTelefono" placeholder="Ej: 11 2345-6789" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+
+  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">Localidad:</label>
+  <input type="text" id="txtLocalidad" placeholder="Ej: Junín" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+
+  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">E-mail:</label>
+  <input type="email" id="txtEmail" placeholder="Ej: juan@email.com" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+
+  <button id="btnAccion" onclick="guardarCliente()" style="background: #0f172a; color: white; border: none; padding: 13px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; margin-top: 14px; cursor: pointer;">➕ Registrar Cliente</button>
+  <button onclick="alternarVistaLista(true)" style="background: #475569; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; margin-top: 8px; cursor: pointer;">📋 Mostrar Registros</button>
+  <button id="btnCancelarEdicion" onclick="cancelarEdicion()" style="background: #64748b; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.85rem; margin-top: 8px; cursor: pointer; display: none;">Cancelar Edición</button>
+  <button onclick="cerrarVentanaModal()" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">Volver al Menú</button>
+</div>
+
+<!-- VISTA 2: LISTADO -->
+<div id="vista-listado" style="display: none;">
+  <div style="margin-bottom: 8px;">
+    <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 0; text-align: left; text-transform: uppercase;">🔍 Buscar Registro:</label>
+    <input type="text" id="txtBuscar" placeholder="Nombre, localidad, tel..." oninput="actualizarPantallaClientes()" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+  </div>
+
+  <div id="listaClientes" style="margin-top: 8px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+    <div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No hay clientes registrados.</div>
+  </div>
+
+  <button onclick="alternarVistaLista(false)" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">⬅️ Volver al Formulario</button>
+</div>
+
+<script>
+    function cerrarVentanaModal() {
+        if (typeof cerrarModalDinamico === 'function') {
+            cerrarModalDinamico();
+        } else {
+            window.location.href = 'menu.html';
+        }
+    }
+
+    function formatearFechaLocal(fechaStr) {
+      if (!fechaStr) return '';
+      const partes = fechaStr.split('-');
+      return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
+    }
+
+    let fechaSesionLocal = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
+    const lblFecha = document.getElementById('lblFechaTrabajo');
+    if (lblFecha) lblFecha.innerText = `Fecha de Trabajo: ${formatearFechaLocal(fechaSesionLocal)}`;
+
+    let clientes = [];
+    let editIndex = null;
+
+    try {
+      const guardados = localStorage.getItem('bma_clientes') || localStorage.getItem('sbo_clientes') || localStorage.getItem('clientes');
+      if (guardados) clientes = JSON.parse(guardados);
+    } catch (e) {
+      clientes = [];
+    }
+
+    function alternarVistaLista(mostrarLista) {
+      document.getElementById('vista-formulario').style.display = mostrarLista ? 'none' : 'block';
+      document.getElementById('vista-listado').style.display = mostrarLista ? 'block' : 'none';
+      if (mostrarLista) actualizarPantallaClientes();
+    }
+
+    function actualizarPantallaClientes() {
+      const listaContainer = document.getElementById('listaClientes');
+      const filtro = document.getElementById('txtBuscar').value.toLowerCase().trim();
+      listaContainer.innerHTML = '';
+
+      const filtrados = clientes.filter(c => {
+        const nombre = (c.nombre || c.cliente || c.AyN || '').toLowerCase();
+        const localidad = (c.localidad || '').toLowerCase();
+        const telefono = (c.telefono || c.tel || '').toLowerCase();
+        const email = (c.email || '').toLowerCase();
+        return nombre.includes(filtro) || localidad.includes(filtro) || telefono.includes(filtro) || email.includes(filtro);
+      });
+
+      if (filtrados.length === 0) {
+        listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No se encontraron clientes.</div>';
+      } else {
+        filtrados.forEach((c) => {
+          const realIndex = clientes.indexOf(c);
+          const nombreCli = c.nombre || c.cliente || c.AyN || 'Sin nombre';
+          const telCli = c.telefono || c.tel || 'Sin tel';
+          const locCli = c.localidad || 'Sin localidad';
+          const emailCli = c.email || 'Sin correo';
+
+          const item = document.createElement('div');
+          item.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #f8fafc; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.9rem;";
+          item.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 3px;">
+              <span style="font-weight: bold; color: #1e293b; font-size: 0.95rem;">${nombreCli}</span>
+              <span style="font-size: 0.8rem; color: #64748b;">📞 ${telCli} | 📍 ${locCli}</span>
+              <span style="font-size: 0.8rem; color: #64748b;">✉️ ${emailCli}</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button onclick="cargarEdicionCliente(${realIndex})" style="background: none; border: none; color: #3b82f6; font-size: 1.1rem; cursor: pointer; padding: 4px;" title="Editar">✏️</button>
+              <button onclick="eliminarClienteItem(${realIndex})" style="background: none; border: none; color: #ef4444; font-size: 1.1rem; cursor: pointer; padding: 4px;" title="Eliminar">❌</button>
+            </div>
+          `;
+          listaContainer.appendChild(item);
+        });
+      }
+    }
+
+    function guardarCliente() {
+      const nombre = document.getElementById('txtNombre').value.trim();
+      const telefono = document.getElementById('txtTelefono').value.trim();
+      const localidad = document.getElementById('txtLocalidad').value.trim();
+      const email = document.getElementById('txtEmail').value.trim();
+
+      if (!nombre) return alert('Por favor, ingresá el nombre del cliente.');
+
+      if (editIndex !== null) {
+        clientes[editIndex] = { nombre, telefono, localidad, email };
+        cancelarEdicion();
+      } else {
+        clientes.push({ nombre, telefono, localidad, email });
+        document.getElementById('txtNombre').value = '';
+        document.getElementById('txtTelefono').value = '';
+        document.getElementById('txtLocalidad').value = '';
+        document.getElementById('txtEmail').value = '';
+      }
+
+      guardarYActualizarClientes();
+    }
+
+    function cargarEdicionCliente(index) {
+      const c = clientes[index];
+      document.getElementById('txtNombre').value = c.nombre || c.cliente || c.AyN || '';
+      document.getElementById('txtTelefono').value = c.telefono || c.tel || '';
+      document.getElementById('txtLocalidad').value = c.localidad || '';
+      document.getElementById('txtEmail').value = c.email || '';
+
+      editIndex = index;
+      document.getElementById('lblTituloForm').innerText = '✏️ Editar Cliente';
+      const btnAccion = document.getElementById('btnAccion');
+      btnAccion.innerText = '💾 Actualizar Cliente';
+      btnAccion.style.background = '#3b82f6';
+      document.getElementById('btnCancelarEdicion').style.display = 'block';
+
+      alternarVistaLista(false);
+    }
+
+    function cancelarEdicion() {
+      editIndex = null;
+      document.getElementById('txtNombre').value = '';
+      document.getElementById('txtTelefono').value = '';
+      document.getElementById('txtLocalidad').value = '';
+      document.getElementById('txtEmail').value = '';
+
+      document.getElementById('lblTituloForm').innerText = '👥 Registrar Cliente';
+      const btnAccion = document.getElementById('btnAccion');
+      btnAccion.innerText = '➕ Registrar Cliente';
+      btnAccion.style.background = '#0f172a';
+      document.getElementById('btnCancelarEdicion').style.display = 'none';
+    }
+
+    function eliminarClienteItem(index) {
+      if (confirm('¿Querés eliminar este cliente?')) {
+        if (editIndex === index) {
+          cancelarEdicion();
+        } else if (editIndex !== null && editIndex > index) {
+          editIndex--;
+        }
+        clientes.splice(index, 1);
+        guardarYActualizarClientes();
+        actualizarPantallaClientes();
+      }
+    }
+
+    function guardarYActualizarClientes() {
+      localStorage.setItem('bma_clientes', JSON.stringify(clientes));
+    }
+</script>

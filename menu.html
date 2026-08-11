@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Principal - B. M. A. Artesanías</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+
+    :root {
+      --primary-color: #000000;
+      --accent-color: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    
+    body { 
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container { 
+      background-color: #ffffff; 
+      color: #1f2937;
+      width: 100%; 
+      flex-grow: 1;
+      padding: 15px;
+      display: flex; 
+      flex-direction: column;
+    }
+    
+    .header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 15px; 
+      position: relative; 
+      height: 75px; 
+      padding-top: 8px; 
+    }
+    
+    .logo-img { 
+      width: 70px; 
+      height: 70px; 
+      border-radius: 10px; 
+      object-fit: cover; 
+      z-index: 2; 
+      margin-top: 4px; 
+    }
+    
+    .brand { 
+      position: absolute;
+      left: 52%; 
+      transform: translateX(-50%);
+      text-align: center; 
+      width: 100%;
+      pointer-events: none; 
+    }
+    .brand h1 { font-size: 1.75rem; color: #000; margin: 0; font-family: 'Magnolia script', cursive; }
+    .brand p { font-size: 1.15rem; color: #4b5563; font-family: 'Magnolia script', cursive; }
+    
+    .fecha-hora-centro {
+        text-align: center;
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .licencia { background-color: #f8fafc; padding: 10px; border-radius: 8px; text-align: center; border: 1.5px solid #cbd5e1; margin-bottom: 15px; font-weight: bold; }
+    
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+    .stat-card { background: #f8fafc; padding: 15px; border-radius: 10px; text-align: center; border: 1.5px solid #cbd5e1; }
+    .stat-value { font-size: 1.5rem; font-weight: 900; }
+    
+    .main-action { background: #f8fafc; border: 2px solid #000; border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; cursor: pointer; text-decoration: none; color: inherit; }
+    .main-action:active { transform: scale(0.98); }
+    .main-action h2 { font-size: 1.2rem; text-transform: uppercase; }
+    
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+    .menu-card { background: #f8fafc; padding: 15px; border-radius: 10px; border: 1.5px solid #cbd5e1; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: inherit; }
+    .menu-card:active { transform: scale(0.98); }
+    .menu-card h3 { font-size: 1rem; }
+    
+    .full-card { background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 15px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+    .full-card:active { transform: scale(0.98); }
+    
+    .full-card-salir { background: #4e4b46; border-radius: 10px; padding: 15px; color: #fff; cursor: pointer; border: 1.5px solid #57534e; display: flex; align-items: center; gap: 12px; }
+    .full-card-salir:active { transform: scale(0.98); }
+    .full-card-salir h3 { color: #f87171; }
+
+    .mono-icon { filter: grayscale(100%); display: inline-block; }
+
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; flex-shrink: 0; }
+    .modal-header h3 { font-size: 1rem; color: #000000; font-weight: 800; }
+    .modal-desc { font-size: 0.78rem; color: #4b5563; margin-bottom: 8px; flex-shrink: 0; }
+
+    .btn-volver-menu { background-color: #000000; color: white; border: none; padding: 10px; width: 100%; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: center; flex-shrink: 0; margin-top: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .btn-volver-menu:active { transform: scale(0.98); }
+
+    .btn-reiniciar-factory { background: #4e4b46; border: 1.5px solid #57534e; border-radius: 8px; padding: 11px 14px; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; color: #f87171; font-weight: 800; font-size: 0.9rem; width: 100%; margin-top: 4px; }
+    .btn-reiniciar-factory:hover { background: #57534e; }
+
+    .footer-zocalo { 
+        margin-top: 15px;
+        padding-top: 20px;
+        font-size: 0.75rem;
+        color: #64748b;
+    }
+    .footer-linea-1 { text-align: left; margin: 0 10px; }
+    .footer-linea-2 { text-align: center; margin-top: 5px; }
+
+    /* Modal Dinámico General */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; }
+    .modal-overlay.active { display: flex; }
+    .modal-container { background: white; width: 100%; max-width: 410px; border-radius: 16px; padding: 18px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); animation: fadeIn 0.2s ease-in-out; max-height: 90vh; display: flex; flex-direction: column; overflow-y: auto; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img src="icono.png" class="logo-img" alt="Logo BMA">
+            <div class="brand">
+                <h1>B. M. A. Artesanías</h1>
+                <p>Bijou Macramé Artesanal</p>
+            </div>
+        </div>
+
+        <div id="fecha-hora-actual" class="fecha-hora-centro"></div>
+
+        <div class="licencia">🛡️ "Licencia Vitalicia de por Vida"</div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">VENTAS JORNADA</div>
+                <div class="stat-value" id="lblStatVentas">$0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">STOCK TOTAL</div>
+                <div class="stat-value" id="lblStatStock">0 un.</div>
+            </div>
+        </div>
+
+        <div class="main-action" onclick="abrirModulo('ventas.html')">
+            <span class="mono-icon" style="font-size: 28px;">💳</span>
+            <div class="main-action-text">
+                <h2>REGISTRAR VENTA</h2>
+                <p>Cargar pedido, carrito y comprobantes</p>
+            </div>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-card" onclick="abrirModulo('clientes.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">👥</span><div><h3>Clientes</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('stock.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">📦</span><div><h3>Stock</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('caja_chica.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">💵</span><div><h3>Caja Chica</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('cierre_z.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">🔒</span><div><h3>Cierre Z</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('libro_diario.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">📖</span><div><h3>Libro Diario</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('libro_mensual.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">📊</span><div><h3>Libro Mensual</h3></div></div>
+        </div>
+
+        <div class="full-card" id="btn-config">
+            <span class="mono-icon" style="font-size: 22px;">⚙️</span>
+            <div>
+                <h3 style="color: #000000; font-size: 1rem;">Configuración</h3>
+                <p style="font-size: 0.65rem; color: #64748b; line-height: 1.2;">Copias de seguridad y reinicio de fábrica</p>
+            </div>
+        </div>
+
+        <div class="full-card-salir" onclick="window.location.href='index.html'">
+            <span class="mono-icon" style="font-size: 22px;">🚪</span>
+            <div>
+                <h3>Salir al Inicio</h3>
+                <p style="font-size: 0.65rem; color: #d6d3d1; line-height: 1.2;">Volver al principio de la app</p>
+            </div>
+        </div>
+
+        <footer class="footer-zocalo">
+            <div class="footer-linea-1">Un producto de S. B. O. Control® - Todos los derechos reservados.</div>
+            <div class="footer-linea-2">Copyright 2026© - Versión: 1.0.0</div>
+        </footer>
+    </div>
+
+    <!-- Contenedor del Modal Dinámico -->
+    <div class="modal-overlay" id="modal-dinamico">
+        <div class="modal-container" id="contenido-modal">
+            <!-- El contenido de los módulos se inyecta acá adentro -->
+        </div>
+    </div>
+
+    <!-- MODAL CONFIGURACIÓN -->
+    <div class="modal-overlay" id="modal-config">
+        <div class="modal-container" style="max-width: 420px;">
+            <div class="modal-header">
+                <h3>Configuración del Sistema</h3>
+                <img src="icono.png" alt="Logo" style="width: 28px; height: 28px; border-radius: 6px; object-fit: cover; cursor: pointer;" id="btn-cerrar-config">
+            </div>
+            <div class="modal-desc">Gestioná tus respaldos o ejecutá un reinicio limpio:</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="btn-volver-menu" id="btn-exportar" style="margin-top: 0; background-color: #e2e8f0; color: #000000;">📥 Exportar Datos (JSON)</button>
+                <label class="btn-volver-menu" style="background-color: #334155; text-align: center; cursor: pointer; display: block; margin-top: 0;">
+                    📤 Restaurar Datos
+                    <input type="file" id="input-importar" accept=".json" style="display: none;">
+                </label>
+                <button class="btn-reiniciar-factory" onclick="reiniciarSistemaDeFabricaBMA()">
+                    ⚠️ Reiniciar Sistema de Fábrica
+                </button>
+            </div>
+            <button class="btn-volver-menu" onclick="document.getElementById('modal-config').classList.remove('active')">Volver al Menú</button>
+        </div>
+    </div>
+
+    <script>
+        function actualizarTiempo() {
+            const hoy = new Date();
+            const opcionesFecha = { day: '2-digit', month: '2-digit', year: '2-digit' };
+            const opcionesHora = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('fecha-hora-actual').innerText = `${hoy.toLocaleDateString('es-AR', opcionesFecha)} - ${hoy.toLocaleTimeString('es-AR', opcionesHora)}`;
+        }
+        actualizarTiempo();
+        setInterval(actualizarTiempo, 1000);
+
+        function actualizarEstadisticasMenu() {
+            // Ventas de la jornada
+            const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
+            const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || JSON.parse(localStorage.getItem('sbo_ventas')) || [];
+            
+            const totalVentasJornada = ventas
+                .filter(v => v.fecha === fechaSesion)
+                .reduce((acc, v) => acc + (v.total || 0), 0);
+            
+            const elVentas = document.getElementById('lblStatVentas');
+            if (elVentas) {
+                elVentas.innerText = `$${totalVentasJornada.toLocaleString('es-AR')}`;
+            }
+
+            // Stock total
+            const stock = JSON.parse(localStorage.getItem('bma_stock')) || JSON.parse(localStorage.getItem('sbo_stock')) || [];
+            const totalStock = stock.reduce((acc, p) => {
+                const cant = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
+                return acc + (parseInt(cant) || 0);
+            }, 0);
+
+            const elStock = document.getElementById('lblStatStock');
+            if (elStock) {
+                elStock.innerText = `${totalStock} un.`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', actualizarEstadisticasMenu);
+
+        // Función para cargar cualquier módulo por fetch y ejecutar sus scripts internos
+        function abrirModulo(url) {
+            fetch(url)
+                .then(res => res.text())
+                .then(html => {
+                    const contenedor = document.getElementById('contenido-modal');
+                    contenedor.innerHTML = html;
+                    
+                    // Extraer y ejecutar los scripts del archivo externo cargado
+                    const scripts = contenedor.querySelectorAll('script');
+                    scripts.forEach(script => {
+                        const nuevoScript = document.createElement('script');
+                        if (script.src) {
+                            nuevoScript.src = script.src;
+                        } else {
+                            nuevoScript.innerHTML = script.innerHTML;
+                        }
+                        document.body.appendChild(nuevoScript);
+                        script.remove();
+                    });
+
+                    document.getElementById('modal-dinamico').classList.add('active');
+                })
+                .catch(err => console.error('Error al cargar el módulo:', err));
+        }
+
+        function cerrarModalDinamico() {
+            document.getElementById('modal-dinamico').classList.remove('active');
+            document.getElementById('contenido-modal').innerHTML = '';
+            actualizarEstadisticasMenu(); // Actualiza los números al volver al menú
+        }
+
+        // Cerrar al hacer clic fuera del modal dinámico
+        document.getElementById('modal-dinamico').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-dinamico') {
+                cerrarModalDinamico();
+            }
+        });
+
+        // Configuración Modal Setup
+        const setupModalConfig = (cardId, modalId, closeBtnId) => {
+            const card = document.getElementById(cardId);
+            const modal = document.getElementById(modalId);
+            const closeBtn = document.getElementById(closeBtnId);
+            if(card && modal && closeBtn) {
+                card.addEventListener('click', () => modal.classList.add('active'));
+                closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+                modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+            }
+        };
+        setupModalConfig('btn-config', 'modal-config', 'btn-cerrar-config');
+
+        document.getElementById('btn-exportar').addEventListener('click', () => {
+            let backupData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key.startsWith('bma_') || key.startsWith('sbo_')) {
+                    try {
+                        backupData[key] = JSON.parse(localStorage.getItem(key));
+                    } catch(e) {
+                        backupData[key] = localStorage.getItem(key);
+                    }
+                }
+            }
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+            let downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `bma_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        });
+
+        document.getElementById('input-importar').addEventListener('change', (e) => {
+            let file = e.target.files[0];
+            if (!file) return;
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    let backupData = JSON.parse(event.target.result);
+                    for (let key in backupData) {
+                        if (key.startsWith('bma_') || key.startsWith('sbo_')) {
+                            if (typeof backupData[key] === 'object') {
+                                localStorage.setItem(key, JSON.stringify(backupData[key]));
+                            } else {
+                                localStorage.setItem(key, backupData[key]);
+                            }
+                        }
+                    }
+                    alert('¡Copia de seguridad restaurada con éxito!');
+                    location.reload();
+                } catch (err) {
+                    alert('Error al leer el archivo de backup.');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function reiniciarSistemaDeFabricaBMA() {
+            if (!confirm('⚠️ ¡Atención! Esto va a descargar una copia de seguridad de tus datos y dejará el sistema BMA como nuevo. ¿Querés continuar?')) {
+                return;
+            }
+            
+            let backupData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key.startsWith('bma_') || key.startsWith('sbo_')) {
+                    try {
+                        backupData[key] = JSON.parse(localStorage.getItem(key));
+                    } catch(e) {
+                        backupData[key] = localStorage.getItem(key);
+                    }
+                }
+            }
+
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+            let downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `bma_respaldo_total_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+
+            setTimeout(() => {
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    let key = localStorage.key(i);
+                    if (key.startsWith('bma_') || key.startsWith('sbo_')) {
+                        localStorage.removeItem(key);
+                    }
+                }
+                alert('🔄 Sistema BMA reiniciado de fábrica con éxito. Respaldo guardado en tu celu.');
+                window.location.reload();
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
