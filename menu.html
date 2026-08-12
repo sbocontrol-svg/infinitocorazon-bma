@@ -21,14 +21,14 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
     
     .container { 
       background-color: #ffffff; 
       color: #1f2937;
       width: 100%; 
-      flex-grow: 1;
-      padding: 15px;
+      padding: 10px 12px;
       display: flex; 
       flex-direction: column;
     }
@@ -37,19 +37,18 @@
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
-      margin-bottom: 15px; 
+      margin-bottom: 8px; 
       position: relative; 
-      height: 75px; 
-      padding-top: 8px; 
+      height: 80px; 
+      padding-top: 4px; 
     }
     
     .logo-img { 
-      width: 70px; 
-      height: 70px; 
+      width: 80px; 
+      height: 80px; 
       border-radius: 10px; 
       object-fit: cover; 
       z-index: 2; 
-      margin-top: 4px; 
     }
     
     .brand { 
@@ -60,38 +59,45 @@
       width: 100%;
       pointer-events: none; 
     }
-    .brand h1 { font-size: 1.75rem; color: #000; margin: 0; font-family: 'Magnolia script', cursive; }
-    .brand p { font-size: 1.15rem; color: #4b5563; font-family: 'Magnolia script', cursive; }
+    .brand h1 { font-size: 2.5rem; color: #d9381e; margin: 0; font-family: 'Segoe script', cursive; }
+    .brand p { font-size: 1.2rem; color: #4b5563; font-family: 'Segoe script', cursive; }
     
     .fecha-hora-centro {
         text-align: center;
-        font-size: 0.75rem;
+        font-size: 0.80rem;
         color: #64748b;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
     }
     
-    .licencia { background-color: #f8fafc; padding: 10px; border-radius: 8px; text-align: center; border: 1.5px solid #cbd5e1; margin-bottom: 15px; font-weight: bold; }
+    .licencia { background-color: #f8fafc; padding: 8px; border-radius: 8px; text-align: center; border: 1.5px solid #cbd5e1; margin-bottom: 10px; font-weight: bold; font-size: 0.85rem; }
     
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-    .stat-card { background: #f8fafc; padding: 15px; border-radius: 10px; text-align: center; border: 1.5px solid #cbd5e1; }
-    .stat-value { font-size: 1.5rem; font-weight: 900; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; align-items: start; }
+    .stat-card { background: #f8fafc; padding: 8px 10px; border-radius: 8px; border: 1.5px solid #cbd5e1; display: flex; flex-direction: column; position: relative; }
+    .stat-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+    .stat-title { font-size: 0.65rem; font-weight: 800; color: #4b5563; }
+    .stat-toggle-btn { background: none; border: none; font-size: 0.9rem; cursor: pointer; color: #4b5563; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
+    .stat-toggle-btn:active { background: #cbd5e1; }
+    .stat-value { font-size: 1.2rem; font-weight: 900; }
     
-    .main-action { background: #f8fafc; border: 2px solid #000; border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; cursor: pointer; text-decoration: none; color: inherit; }
+    .stat-item-row { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+    
+    .main-action { background: #f8fafc; border: 2px solid #d9381e; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; text-decoration: none; color: inherit; }
     .main-action:active { transform: scale(0.98); }
-    .main-action h2 { font-size: 1.2rem; text-transform: uppercase; }
+    .main-action h2 { font-size: 1.1rem; text-transform: uppercase; color: #d9381e; }
+    .main-action p { font-size: 0.7rem; color: #4b5563; }
     
-    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-    .menu-card { background: #f8fafc; padding: 15px; border-radius: 10px; border: 1.5px solid #cbd5e1; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: inherit; }
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .menu-card { background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #cbd5e1; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: inherit; }
     .menu-card:active { transform: scale(0.98); }
-    .menu-card h3 { font-size: 1rem; }
+    .menu-card h3 { font-size: 0.95rem; }
     
-    .full-card { background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 15px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+    .full-card { background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
     .full-card:active { transform: scale(0.98); }
     
-    .full-card-salir { background: #4e4b46; border-radius: 10px; padding: 15px; color: #fff; cursor: pointer; border: 1.5px solid #57534e; display: flex; align-items: center; gap: 12px; }
+    .full-card-salir { background: #4e4b46; border-radius: 8px; padding: 10px 12px; color: #fff; cursor: pointer; border: 1.5px solid #57534e; display: flex; align-items: center; gap: 10px; }
     .full-card-salir:active { transform: scale(0.98); }
-    .full-card-salir h3 { color: #f87171; }
+    .full-card-salir h3 { color: #f87171; font-size: 0.95rem; }
 
     .mono-icon { filter: grayscale(100%); display: inline-block; }
 
@@ -99,22 +105,23 @@
     .modal-header h3 { font-size: 1rem; color: #000000; font-weight: 800; }
     .modal-desc { font-size: 0.78rem; color: #4b5563; margin-bottom: 8px; flex-shrink: 0; }
 
-    .btn-volver-menu { background-color: #000000; color: white; border: none; padding: 10px; width: 100%; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: center; flex-shrink: 0; margin-top: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .btn-volver-menu { background-color: #000000; color: white; border: none; padding: 9px; width: 100%; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: center; flex-shrink: 0; margin-top: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
     .btn-volver-menu:active { transform: scale(0.98); }
 
-    .btn-reiniciar-factory { background: #4e4b46; border: 1.5px solid #57534e; border-radius: 8px; padding: 11px 14px; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; color: #f87171; font-weight: 800; font-size: 0.9rem; width: 100%; margin-top: 4px; }
+    .btn-reiniciar-factory { background: #4e4b46; border: 1.5px solid #57534e; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; color: #f87171; font-weight: 800; font-size: 0.85rem; width: 100%; margin-top: 4px; }
     .btn-reiniciar-factory:hover { background: #57534e; }
 
     .footer-zocalo { 
-        margin-top: 15px;
-        padding-top: 20px;
-        font-size: 0.75rem;
+        margin-top: 12px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        font-size: 0.7rem;
         color: #64748b;
     }
-    .footer-linea-1 { text-align: left; margin: 0 10px; }
-    .footer-linea-2 { text-align: center; margin-top: 5px; }
+    .footer-linea-1 { text-align: center; margin: 0 4px; }
+    .footer-linea-2 { text-align: center; margin-top: 2px; }
 
-    /* Modal Dinámico General */
+    /* Modal Dinámico General y Flotantes */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; }
     .modal-overlay.active { display: flex; }
     .modal-container { background: white; width: 100%; max-width: 410px; border-radius: 16px; padding: 18px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); animation: fadeIn 0.2s ease-in-out; max-height: 90vh; display: flex; flex-direction: column; overflow-y: auto; }
@@ -131,8 +138,8 @@
         <div class="header">
             <img src="icono.png" class="logo-img" alt="Logo BMA">
             <div class="brand">
-                <h1>B. M. A. Artesanías</h1>
-                <p>Bijou Macramé Artesanal</p>
+                <h1>Infinito Corazón</h1>
+                <p> by Bijou Macramé Artesanal</p>
             </div>
         </div>
 
@@ -142,17 +149,23 @@
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-title">VENTAS JORNADA</div>
+                <div class="stat-header-row">
+                    <div class="stat-title">VENTAS JORNADA</div>
+                    <button class="stat-toggle-btn" onclick="abrirDetalleStat('ventas')" title="Ver detalle">☰</button>
+                </div>
                 <div class="stat-value" id="lblStatVentas">$0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">STOCK TOTAL</div>
+                <div class="stat-header-row">
+                    <div class="stat-title">STOCK TOTAL</div>
+                    <button class="stat-toggle-btn" onclick="abrirDetalleStat('stock')" title="Ver detalle">☰</button>
+                </div>
                 <div class="stat-value" id="lblStatStock">0 un.</div>
             </div>
         </div>
 
         <div class="main-action" onclick="abrirModulo('ventas.html')">
-            <span class="mono-icon" style="font-size: 28px;">💳</span>
+            <span class="mono-icon" style="font-size: 24px;">💳</span>
             <div class="main-action-text">
                 <h2>REGISTRAR VENTA</h2>
                 <p>Cargar pedido, carrito y comprobantes</p>
@@ -160,27 +173,27 @@
         </div>
 
         <div class="menu-grid">
-            <div class="menu-card" onclick="abrirModulo('clientes.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">👥</span><div><h3>Clientes</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('stock.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">📦</span><div><h3>Stock</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('caja_chica.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">💵</span><div><h3>Caja Chica</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('cierre_z.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">🔒</span><div><h3>Cierre Z</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('libro_diario.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">📖</span><div><h3>Libro Diario</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('libro_mensual.html')"><span class="emoji mono-icon" style="font-size: 1.6rem;">📊</span><div><h3>Libro Mensual</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('clientes.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">👥</span><div><h3>Clientes</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('stock.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📦</span><div><h3>Stock</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('caja_chica.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">💵</span><div><h3>Caja Chica</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('cierre_z.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">🔒</span><div><h3>Cierre Z</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('libro_diario.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📖</span><div><h3>Libro Diario</h3></div></div>
+            <div class="menu-card" onclick="abrirModulo('libro_mensual.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📊</span><div><h3>Libro Mensual</h3></div></div>
         </div>
 
         <div class="full-card" id="btn-config">
-            <span class="mono-icon" style="font-size: 22px;">⚙️</span>
+            <span class="mono-icon" style="font-size: 20px;">⚙️</span>
             <div>
-                <h3 style="color: #000000; font-size: 1rem;">Configuración</h3>
-                <p style="font-size: 0.65rem; color: #64748b; line-height: 1.2;">Copias de seguridad y reinicio de fábrica</p>
+                <h3 style="color: #000000; font-size: 0.95rem;">Configuración</h3>
+                <p style="font-size: 0.62rem; color: #64748b; line-height: 1.2;">Copias de seguridad y reinicio de fábrica</p>
             </div>
         </div>
 
         <div class="full-card-salir" onclick="window.location.href='index.html'">
-            <span class="mono-icon" style="font-size: 22px;">🚪</span>
+            <span class="mono-icon" style="font-size: 20px;">🚪</span>
             <div>
                 <h3>Salir al Inicio</h3>
-                <p style="font-size: 0.65rem; color: #d6d3d1; line-height: 1.2;">Volver al principio de la app</p>
+                <p style="font-size: 0.62rem; color: #d6d3d1; line-height: 1.2;">Volver al principio de la app</p>
             </div>
         </div>
 
@@ -194,6 +207,20 @@
     <div class="modal-overlay" id="modal-dinamico">
         <div class="modal-container" id="contenido-modal">
             <!-- El contenido de los módulos se inyecta acá adentro -->
+        </div>
+    </div>
+
+    <!-- MODAL FLOTANTE PEQUEÑO PARA DETALLE DE ESTADÍSTICAS -->
+    <div class="modal-overlay" id="modal-stat-detalle">
+        <div class="modal-container" style="max-width: 340px;">
+            <div class="modal-header">
+                <h3 id="titulo-stat-modal">Detalle</h3>
+                <span style="cursor: pointer; font-weight: bold; font-size: 1.2rem; color: #64748b;" onclick="cerrarStatModal()">✕</span>
+            </div>
+            <div id="contenido-stat-modal" style="max-height: 220px; overflow-y: auto; margin-bottom: 10px;">
+                <!-- Contenido dinámico -->
+            </div>
+            <button class="btn-volver-menu" onclick="cerrarStatModal()">Cerrar</button>
         </div>
     </div>
 
@@ -220,6 +247,9 @@
     </div>
 
     <script>
+        let datosVentasJornadaCache = [];
+        let datosStockCache = [];
+
         function actualizarTiempo() {
             const hoy = new Date();
             const opcionesFecha = { day: '2-digit', month: '2-digit', year: '2-digit' };
@@ -230,22 +260,19 @@
         setInterval(actualizarTiempo, 1000);
 
         function actualizarEstadisticasMenu() {
-            // Ventas de la jornada
             const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
             const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || JSON.parse(localStorage.getItem('sbo_ventas')) || [];
             
-            const totalVentasJornada = ventas
-                .filter(v => v.fecha === fechaSesion)
-                .reduce((acc, v) => acc + (v.total || 0), 0);
+            datosVentasJornadaCache = ventas.filter(v => v.fecha === fechaSesion);
+            const totalVentasJornada = datosVentasJornadaCache.reduce((acc, v) => acc + (v.total || 0), 0);
             
             const elVentas = document.getElementById('lblStatVentas');
             if (elVentas) {
                 elVentas.innerText = `$${totalVentasJornada.toLocaleString('es-AR')}`;
             }
 
-            // Stock total
-            const stock = JSON.parse(localStorage.getItem('bma_stock')) || JSON.parse(localStorage.getItem('sbo_stock')) || [];
-            const totalStock = stock.reduce((acc, p) => {
+            datosStockCache = JSON.parse(localStorage.getItem('bma_stock')) || JSON.parse(localStorage.getItem('sbo_stock')) || [];
+            const totalStock = datosStockCache.reduce((acc, p) => {
                 const cant = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
                 return acc + (parseInt(cant) || 0);
             }, 0);
@@ -256,9 +283,52 @@
             }
         }
 
+        function abrirDetalleStat(tipo) {
+            const tituloModal = document.getElementById('titulo-stat-modal');
+            const contenidoModal = document.getElementById('contenido-stat-modal');
+
+            if (tipo === 'ventas') {
+                tituloModal.innerText = '💳 Detalle Ventas Jornada';
+                if (datosVentasJornadaCache.length === 0) {
+                    contenidoModal.innerHTML = '<div style="text-align:center; color:#64748b; padding: 10px;">Sin ventas registradas hoy</div>';
+                } else {
+                    let html = '';
+                    datosVentasJornadaCache.forEach(v => {
+                        let desc = v.productos ? v.productos.map(p => `${p.cantidad || p.cant || 1}x ${p.nombre || p.articulo || p.titulo || p.producto || 'Artículo'}`).join(', ') : (v.detalle || 'Venta general');
+                        html += `<div class="stat-item-row"><span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${desc}</span> <span style="font-weight:bold; color:#d9381e;">$${(v.total || 0).toLocaleString('es-AR')}</span></div>`;
+                    });
+                    contenidoModal.innerHTML = html;
+                }
+            } else if (tipo === 'stock') {
+                tituloModal.innerText = '📦 Detalle Stock Actual';
+                if (datosStockCache.length === 0) {
+                    contenidoModal.innerHTML = '<div style="text-align:center; color:#64748b; padding: 10px;">Sin artículos en stock</div>';
+                } else {
+                    let html = '';
+                    datosStockCache.forEach(p => {
+                        let nombre = p.producto || p.nombre || p.articulo || p.titulo || p.descripcion || 'Artículo';
+                        let cant = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
+                        html += `<div class="stat-item-row"><span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${nombre}</span> <span style="font-weight:bold;">${cant} un.</span></div>`;
+                    });
+                    contenidoModal.innerHTML = html;
+                }
+            }
+
+            document.getElementById('modal-stat-detalle').classList.add('active');
+        }
+
+        function cerrarStatModal() {
+            document.getElementById('modal-stat-detalle').classList.remove('active');
+        }
+
+        document.getElementById('modal-stat-detalle').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-stat-detalle') {
+                cerrarStatModal();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', actualizarEstadisticasMenu);
 
-        // Función para cargar cualquier módulo por fetch y ejecutar sus scripts internos
         function abrirModulo(url) {
             fetch(url)
                 .then(res => res.text())
@@ -266,7 +336,6 @@
                     const contenedor = document.getElementById('contenido-modal');
                     contenedor.innerHTML = html;
                     
-                    // Extraer y ejecutar los scripts del archivo externo cargado
                     const scripts = contenedor.querySelectorAll('script');
                     scripts.forEach(script => {
                         const nuevoScript = document.createElement('script');
@@ -287,17 +356,15 @@
         function cerrarModalDinamico() {
             document.getElementById('modal-dinamico').classList.remove('active');
             document.getElementById('contenido-modal').innerHTML = '';
-            actualizarEstadisticasMenu(); // Actualiza los números al volver al menú
+            actualizarEstadisticasMenu();
         }
 
-        // Cerrar al hacer clic fuera del modal dinámico
         document.getElementById('modal-dinamico').addEventListener('click', (e) => {
             if (e.target.id === 'modal-dinamico') {
                 cerrarModalDinamico();
             }
         });
 
-        // Configuración Modal Setup
         const setupModalConfig = (cardId, modalId, closeBtnId) => {
             const card = document.getElementById(cardId);
             const modal = document.getElementById(modalId);

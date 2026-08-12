@@ -12,32 +12,32 @@
 
 <!-- VISTA 1: FORMULARIO -->
 <div id="vista-formulario">
-  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">Nombre y Apellido / Razón Social:</label>
-  <input type="text" id="txtNombre" placeholder="Ej: Juan Pérez" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">Nombre y Apellido / Razón Social:</label>
+  <input type="text" id="txtNombre" placeholder="Ej: Juan Pérez" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
 
-  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">Teléfono / WhatsApp:</label>
-  <input type="text" id="txtTelefono" placeholder="Ej: 11 2345-6789" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">Teléfono / WhatsApp:</label>
+  <input type="text" id="txtTelefono" placeholder="Ej: 2364123456" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
 
-  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">Localidad:</label>
-  <input type="text" id="txtLocalidad" placeholder="Ej: Junín" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">Localidad:</label>
+  <input type="text" id="txtLocalidad" placeholder="Ej: Junín" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
 
-  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-align: left; text-transform: uppercase;">E-mail:</label>
-  <input type="email" id="txtEmail" placeholder="Ej: juan@email.com" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">E-mail:</label>
+  <input type="email" id="txtEmail" placeholder="Ej: juan@email.com" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
 
-  <button id="btnAccion" onclick="guardarCliente()" style="background: #0f172a; color: white; border: none; padding: 13px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; margin-top: 14px; cursor: pointer;">➕ Registrar Cliente</button>
-  <button onclick="alternarVistaLista(true)" style="background: #475569; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; margin-top: 8px; cursor: pointer;">📋 Mostrar Registros</button>
-  <button id="btnCancelarEdicion" onclick="cancelarEdicion()" style="background: #64748b; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.85rem; margin-top: 8px; cursor: pointer; display: none;">Cancelar Edición</button>
+  <button id="btnAccion" onclick="guardarCliente()" style="background: #0f172a; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.95rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,0.3);">➕ Registrar Cliente</button>
+  <button onclick="alternarVistaLista(true)" style="background: #475569; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-top: 8px; cursor: pointer;">📋 Mostrar Registros</button>
+  <button id="btnCancelarEdicion" onclick="cancelarEdicion()" style="background: #64748b; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.85rem; margin-top: 8px; cursor: pointer; display: none;">Cancelar Edición</button>
   <button onclick="cerrarVentanaModal()" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">Volver al Menú</button>
 </div>
 
 <!-- VISTA 2: LISTADO -->
 <div id="vista-listado" style="display: none;">
   <div style="margin-bottom: 8px;">
-    <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-top: 0; text-align: left; text-transform: uppercase;">🔍 Buscar Registro:</label>
-    <input type="text" id="txtBuscar" placeholder="Nombre, localidad, tel..." oninput="actualizarPantallaClientes()" style="width: 100%; padding: 12px 14px; margin-top: 5px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;">
+    <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 0; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">🔍 Buscar Registro:</label>
+    <input type="text" id="txtBuscar" placeholder="Nombre, localidad, tel..." oninput="actualizarPantallaClientes()" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
   </div>
 
-  <div id="listaClientes" style="margin-top: 8px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+  <div id="listaClientes" style="margin-top: 8px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;">
     <div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No hay clientes registrados.</div>
   </div>
 
@@ -93,7 +93,7 @@
       });
 
       if (filtrados.length === 0) {
-        listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No se encontraron clientes.</div>';
+        listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.8rem; padding: 15px;">No se encontraron clientes.</div>';
       } else {
         filtrados.forEach((c) => {
           const realIndex = clientes.indexOf(c);
@@ -103,16 +103,16 @@
           const emailCli = c.email || 'Sin correo';
 
           const item = document.createElement('div');
-          item.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #f8fafc; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.9rem;";
+          item.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem;";
           item.innerHTML = `
-            <div style="display: flex; flex-direction: column; gap: 3px;">
-              <span style="font-weight: bold; color: #1e293b; font-size: 0.95rem;">${nombreCli}</span>
-              <span style="font-size: 0.8rem; color: #64748b;">📞 ${telCli} | 📍 ${locCli}</span>
-              <span style="font-size: 0.8rem; color: #64748b;">✉️ ${emailCli}</span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-weight: bold; color: #1e293b; font-size: 0.9rem;">${nombreCli}</span>
+              <span style="font-size: 0.78rem; color: #64748b;">📞 ${telCli} | 📍 ${locCli}</span>
+              <span style="font-size: 0.78rem; color: #64748b;">✉️ ${emailCli}</span>
             </div>
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <button onclick="cargarEdicionCliente(${realIndex})" style="background: none; border: none; color: #3b82f6; font-size: 1.1rem; cursor: pointer; padding: 4px;" title="Editar">✏️</button>
-              <button onclick="eliminarClienteItem(${realIndex})" style="background: none; border: none; color: #ef4444; font-size: 1.1rem; cursor: pointer; padding: 4px;" title="Eliminar">❌</button>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <button onclick="cargarEdicionCliente(${realIndex})" style="background: #e0f2fe; border: none; color: #0369a1; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Editar">✏️</button>
+              <button onclick="eliminarClienteItem(${realIndex})" style="background: #fee2e2; border: none; color: #b91c1c; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Eliminar">❌</button>
             </div>
           `;
           listaContainer.appendChild(item);
