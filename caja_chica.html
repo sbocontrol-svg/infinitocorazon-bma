@@ -1,14 +1,129 @@
 <style>
-  .caja-container-box *, .caja-modal-overlay * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-  .caja-container-box label { font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px; }
-  .caja-container-box input, .caja-container-box select { width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none; }
+  .caja-container-box *, .caja-modal-overlay * { 
+    box-sizing: border-box; 
+    font-family: system-ui, -apple-system, sans-serif; 
+  }
+  .caja-container-box label { 
+    font-size: 11px; 
+    font-weight: 700; 
+    color: #475569; 
+    display: block; 
+    margin-top: 10px; 
+    text-align: left; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+  }
+  .caja-container-box input, .caja-container-box select { 
+    width: 100%; 
+    padding: 10px; 
+    margin-top: 4px; 
+    border: 1.5px solid #cbd5e1; 
+    border-radius: 10px; 
+    font-size: 14px; 
+    background: #f8fafc; 
+    color: #1e293b; 
+    outline: none; 
+  }
   
-  .caja-btn-main { background: #0f172a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
-  .caja-btn-secundario { background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+  .caja-btn-main { 
+    background: #0f172a; 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    border-radius: 8px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    width: 100%; 
+    margin-top: 8px; 
+    min-height: 44px; 
+  }
+  .caja-btn-secundario { 
+    background: #334155; 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    width: 100%; 
+    border-radius: 10px; 
+    font-weight: bold; 
+    font-size: 0.95rem; 
+    margin-top: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 6px; 
+    text-decoration: none; 
+    min-height: 44px; 
+  }
   
-  .caja-card { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-top: 10px; }
-  .caja-mov-item { background: #fff; border: 1px solid #e2e8f0; padding: 8px 10px; border-radius: 8px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-  .caja-btn-del { background: #fee2e2; color: #ef4444; border: none; padding: 4px 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.75rem; }
+  .caja-card { 
+    background: #f8fafc; 
+    border: 1.5px solid #e2e8f0; 
+    border-radius: 12px; 
+    padding: 12px; 
+    margin-top: 10px; 
+  }
+  .caja-mov-item { 
+    background: #fff; 
+    border: 1px solid #e2e8f0; 
+    padding: 8px 10px; 
+    border-radius: 8px; 
+    margin-bottom: 6px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+  }
+  .caja-btn-del { 
+    background: #fee2e2; 
+    color: #ef4444; 
+    border: none; 
+    padding: 6px 12px; 
+    border-radius: 6px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    font-size: 0.8rem; 
+    min-height: 36px; 
+  }
+
+  /* Modal Flotante */
+  .caja-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(3px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 16px;
+  }
+
+  .caja-modal-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    max-height: 80vh;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  }
+
+  .caja-scroll-list {
+    flex: 1;
+    overflow-y: auto;
+    margin: 10px 0;
+    padding-right: 4px;
+  }
+
+  .caja-scroll-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .caja-scroll-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
 </style>
 
 <div class="caja-container-box">
@@ -22,15 +137,16 @@
     </button>
   </div>
 
-  <div id="cajaBloqueSaldoInicial" class="caja-card">
-    <!-- Se carga dinámicamente con JS -->
-  </div>
+  <!-- Saldo Inicial -->
+  <div id="cajaBloqueSaldoInicial" class="caja-card"></div>
 
+  <!-- Total en Caja -->
   <div style="background: #0f172a; color: white; border-radius: 12px; padding: 12px; margin-top: 8px; text-align: center;">
     <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">Saldo Total en Caja</span>
     <div id="cajaSaldoActual" style="font-size: 1.4rem; font-weight: 800; margin-top: 2px;">$0</div>
   </div>
 
+  <!-- Registro de Nuevo Movimiento -->
   <div class="caja-card">
     <strong style="font-size: 0.85rem; color: #0f172a; display: block; margin-bottom: 6px;">Nuevo Movimiento</strong>
     <select id="cajaTipo">
@@ -39,23 +155,61 @@
     </select>
     <input type="text" id="cajaConcepto" placeholder="Concepto (ej: Vuelto, Gasto)">
     <input type="number" id="cajaMonto" placeholder="Monto ($)">
-    <button class="caja-btn-main" style="background:#475569;" onclick="agregarMovimientoCaja()">➕ Registrar</button>
+    <button class="caja-btn-main" style="background:#475569;" onclick="agregarMovimientoCaja()">➕ Registrar Movimiento</button>
   </div>
 
-  <div class="caja-card">
-    <strong style="font-size: 0.85rem; color: #0f172a; display: block; margin-bottom: 6px;">Movimientos</strong>
-    <div id="listaMovimientosCaja" style="max-height: 150px; overflow-y: auto;"></div>
-  </div>
+  <!-- Botón abrir Historial Flotante -->
+  <button class="caja-btn-secundario" style="background:#1e293b;" onclick="abrirModalMovimientos()">
+    📋 Ver Historial de Movimientos
+  </button>
 
   <button onclick="cerrarVentanaModalCajaGen()" class="caja-btn-secundario">Volver</button>
 </div>
 
+<!-- Modal Flotante de Historial -->
+<div id="modalMovimientosCaja" class="caja-modal-overlay">
+  <div class="caja-modal-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+      <strong style="font-size: 1rem; color: #0f172a;">📋 Movimientos del Día</strong>
+      <button onclick="cerrarModalMovimientos()" style="background:none; border:none; font-size: 1.2rem; cursor:pointer; color:#64748b;">✕</button>
+    </div>
+
+    <div id="listaMovimientosCajaModal" class="caja-scroll-list"></div>
+
+    <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: auto;">
+      <button class="caja-btn-main" style="background:#0f172a; margin: 0;" onclick="cerrarModalMovimientos()">
+        Volver
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
-  function cerrarVentanaModalCajaGen() { typeof cerrarModalDinamico === 'function' ? cerrarModalDinamico() : window.location.href = 'menu.html'; }
-  
-  const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
-  let movimientosCajaList = JSON.parse(localStorage.getItem('bma_cajachica')) || [];
-  let saldoInicialData = JSON.parse(localStorage.getItem('bma_saldo_inicial_data')) || {};
+  function obtenerDatosBma(clave, valorDefecto = null) {
+    try {
+      const item = localStorage.getItem(clave);
+      return item ? JSON.parse(item) : valorDefecto;
+    } catch (e) {
+      console.error(`Error al leer ${clave}:`, e);
+      return valorDefecto;
+    }
+  }
+
+  function guardarDatosBma(clave, valor) {
+    try {
+      localStorage.setItem(clave, JSON.stringify(valor));
+    } catch (e) {
+      console.error(`Error al guardar ${clave}:`, e);
+    }
+  }
+
+  function cerrarVentanaModalCajaGen() { 
+    typeof cerrarModalDinamico === 'function' ? cerrarModalDinamico() : window.location.href = 'menu.html'; 
+  }
+
+  const fechaSesion = localStorage.getItem('bma_fechaSesion') || new Date().toISOString().split('T')[0];
+  let movimientosCajaList = obtenerDatosBma('bma_caja_chica', []);
+  let saldoInicialData = obtenerDatosBma('bma_saldo_inicial_data', {});
 
   function habilitarEdicionSaldo() {
     document.getElementById('cajaBloqueSaldoInicial').innerHTML = `
@@ -71,7 +225,7 @@
     const val = parseFloat(document.getElementById('cajaInputSaldo').value);
     if (isNaN(val)) return alert('Ingresá un número válido');
     saldoInicialData[fechaSesion] = val;
-    localStorage.setItem('bma_saldo_inicial_data', JSON.stringify(saldoInicialData));
+    guardarDatosBma('bma_saldo_inicial_data', saldoInicialData);
     renderizarCajaChica();
   }
 
@@ -82,7 +236,7 @@
     if (!concepto || monto <= 0) return alert('Completá los datos.');
     
     movimientosCajaList.unshift({ id: Date.now(), fecha: fechaSesion, tipo, concepto, monto });
-    localStorage.setItem('bma_cajachica', JSON.stringify(movimientosCajaList));
+    guardarDatosBma('bma_caja_chica', movimientosCajaList);
     document.getElementById('cajaConcepto').value = '';
     document.getElementById('cajaMonto').value = '';
     renderizarCajaChica();
@@ -90,12 +244,13 @@
 
   function eliminarMovimientoCaja(id) {
     movimientosCajaList = movimientosCajaList.filter(m => m.id !== id);
-    localStorage.setItem('bma_cajachica', JSON.stringify(movimientosCajaList));
+    guardarDatosBma('bma_caja_chica', movimientosCajaList);
     renderizarCajaChica();
+    renderizarMovimientosModal();
   }
 
   function renderizarCajaChica() {
-    document.getElementById('lblFechaTrabajoCaja').innerText = `Fecha de Trabajo: ${fechaSesion.split('-').reverse().join('/')}`;
+    document.getElementById('lblFechaTrabajoCaja').innerText = `Fecha: ${fechaSesion.split('-').reverse().join('/')}`;
     
     const saldoIni = saldoInicialData[fechaSesion] || 0;
     if (saldoInicialData[fechaSesion] !== undefined) {
@@ -110,22 +265,44 @@
 
     const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
     let saldoCalculado = saldoIni;
+    movimientosJornada.forEach(m => {
+      saldoCalculado += (m.tipo === 'Ingreso' ? m.monto : -m.monto);
+    });
+
+    document.getElementById('cajaSaldoActual').innerText = `$${saldoCalculado.toLocaleString('es-AR')}`;
+  }
+
+  function abrirModalMovimientos() {
+    renderizarMovimientosModal();
+    document.getElementById('modalMovimientosCaja').style.display = 'flex';
+  }
+
+  function cerrarModalMovimientos() {
+    document.getElementById('modalMovimientosCaja').style.display = 'none';
+  }
+
+  function renderizarMovimientosModal() {
+    const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
     let html = '';
 
     movimientosJornada.forEach(m => {
-      saldoCalculado += (m.tipo === 'Ingreso' ? m.monto : -m.monto);
       html += `
         <div class="caja-mov-item">
-          <div><strong style="font-size:0.8rem">${m.concepto}</strong><br><small>${m.tipo}</small></div>
+          <div>
+            <strong style="font-size:0.85rem; color:#0f172a;">${m.concepto}</strong><br>
+            <small style="color:#64748b;">${m.tipo}</small>
+          </div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-weight:700; color:${m.tipo==='Ingreso'?'#16a34a':'#dc2626'}">$${m.monto.toLocaleString('es-AR')}</span>
+            <span style="font-weight:700; color:${m.tipo === 'Ingreso' ? '#16a34a' : '#dc2626'}">
+              $${m.monto.toLocaleString('es-AR')}
+            </span>
             <button class="caja-btn-del" onclick="eliminarMovimientoCaja(${m.id})">✕</button>
           </div>
         </div>`;
     });
 
-    document.getElementById('listaMovimientosCaja').innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.75rem;">Sin movimientos.</p>';
-    document.getElementById('cajaSaldoActual').innerText = `$${saldoCalculado.toLocaleString('es-AR')}`;
+    document.getElementById('listaMovimientosCajaModal').innerHTML = 
+      html || '<p style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top: 20px;">Sin movimientos hoy.</p>';
   }
 
   renderizarCajaChica();

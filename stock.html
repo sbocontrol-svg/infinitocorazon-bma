@@ -27,7 +27,7 @@
       <div id="lblFechaTrabajoStock" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
     </div>
     
-    <button onclick="cerrarVentanaModalStockGen()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+    <button onclick="window.cerrarVentanaModalStockGen()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
       <img src="icono.png" alt="Logo BMA" style="width: 44px; height: 44px; object-fit: contain;">
     </button>
   </div>
@@ -40,15 +40,15 @@
 
   <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 8px;">
     <label style="margin-top:0;">Precio de Venta ($):</label>
-    <button type="button" class="stock-btn-calc-link" onclick="abrirCalculadoraStock()">🧮 Calcular Precio</button>
+    <button type="button" class="stock-btn-calc-link" onclick="window.abrirCalculadoraStock()">🧮 Calcular Precio</button>
   </div>
   <input type="number" id="txtPrecio" placeholder="0.00" step="0.01">
 
-  <button class="stock-btn-accion" id="btnAccionStock" onclick="guardarProductoStock()">➕ Agregar al Stock</button>
-  <button class="stock-btn-cancelar" id="btnCancelarStock" onclick="cancelarEdicionStock()">Cancelar Edición</button>
+  <button class="stock-btn-accion" id="btnAccionStock" onclick="window.guardarProductoStock()">➕ Agregar al Stock</button>
+  <button class="stock-btn-cancelar" id="btnCancelarStock" onclick="window.cancelarEdicionStock()">Cancelar Edición</button>
   
   <button class="stock-btn-registros" id="btnAbrirModalStock">📋 Ver Inventario Actual</button>
-  <button onclick="cerrarVentanaModalStockGen()" class="stock-btn-secundario">Volver al Menú</button>
+  <button onclick="window.cerrarVentanaModalStockGen()" class="stock-btn-secundario">Volver al Menú</button>
 </div>
 
 <!-- Modal Inventario Actual -->
@@ -79,30 +79,30 @@
     
     <div class="calc-row">
       <input type="text" id="mat1_desc" placeholder="Material 1" style="flex: 2;">
-      <input type="number" id="mat1_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="calcularTotalModalStock()">
+      <input type="number" id="mat1_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="window.calcularTotalModalStock()">
     </div>
     <div class="calc-row">
       <input type="text" id="mat2_desc" placeholder="Material 2" style="flex: 2;">
-      <input type="number" id="mat2_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="calcularTotalModalStock()">
+      <input type="number" id="mat2_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="window.calcularTotalModalStock()">
     </div>
     <div class="calc-row">
       <input type="text" id="mat3_desc" placeholder="Material 3" style="flex: 2;">
-      <input type="number" id="mat3_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="calcularTotalModalStock()">
+      <input type="number" id="mat3_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="window.calcularTotalModalStock()">
     </div>
     <div class="calc-row">
       <input type="text" id="mat4_desc" placeholder="Material 4" style="flex: 2;">
-      <input type="number" id="mat4_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="calcularTotalModalStock()">
+      <input type="number" id="mat4_val" placeholder="$ Costo" step="0.01" style="flex: 1;" oninput="window.calcularTotalModalStock()">
     </div>
 
     <label style="font-weight: bold; color: #334155; margin-top: 8px; font-size: 11px;">Mano de Obra:</label>
     <div class="calc-row">
       <div style="flex: 1; min-width: 0;">
         <label style="font-size: 9px; margin-top: 0;">Valor Hora ($):</label>
-        <input type="number" id="calcValorHora" value="10000" placeholder="0.00" step="100" oninput="calcularTotalModalStock()">
+        <input type="number" id="calcValorHora" value="10000" placeholder="0.00" step="100" oninput="window.calcularTotalModalStock()">
       </div>
       <div style="flex: 1; min-width: 0;">
         <label style="font-size: 9px; margin-top: 0;">Minutos:</label>
-        <input type="number" id="calcMinutos" placeholder="Ej: 25" step="1" oninput="calcularTotalModalStock()">
+        <input type="number" id="calcMinutos" placeholder="Ej: 25" step="1" oninput="window.calcularTotalModalStock()">
       </div>
     </div>
     <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px; text-align: right;">
@@ -111,7 +111,7 @@
 
     <label style="font-weight: bold; color: #334155; margin-top: 6px; font-size: 11px;">Margen de Ganancia:</label>
     <div class="calc-row">
-      <input type="number" id="calcGanancia" placeholder="Ej: 50" value="50" step="1" style="flex: 1;" oninput="calcularTotalModalStock()">
+      <input type="number" id="calcGanancia" placeholder="Ej: 50" value="50" step="1" style="flex: 1;" oninput="window.calcularTotalModalStock()">
       <span style="font-size: 0.9rem; font-weight: bold; color: #4b5563;">%</span>
     </div>
 
@@ -120,240 +120,272 @@
       <div style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-top: 2px;">Precio Sugerido: $<span id="lblPrecioFinal">0.00</span></div>
     </div>
 
-    <button class="stock-btn-accion" style="margin-top: 10px;" onclick="aplicarPrecioCalculadoStock()">✅ Usar este Precio</button>
-    <button class="stock-btn-secundario" style="background: #64748b; margin-top: 8px;" onclick="cerrarCalculadoraStock()">❌ Cerrar</button>
+    <button class="stock-btn-accion" style="margin-top: 10px;" onclick="window.aplicarPrecioCalculadoStock()">✅ Usar este Precio</button>
+    <button class="stock-btn-secundario" style="background: #64748b; margin-top: 8px;" onclick="window.cerrarCalculadoraStock()">❌ Cerrar</button>
   </div>
 </div>
 
 <script>
-  function cerrarVentanaModalStockGen() {
+  window.cerrarVentanaModalStockGen = function() {
     if (typeof cerrarModalDinamico === 'function') {
       cerrarModalDinamico();
     } else {
       window.location.href = 'menu.html';
     }
-  }
+  };
 
-  var fechaSesionStock = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
+  (function() {
+    function obtenerFechaLocal() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
 
-  function formatearFechaStock(fechaStr) {
-    if (!fechaStr) return '';
-    var partes = fechaStr.split('-');
-    return partes.length === 3 ? partes[2] + '/' + partes[1] + '/' + partes[0] : fechaStr;
-  }
+    const fechaSesionStock = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
 
-  var lblFechaStockEl = document.getElementById('lblFechaTrabajoStock');
-  if (lblFechaStockEl) {
-    lblFechaStockEl.innerText = 'Fecha de Trabajo: ' + formatearFechaStock(fechaSesionStock);
-  }
+    function formatearFechaStock(fechaStr) {
+      if (!fechaStr) return '';
+      const partes = fechaStr.split('-');
+      return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
+    }
 
-  var inventarioStock = [];
-  var editandoIndexStock = null;
+    const lblFechaStockEl = document.getElementById('lblFechaTrabajoStock');
+    if (lblFechaStockEl) {
+      lblFechaStockEl.innerText = 'Fecha de Trabajo: ' + formatearFechaStock(fechaSesionStock);
+    }
 
-  try {
-    var guardadosStock = localStorage.getItem('bma_stock') || localStorage.getItem('sbo_stock') || localStorage.getItem('stock');
-    if (guardadosStock) inventarioStock = JSON.parse(guardadosStock);
-  } catch (e) {
-    inventarioStock = [];
-  }
+    let inventarioStock = [];
+    let editandoIndexStock = null;
 
-  function actualizarPantallaStock() {
-    var listaContainer = document.getElementById('listaStock');
-    if (!listaContainer) return;
-    listaContainer.innerHTML = '';
-
-    if (inventarioStock.length === 0) {
-      listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No hay productos en stock.</div>';
-    } else {
-      for (var i = 0; i < inventarioStock.length; i++) {
-        var p = inventarioStock[i];
-        var nombreItem = p.producto || p.articulo || p.nombre || 'Sin nombre';
-        var item = document.createElement('div');
-        item.className = 'stock-item';
-        item.innerHTML = 
-          '<div style="display: flex; flex-direction: column; gap: 3px;">' +
-            '<span style="font-weight: bold; color: #1e293b; font-size: 0.95rem;">' + nombreItem + '</span>' +
-            '<span style="font-size: 0.8rem; color: #64748b;">Precio: $' + Number(p.precio || 0).toFixed(2) + '</span>' +
-          '</div>' +
-          '<div style="display: flex; align-items: center; gap: 8px;">' +
-            '<span style="font-weight: bold; font-size: 0.95rem; color: #0f172a;">' + p.cantidad + ' un.</span>' +
-            '<div style="display:flex; gap:4px;">' +
-              '<button style="background: none; border: none; color: #3b82f6; font-size: 1.1rem; cursor: pointer; padding: 4px;" onclick="cargarParaEditarStock(' + i + ')" title="Editar">✏️</button>' +
-              '<button style="background: none; border: none; color: #ef4444; font-size: 1.1rem; cursor: pointer; padding: 4px;" onclick="eliminarProductoStock(' + i + ')" title="Eliminar">❌</button>' +
-            '</div>' +
-          '</div>';
-        listaContainer.appendChild(item);
+    function obtenerStockSafe() {
+      try {
+        const guardados = localStorage.getItem('bma_stock') || localStorage.getItem('sbo_stock') || localStorage.getItem('stock');
+        return guardados ? JSON.parse(guardados) : [];
+      } catch (e) {
+        console.error("Error cargando stock:", e);
+        return [];
       }
     }
-  }
 
-  function guardarProductoStock() {
-    var producto = document.getElementById('txtProducto').value.trim();
-    var cantidad = parseInt(document.getElementById('txtCantidad').value);
-    var precio = parseFloat(document.getElementById('txtPrecio').value) || 0;
+    inventarioStock = obtenerStockSafe();
 
-    if (!producto) {
-      alert('Por favor, ingresá el nombre del producto.');
-      return;
-    }
-    if (isNaN(cantidad) || cantidad <= 0) {
-      alert('Por favor, ingresá una cantidad válida.');
-      return;
-    }
+    window.actualizarPantallaStock = function() {
+      const listaContainer = document.getElementById('listaStock');
+      if (!listaContainer) return;
+      listaContainer.innerHTML = '';
 
-    // Guardamos con múltiples alias (producto, articulo, nombre) para que ventas/otros módulos no fallen al enlazarlos
-    var objetoStock = { 
-      producto: producto, 
-      articulo: producto,
-      nombre: producto,
-      cantidad: cantidad, 
-      precio: precio, 
-      fecha: editandoIndexStock !== null ? (inventarioStock[editandoIndexStock].fecha || fechaSesionStock) : fechaSesionStock 
+      if (inventarioStock.length === 0) {
+        listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No hay productos en stock.</div>';
+      } else {
+        for (let i = 0; i < inventarioStock.length; i++) {
+          const p = inventarioStock[i];
+          const nombreItem = p.producto || p.articulo || p.nombre || 'Sin nombre';
+          const cantActual = p.cantidad !== undefined ? p.cantidad : (p.stock || 0);
+          const precioActual = Number(p.precio || 0).toFixed(2);
+
+          const item = document.createElement('div');
+          item.className = 'stock-item';
+          item.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 3px;">
+              <span style="font-weight: bold; color: #1e293b; font-size: 0.95rem;">${nombreItem}</span>
+              <span style="font-size: 0.8rem; color: #64748b;">Precio: $${precioActual}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-weight: bold; font-size: 0.95rem; color: #0f172a;">${cantActual} un.</span>
+              <div style="display:flex; gap:4px;">
+                <button style="background: none; border: none; color: #3b82f6; font-size: 1.1rem; cursor: pointer; padding: 4px;" onclick="window.cargarParaEditarStock(${i})" title="Editar">✏️</button>
+                <button style="background: none; border: none; color: #ef4444; font-size: 1.1rem; cursor: pointer; padding: 4px;" onclick="window.eliminarProductoStock(${i})" title="Eliminar">❌</button>
+              </div>
+            </div>
+          `;
+          listaContainer.appendChild(item);
+        }
+      }
     };
 
-    if (editandoIndexStock !== null) {
-      inventarioStock[editandoIndexStock] = objetoStock;
-      cancelarEdicionStock();
-    } else {
-      inventarioStock.push(objetoStock);
-      limpiarFormularioStock();
-    }
+    window.guardarProductoStock = function() {
+      const txtProd = document.getElementById('txtProducto');
+      const txtCant = document.getElementById('txtCantidad');
+      const txtPrec = document.getElementById('txtPrecio');
 
-    guardarYActualizarStock();
-  }
+      const producto = txtProd ? txtProd.value.trim() : '';
+      const cantidad = parseInt(txtCant ? txtCant.value : 0);
+      const precio = parseFloat(txtPrec ? txtPrec.value : 0) || 0;
 
-  function cargarParaEditarStock(index) {
-    var p = inventarioStock[index];
-    document.getElementById('txtProducto').value = p.producto || p.articulo || p.nombre || '';
-    document.getElementById('txtCantidad').value = p.cantidad;
-    document.getElementById('txtPrecio').value = p.precio;
-
-    editandoIndexStock = index;
-    var lblTitulo = document.getElementById('lblTituloStockForm');
-    if (lblTitulo) lblTitulo.innerText = '✏️ Editar Producto';
-    var btnAccion = document.getElementById('btnAccionStock');
-    if (btnAccion) {
-      btnAccion.innerText = '💾 Actualizar Producto';
-      btnAccion.style.background = '#3b82f6';
-    }
-    var btnCancel = document.getElementById('btnCancelarStock');
-    if (btnCancel) btnCancel.style.display = 'block';
-    
-    var modalStockActual = document.getElementById('modal-stock-actual');
-    if (modalStockActual) modalStockActual.classList.remove('active');
-  }
-
-  function cancelarEdicionStock() {
-    editandoIndexStock = null;
-    var lblTitulo = document.getElementById('lblTituloStockForm');
-    if (lblTitulo) lblTitulo.innerText = '📦 Control de Stock';
-    var btnAccion = document.getElementById('btnAccionStock');
-    if (btnAccion) {
-      btnAccion.innerText = '➕ Agregar al Stock';
-      btnAccion.style.background = '#0f172a';
-    }
-    var btnCancel = document.getElementById('btnCancelarStock');
-    if (btnCancel) btnCancel.style.display = 'none';
-    limpiarFormularioStock();
-  }
-
-  function limpiarFormularioStock() {
-    document.getElementById('txtProducto').value = '';
-    document.getElementById('txtCantidad').value = '';
-    document.getElementById('txtPrecio').value = '';
-  }
-
-  function eliminarProductoStock(index) {
-    if (confirm('¿Querés eliminar este producto del stock?')) {
-      if (editandoIndexStock === index) {
-        cancelarEdicionStock();
-      } else if (editandoIndexStock !== null && editandoIndexStock > index) {
-        editandoIndexStock--; 
+      if (!producto) {
+        alert('Por favor, ingresá el nombre del producto.');
+        return;
       }
-      inventarioStock.splice(index, 1);
+      if (isNaN(cantidad) || cantidad <= 0) {
+        alert('Por favor, ingresá una cantidad válida.');
+        return;
+      }
+
+      const objetoStock = { 
+        producto: producto, 
+        articulo: producto,
+        nombre: producto,
+        cantidad: cantidad, 
+        stock: cantidad,
+        precio: precio, 
+        fecha: editandoIndexStock !== null ? (inventarioStock[editandoIndexStock].fecha || fechaSesionStock) : fechaSesionStock 
+      };
+
+      if (editandoIndexStock !== null) {
+        inventarioStock[editandoIndexStock] = objetoStock;
+        window.cancelarEdicionStock();
+      } else {
+        inventarioStock.push(objetoStock);
+        limpiarFormularioStock();
+      }
+
       guardarYActualizarStock();
-    }
-  }
-
-  function guardarYActualizarStock() {
-    localStorage.setItem('bma_stock', JSON.stringify(inventarioStock));
-    actualizarPantallaStock();
-  }
-
-  function abrirCalculadoraStock() {
-    var modalCalc = document.getElementById('modalCalculadoraStock');
-    if (modalCalc) modalCalc.classList.add('active');
-    calcularTotalModalStock();
-  }
-
-  function cerrarCalculadoraStock() {
-    var modalCalc = document.getElementById('modalCalculadoraStock');
-    if (modalCalc) modalCalc.classList.remove('active');
-    resetearCalculadoraStock();
-  }
-
-  function resetearCalculadoraStock() {
-    var ids = ['mat1_desc', 'mat1_val', 'mat2_desc', 'mat2_val', 'mat3_desc', 'mat3_val', 'mat4_desc', 'mat4_val', 'calcMinutos'];
-    for (var i = 0; i < ids.length; i++) {
-      var el = document.getElementById(ids[i]);
-      if (el) el.value = '';
-    }
-    var vh = document.getElementById('calcValorHora'); if (vh) vh.value = '10000';
-    var cg = document.getElementById('calcGanancia'); if (cg) cg.value = '50';
-
-    var lbls = ['lblCostoManoObra', 'lblCostoTotal', 'lblPrecioFinal'];
-    for (var j = 0; j < lbls.length; j++) {
-      var elLbl = document.getElementById(lbls[j]);
-      if (elLbl) elLbl.innerText = '0.00';
-    }
-  }
-
-  function calcularTotalModalStock() {
-    var m1 = parseFloat(document.getElementById('mat1_val').value) || 0;
-    var m2 = parseFloat(document.getElementById('mat2_val').value) || 0;
-    var m3 = parseFloat(document.getElementById('mat3_val').value) || 0;
-    var m4 = parseFloat(document.getElementById('mat4_val').value) || 0;
-
-    var valorHora = parseFloat(document.getElementById('calcValorHora').value) || 0;
-    var minutos = parseFloat(document.getElementById('calcMinutos').value) || 0;
-    
-    var costoManoObra = (minutos / 60) * valorHora;
-    var gananciaPct = parseFloat(document.getElementById('calcGanancia').value) || 0;
-
-    var costoTotalInsumos = m1 + m2 + m3 + m4;
-    var costoTotal = costoTotalInsumos + costoManoObra;
-    var precioFinal = costoTotal * (1 + (gananciaPct / 100));
-
-    var lblCMO = document.getElementById('lblCostoManoObra'); if (lblCMO) lblCMO.innerText = costoManoObra.toFixed(2);
-    var lblCT = document.getElementById('lblCostoTotal'); if (lblCT) lblCT.innerText = costoTotal.toFixed(2);
-    var lblPF = document.getElementById('lblPrecioFinal'); if (lblPF) lblPF.innerText = precioFinal.toFixed(2);
-  }
-
-  function aplicarPrecioCalculadoStock() {
-    var lblPF = document.getElementById('lblPrecioFinal');
-    var precioFinal = lblPF ? lblPF.innerText : '0.00';
-    var txtPrecio = document.getElementById('txtPrecio');
-    if (txtPrecio) txtPrecio.value = precioFinal;
-    var modalCalc = document.getElementById('modalCalculadoraStock');
-    if (modalCalc) modalCalc.classList.remove('active');
-    resetearCalculadoraStock();
-  }
-
-  var modalStockActual = document.getElementById('modal-stock-actual');
-  var btnAbrirStock = document.getElementById('btnAbrirModalStock');
-  var btnCerrarStockX = document.getElementById('btnCerrarModalStockX');
-
-  if (btnAbrirStock && modalStockActual) {
-    btnAbrirStock.onclick = function() { modalStockActual.classList.add('active'); };
-  }
-  if (btnCerrarStockX && modalStockActual) {
-    btnCerrarStockX.onclick = function() { modalStockActual.classList.remove('active'); };
-  }
-  if (modalStockActual) {
-    modalStockActual.onclick = function(e) {
-      if (e.target === modalStockActual) modalStockActual.classList.remove('active');
     };
-  }
 
-  actualizarPantallaStock();
+    window.cargarParaEditarStock = function(index) {
+      const p = inventarioStock[index];
+      if (!p) return;
+
+      document.getElementById('txtProducto').value = p.producto || p.articulo || p.nombre || '';
+      document.getElementById('txtCantidad').value = p.cantidad !== undefined ? p.cantidad : (p.stock || 0);
+      document.getElementById('txtPrecio').value = p.precio || 0;
+
+      editandoIndexStock = index;
+      const lblTitulo = document.getElementById('lblTituloStockForm');
+      if (lblTitulo) lblTitulo.innerText = '✏️ Editar Producto';
+      const btnAccion = document.getElementById('btnAccionStock');
+      if (btnAccion) {
+        btnAccion.innerText = '💾 Actualizar Producto';
+        btnAccion.style.background = '#3b82f6';
+      }
+      const btnCancel = document.getElementById('btnCancelarStock');
+      if (btnCancel) btnCancel.style.display = 'block';
+      
+      const modalStockActual = document.getElementById('modal-stock-actual');
+      if (modalStockActual) modalStockActual.classList.remove('active');
+    };
+
+    window.cancelarEdicionStock = function() {
+      editandoIndexStock = null;
+      const lblTitulo = document.getElementById('lblTituloStockForm');
+      if (lblTitulo) lblTitulo.innerText = '📦 Control de Stock';
+      const btnAccion = document.getElementById('btnAccionStock');
+      if (btnAccion) {
+        btnAccion.innerText = '➕ Agregar al Stock';
+        btnAccion.style.background = '#0f172a';
+      }
+      const btnCancel = document.getElementById('btnCancelarStock');
+      if (btnCancel) btnCancel.style.display = 'none';
+      limpiarFormularioStock();
+    };
+
+    function limpiarFormularioStock() {
+      if (document.getElementById('txtProducto')) document.getElementById('txtProducto').value = '';
+      if (document.getElementById('txtCantidad')) document.getElementById('txtCantidad').value = '';
+      if (document.getElementById('txtPrecio')) document.getElementById('txtPrecio').value = '';
+    }
+
+    window.eliminarProductoStock = function(index) {
+      if (confirm('¿Querés eliminar este producto del stock?')) {
+        if (editandoIndexStock === index) {
+          window.cancelarEdicionStock();
+        } else if (editandoIndexStock !== null && editandoIndexStock > index) {
+          editandoIndexStock--; 
+        }
+        inventarioStock.splice(index, 1);
+        guardarYActualizarStock();
+      }
+    };
+
+    function guardarYActualizarStock() {
+      localStorage.setItem('bma_stock', JSON.stringify(inventarioStock));
+      window.actualizarPantallaStock();
+    }
+
+    window.abrirCalculadoraStock = function() {
+      const modalCalc = document.getElementById('modalCalculadoraStock');
+      if (modalCalc) modalCalc.classList.add('active');
+      window.calcularTotalModalStock();
+    };
+
+    window.cerrarCalculadoraStock = function() {
+      const modalCalc = document.getElementById('modalCalculadoraStock');
+      if (modalCalc) modalCalc.classList.remove('active');
+      resetearCalculadoraStock();
+    };
+
+    function resetearCalculadoraStock() {
+      const ids = ['mat1_desc', 'mat1_val', 'mat2_desc', 'mat2_val', 'mat3_desc', 'mat3_val', 'mat4_desc', 'mat4_val', 'calcMinutos'];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      const vh = document.getElementById('calcValorHora'); if (vh) vh.value = '10000';
+      const cg = document.getElementById('calcGanancia'); if (cg) cg.value = '50';
+
+      const lbls = ['lblCostoManoObra', 'lblCostoTotal', 'lblPrecioFinal'];
+      lbls.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = '0.00';
+      });
+    }
+
+    window.calcularTotalModalStock = function() {
+      const m1 = parseFloat(document.getElementById('mat1_val').value) || 0;
+      const m2 = parseFloat(document.getElementById('mat2_val').value) || 0;
+      const m3 = parseFloat(document.getElementById('mat3_val').value) || 0;
+      const m4 = parseFloat(document.getElementById('mat4_val').value) || 0;
+
+      const valorHora = parseFloat(document.getElementById('calcValorHora').value) || 0;
+      const minutos = parseFloat(document.getElementById('calcMinutos').value) || 0;
+      
+      const costoManoObra = (minutos / 60) * valorHora;
+      const gananciaPct = parseFloat(document.getElementById('calcGanancia').value) || 0;
+
+      const costoTotalInsumos = m1 + m2 + m3 + m4;
+      const costoTotal = costoTotalInsumos + costoManoObra;
+      const precioFinal = costoTotal * (1 + (gananciaPct / 100));
+
+      const lblCMO = document.getElementById('lblCostoManoObra'); if (lblCMO) lblCMO.innerText = costoManoObra.toFixed(2);
+      const lblCT = document.getElementById('lblCostoTotal'); if (lblCT) lblCT.innerText = costoTotal.toFixed(2);
+      const lblPF = document.getElementById('lblPrecioFinal'); if (lblPF) lblPF.innerText = precioFinal.toFixed(2);
+    };
+
+    window.aplicarPrecioCalculadoStock = function() {
+      const lblPF = document.getElementById('lblPrecioFinal');
+      const precioFinal = lblPF ? lblPF.innerText : '0.00';
+      const txtPrecio = document.getElementById('txtPrecio');
+      if (txtPrecio) txtPrecio.value = precioFinal;
+      window.cerrarCalculadoraStock();
+    };
+
+    // Event listeners para los modales
+    const modalStockActual = document.getElementById('modal-stock-actual');
+    const modalCalc = document.getElementById('modalCalculadoraStock');
+    const btnAbrirStock = document.getElementById('btnAbrirModalStock');
+    const btnCerrarStockX = document.getElementById('btnCerrarModalStockX');
+
+    if (btnAbrirStock && modalStockActual) {
+      btnAbrirStock.onclick = function() { modalStockActual.classList.add('active'); };
+    }
+    if (btnCerrarStockX && modalStockActual) {
+      btnCerrarStockX.onclick = function() { modalStockActual.classList.remove('active'); };
+    }
+    
+    // Cierre al tocar el fondo oscuro fuera del modal
+    if (modalStockActual) {
+      modalStockActual.onclick = function(e) {
+        if (e.target === modalStockActual) modalStockActual.classList.remove('active');
+      };
+    }
+    if (modalCalc) {
+      modalCalc.onclick = function(e) {
+        if (e.target === modalCalc) window.cerrarCalculadoraStock();
+      };
+    }
+
+    window.actualizarPantallaStock();
+  })();
 </script>

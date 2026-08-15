@@ -237,7 +237,7 @@
 
     <div class="client-display-section">
       <div class="client-box-label">¡Bienvenido!</div>
-      <div class="client-box-name">JuanMa</div>
+      <div class="client-box-name" id="lblNombreCliente">Infinito Corazón</div>
     </div>
 
     <hr class="divider">
@@ -247,12 +247,12 @@
       
       <div class="form-group">
         <label for="txtLicenciaNombre">Licencia:</label>
-        <input type="text" id="txtLicenciaNombre" class="form-control" value="Licencia Vitalicia de por Vida" disabled style="background-color: #f1f5f9; font-weight: bold; text-align: center; color: #000000;">
+        <input type="text" id="txtLicenciaNombre" class="form-control" value="Cargando..." disabled style="background-color: #f1f5f9; font-weight: bold; text-align: center; color: #000000;">
       </div>
 
       <div class="form-group">
         <label for="txtClave">Clave de Acceso:</label>
-        <input type="text" id="txtClave" class="form-control input-uppercase" placeholder="SBO-LVDPV">
+        <input type="text" id="txtClave" class="form-control input-uppercase" placeholder="Ingrese clave de acceso">
       </div>
     </div>
 
@@ -268,6 +268,7 @@
 
   <script>
     let fechaActualSistema = '';
+    let claveEsperadaSistema = 'SBO-LVDPV'; 
 
     function formatearFechaEntera(fechaStr) {
       if (!fechaStr) return '';
@@ -290,6 +291,9 @@
 
       document.getElementById('lblFechaFormateada').textContent = formatearFechaEntera(fechaActualSistema);
 
+      // Busca específicamente al cliente Infinito Corazón / Bijou
+      cargarClienteInfinito();
+
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
           .then(() => console.log("Service Worker registrado con éxito."))
@@ -297,22 +301,59 @@
       }
     });
 
-    function entrarAlSistema() {
-      const clave = document.getElementById('txtClave').value.trim();
+    function cargarClienteInfinito() {
+      const clientes = JSON.parse(localStorage.getItem('sbo_db_clientes')) || [];
 
-      if (clave !== 'SBO-LVDPV') {
-        alert('La clave de acceso es incorrecta. Debe ser SBO-LVDPV.');
+      // 1. Busca cliente por nombre ("Infinito" o "Bijou")
+      let clienteTarget = clientes.find(c => 
+        c.nombreCliente && (
+          c.nombreCliente.toLowerCase().includes('infinito') || 
+          c.nombreCliente.toLowerCase().includes('bijou')
+        )
+      );
+
+      // 2. Si no lo encuentra por nombre, busca por el tipo de licencia (Vitalicia / por Vida)
+      if (!clienteTarget) {
+        clienteTarget = clientes.find(c => 
+          c.licencia && (
+            c.licencia.toLowerCase().includes('vida') || 
+            c.licencia.toLowerCase().includes('vitalicia')
+          )
+        );
+      }
+
+      // Si encuentra al cliente de Infinito Corazón, mapea su licencia y clave
+      if (clienteTarget) {
+        document.getElementById('txtLicenciaNombre').value = clienteTarget.licencia || 'Licencia Vitalicia de por Vida';
+        claveEsperadaSistema = clienteTarget.clave || 'SBO-LVDPV';
+        if (clienteTarget.nombreCliente) {
+          document.getElementById('lblNombreCliente').textContent = clienteTarget.nombreCliente;
+        }
+      } else {
+        // Valores de respaldo si no encuentra nada en la lista
+        document.getElementById('txtLicenciaNombre').value = 'Licencia Vitalicia de por Vida';
+        claveEsperadaSistema = 'SBO-LVDPV';
+      }
+    }
+
+    function entrarAlSistema() {
+      const claveIngresada = document.getElementById('txtClave').value.trim().toUpperCase();
+
+      if (claveIngresada !== claveEsperadaSistema.toUpperCase()) {
+        alert('La clave de acceso es incorrecta. Verificá la clave asignada a Infinito Corazón.');
         return;
       }
 
+      const licenciaNombre = document.getElementById('txtLicenciaNombre').value;
       const fechaFormateadaTexto = formatearFechaEntera(fechaActualSistema);
+      const nombreUsuario = document.getElementById('lblNombreCliente').textContent;
 
       localStorage.setItem('bma_fechaSesion', fechaActualSistema);
       localStorage.setItem('sbo_fechaSesion', fechaActualSistema);
       localStorage.setItem('bma_fechaSesionTexto', fechaFormateadaTexto);
-      localStorage.setItem('bma_licenciaNombre', 'Licencia Vitalicia de por Vida');
-      localStorage.setItem('bma_clave', clave);
-      localStorage.setItem('bma_nombre', 'JuanMa');
+      localStorage.setItem('bma_licenciaNombre', licenciaNombre);
+      localStorage.setItem('bma_clave', claveIngresada);
+      localStorage.setItem('bma_nombre', nombreUsuario);
 
       window.location.href = 'menu.html';
     }

@@ -70,7 +70,7 @@
         margin-bottom: 6px;
     }
     
-    .licencia { background-color: #f8fafc; padding: 8px; border-radius: 8px; text-align: center; border: 1.5px solid #cbd5e1; margin-bottom: 10px; font-weight: bold; font-size: 0.85rem; }
+    .licencia { background-color: #f8fafc; padding: 8px; border-radius: 8px; text-align: center; border: 1.5px solid #cbd5e1; margin-bottom: 10px; font-weight: bold; font-size: 1.00rem; color: #1e293b; }
     
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; align-items: start; }
     .stat-card { background: #f8fafc; padding: 8px 10px; border-radius: 8px; border: 1.5px solid #cbd5e1; display: flex; flex-direction: column; position: relative; }
@@ -145,26 +145,27 @@
 
         <div id="fecha-hora-actual" class="fecha-hora-centro"></div>
 
-        <div class="licencia">🛡️ "Licencia Vitalicia de por Vida"</div>
+        <!-- Banner Titulo de Sección -->
+        <div class="licencia">Sistema de Gestión Integral</div>
 
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-header-row">
                     <div class="stat-title">VENTAS JORNADA</div>
-                    <button class="stat-toggle-btn" onclick="abrirDetalleStat('ventas')" title="Ver detalle">☰</button>
+                    <button class="stat-toggle-btn" onclick="window.abrirDetalleStat('ventas')" title="Ver detalle">☰</button>
                 </div>
                 <div class="stat-value" id="lblStatVentas">$0</div>
             </div>
             <div class="stat-card">
                 <div class="stat-header-row">
                     <div class="stat-title">STOCK TOTAL</div>
-                    <button class="stat-toggle-btn" onclick="abrirDetalleStat('stock')" title="Ver detalle">☰</button>
+                    <button class="stat-toggle-btn" onclick="window.abrirDetalleStat('stock')" title="Ver detalle">☰</button>
                 </div>
                 <div class="stat-value" id="lblStatStock">0 un.</div>
             </div>
         </div>
 
-        <div class="main-action" onclick="abrirModulo('ventas.html')">
+        <div class="main-action" onclick="window.abrirModulo('ventas.html')">
             <span class="mono-icon" style="font-size: 24px;">💳</span>
             <div class="main-action-text">
                 <h2>REGISTRAR VENTA</h2>
@@ -173,12 +174,12 @@
         </div>
 
         <div class="menu-grid">
-            <div class="menu-card" onclick="abrirModulo('clientes.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">👥</span><div><h3>Clientes</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('stock.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📦</span><div><h3>Stock</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('caja_chica.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">💵</span><div><h3>Caja Chica</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('cierre_z.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">🔒</span><div><h3>Cierre Z</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('libro_diario.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📖</span><div><h3>Libro Diario</h3></div></div>
-            <div class="menu-card" onclick="abrirModulo('libro_mensual.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📊</span><div><h3>Libro Mensual</h3></div></div>
+            <div class="menu-card" onclick="window.abrirModulo('clientes.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">👥</span><div><h3>Clientes</h3></div></div>
+            <div class="menu-card" onclick="window.abrirModulo('stock.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📦</span><div><h3>Stock</h3></div></div>
+            <div class="menu-card" onclick="window.abrirModulo('caja_chica.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">💵</span><div><h3>Caja Chica</h3></div></div>
+            <div class="menu-card" onclick="window.abrirModulo('cierre_z.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">🔒</span><div><h3>Cierre Z</h3></div></div>
+            <div class="menu-card" onclick="window.abrirModulo('libro_diario.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📖</span><div><h3>Libro Diario</h3></div></div>
+            <div class="menu-card" onclick="window.abrirModulo('libro_mensual.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📊</span><div><h3>Libro Mensual</h3></div></div>
         </div>
 
         <div class="full-card" id="btn-config">
@@ -215,12 +216,12 @@
         <div class="modal-container" style="max-width: 340px;">
             <div class="modal-header">
                 <h3 id="titulo-stat-modal">Detalle</h3>
-                <span style="cursor: pointer; font-weight: bold; font-size: 1.2rem; color: #64748b;" onclick="cerrarStatModal()">✕</span>
+                <span style="cursor: pointer; font-weight: bold; font-size: 1.2rem; color: #64748b;" onclick="window.cerrarStatModal()">✕</span>
             </div>
             <div id="contenido-stat-modal" style="max-height: 220px; overflow-y: auto; margin-bottom: 10px;">
                 <!-- Contenido dinámico -->
             </div>
-            <button class="btn-volver-menu" onclick="cerrarStatModal()">Cerrar</button>
+            <button class="btn-volver-menu" onclick="window.cerrarStatModal()">Cerrar</button>
         </div>
     </div>
 
@@ -238,7 +239,7 @@
                     📤 Restaurar Datos
                     <input type="file" id="input-importar" accept=".json" style="display: none;">
                 </label>
-                <button class="btn-reiniciar-factory" onclick="reiniciarSistemaDeFabricaBMA()">
+                <button class="btn-reiniciar-factory" onclick="window.reiniciarSistemaDeFabricaBMA()">
                     ⚠️ Reiniciar Sistema de Fábrica
                 </button>
             </div>
@@ -247,218 +248,243 @@
     </div>
 
     <script>
-        let datosVentasJornadaCache = [];
-        let datosStockCache = [];
+        (function() {
+            let datosVentasJornadaCache = [];
+            let datosStockCache = [];
 
-        function actualizarTiempo() {
-            const hoy = new Date();
-            const opcionesFecha = { day: '2-digit', month: '2-digit', year: '2-digit' };
-            const opcionesHora = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            document.getElementById('fecha-hora-actual').innerText = `${hoy.toLocaleDateString('es-AR', opcionesFecha)} - ${hoy.toLocaleTimeString('es-AR', opcionesHora)}`;
-        }
-        actualizarTiempo();
-        setInterval(actualizarTiempo, 1000);
-
-        function actualizarEstadisticasMenu() {
-            const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
-            const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || JSON.parse(localStorage.getItem('sbo_ventas')) || [];
-            
-            datosVentasJornadaCache = ventas.filter(v => v.fecha === fechaSesion);
-            const totalVentasJornada = datosVentasJornadaCache.reduce((acc, v) => acc + (v.total || 0), 0);
-            
-            const elVentas = document.getElementById('lblStatVentas');
-            if (elVentas) {
-                elVentas.innerText = `$${totalVentasJornada.toLocaleString('es-AR')}`;
+            function obtenerFechaLocal() {
+                const d = new Date();
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
             }
 
-            datosStockCache = JSON.parse(localStorage.getItem('bma_stock')) || JSON.parse(localStorage.getItem('sbo_stock')) || [];
-            const totalStock = datosStockCache.reduce((acc, p) => {
-                const cant = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
-                return acc + (parseInt(cant) || 0);
-            }, 0);
-
-            const elStock = document.getElementById('lblStatStock');
-            if (elStock) {
-                elStock.innerText = `${totalStock} un.`;
-            }
-        }
-
-        function abrirDetalleStat(tipo) {
-            const tituloModal = document.getElementById('titulo-stat-modal');
-            const contenidoModal = document.getElementById('contenido-stat-modal');
-
-            if (tipo === 'ventas') {
-                tituloModal.innerText = '💳 Detalle Ventas Jornada';
-                if (datosVentasJornadaCache.length === 0) {
-                    contenidoModal.innerHTML = '<div style="text-align:center; color:#64748b; padding: 10px;">Sin ventas registradas hoy</div>';
-                } else {
-                    let html = '';
-                    datosVentasJornadaCache.forEach(v => {
-                        let desc = v.productos ? v.productos.map(p => `${p.cantidad || p.cant || 1}x ${p.nombre || p.articulo || p.titulo || p.producto || 'Artículo'}`).join(', ') : (v.detalle || 'Venta general');
-                        html += `<div class="stat-item-row"><span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${desc}</span> <span style="font-weight:bold; color:#d9381e;">$${(v.total || 0).toLocaleString('es-AR')}</span></div>`;
-                    });
-                    contenidoModal.innerHTML = html;
-                }
-            } else if (tipo === 'stock') {
-                tituloModal.innerText = '📦 Detalle Stock Actual';
-                if (datosStockCache.length === 0) {
-                    contenidoModal.innerHTML = '<div style="text-align:center; color:#64748b; padding: 10px;">Sin artículos en stock</div>';
-                } else {
-                    let html = '';
-                    datosStockCache.forEach(p => {
-                        let nombre = p.producto || p.nombre || p.articulo || p.titulo || p.descripcion || 'Artículo';
-                        let cant = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
-                        html += `<div class="stat-item-row"><span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${nombre}</span> <span style="font-weight:bold;">${cant} un.</span></div>`;
-                    });
-                    contenidoModal.innerHTML = html;
+            function actualizarTiempo() {
+                const hoy = new Date();
+                const opcionesFecha = { day: '2-digit', month: '2-digit', year: '2-digit' };
+                const opcionesHora = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+                const el = document.getElementById('fecha-hora-actual');
+                if (el) {
+                    el.innerText = `${hoy.toLocaleDateString('es-AR', opcionesFecha)} - ${hoy.toLocaleTimeString('es-AR', opcionesHora)}`;
                 }
             }
 
-            document.getElementById('modal-stat-detalle').classList.add('active');
-        }
+            actualizarTiempo();
+            setInterval(actualizarTiempo, 1000);
 
-        function cerrarStatModal() {
-            document.getElementById('modal-stat-detalle').classList.remove('active');
-        }
-
-        document.getElementById('modal-stat-detalle').addEventListener('click', (e) => {
-            if (e.target.id === 'modal-stat-detalle') {
-                cerrarStatModal();
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', actualizarEstadisticasMenu);
-
-        function abrirModulo(url) {
-            fetch(url)
-                .then(res => res.text())
-                .then(html => {
-                    const contenedor = document.getElementById('contenido-modal');
-                    contenedor.innerHTML = html;
-                    
-                    const scripts = contenedor.querySelectorAll('script');
-                    scripts.forEach(script => {
-                        const nuevoScript = document.createElement('script');
-                        if (script.src) {
-                            nuevoScript.src = script.src;
-                        } else {
-                            nuevoScript.innerHTML = script.innerHTML;
-                        }
-                        document.body.appendChild(nuevoScript);
-                        script.remove();
-                    });
-
-                    document.getElementById('modal-dinamico').classList.add('active');
-                })
-                .catch(err => console.error('Error al cargar el módulo:', err));
-        }
-
-        function cerrarModalDinamico() {
-            document.getElementById('modal-dinamico').classList.remove('active');
-            document.getElementById('contenido-modal').innerHTML = '';
-            actualizarEstadisticasMenu();
-        }
-
-        document.getElementById('modal-dinamico').addEventListener('click', (e) => {
-            if (e.target.id === 'modal-dinamico') {
-                cerrarModalDinamico();
-            }
-        });
-
-        const setupModalConfig = (cardId, modalId, closeBtnId) => {
-            const card = document.getElementById(cardId);
-            const modal = document.getElementById(modalId);
-            const closeBtn = document.getElementById(closeBtnId);
-            if(card && modal && closeBtn) {
-                card.addEventListener('click', () => modal.classList.add('active'));
-                closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-                modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-            }
-        };
-        setupModalConfig('btn-config', 'modal-config', 'btn-cerrar-config');
-
-        document.getElementById('btn-exportar').addEventListener('click', () => {
-            let backupData = {};
-            for (let i = 0; i < localStorage.length; i++) {
-                let key = localStorage.key(i);
-                if (key.startsWith('bma_') || key.startsWith('sbo_')) {
-                    try {
-                        backupData[key] = JSON.parse(localStorage.getItem(key));
-                    } catch(e) {
-                        backupData[key] = localStorage.getItem(key);
-                    }
+            window.actualizarEstadisticasMenu = function() {
+                const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
+                const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || JSON.parse(localStorage.getItem('sbo_ventas')) || [];
+                
+                datosVentasJornadaCache = ventas.filter(v => v.fecha === fechaSesion);
+                const totalVentasJornada = datosVentasJornadaCache.reduce((acc, v) => acc + (parseFloat(v.total) || 0), 0);
+                
+                const elVentas = document.getElementById('lblStatVentas');
+                if (elVentas) {
+                    elVentas.innerText = `$${totalVentasJornada.toLocaleString('es-AR')}`;
                 }
-            }
-            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
-            let downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `bma_backup_${new Date().toISOString().split('T')[0]}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        });
 
-        document.getElementById('input-importar').addEventListener('change', (e) => {
-            let file = e.target.files[0];
-            if (!file) return;
-            let reader = new FileReader();
-            reader.onload = function(event) {
-                try {
-                    let backupData = JSON.parse(event.target.result);
-                    for (let key in backupData) {
-                        if (key.startsWith('bma_') || key.startsWith('sbo_')) {
-                            if (typeof backupData[key] === 'object') {
-                                localStorage.setItem(key, JSON.stringify(backupData[key]));
-                            } else {
-                                localStorage.setItem(key, backupData[key]);
-                            }
-                        }
-                    }
-                    alert('¡Copia de seguridad restaurada con éxito!');
-                    location.reload();
-                } catch (err) {
-                    alert('Error al leer el archivo de backup.');
+                datosStockCache = JSON.parse(localStorage.getItem('bma_stock')) || JSON.parse(localStorage.getItem('sbo_stock')) || [];
+                const totalStock = datosStockCache.reduce((acc, p) => {
+                    const cant = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
+                    return acc + (parseInt(cant) || 0);
+                }, 0);
+
+                const elStock = document.getElementById('lblStatStock');
+                if (elStock) {
+                    elStock.innerText = `${totalStock} un.`;
                 }
             };
-            reader.readAsText(file);
-        });
 
-        function reiniciarSistemaDeFabricaBMA() {
-            if (!confirm('⚠️ ¡Atención! Esto va a descargar una copia de seguridad de tus datos y dejará el sistema BMA como nuevo. ¿Querés continuar?')) {
-                return;
-            }
-            
-            let backupData = {};
-            for (let i = 0; i < localStorage.length; i++) {
-                let key = localStorage.key(i);
-                if (key.startsWith('bma_') || key.startsWith('sbo_')) {
-                    try {
-                        backupData[key] = JSON.parse(localStorage.getItem(key));
-                    } catch(e) {
-                        backupData[key] = localStorage.getItem(key);
+            window.abrirDetalleStat = function(tipo) {
+                const tituloModal = document.getElementById('titulo-stat-modal');
+                const contenidoModal = document.getElementById('contenido-stat-modal');
+
+                if (tipo === 'ventas') {
+                    tituloModal.innerText = '💳 Detalle Ventas Jornada';
+                    if (datosVentasJornadaCache.length === 0) {
+                        contenidoModal.innerHTML = '<div style="text-align:center; color:#64748b; padding: 10px;">Sin ventas registradas hoy</div>';
+                    } else {
+                        let html = '';
+                        datosVentasJornadaCache.forEach(v => {
+                            let desc = v.productos ? v.productos.map(p => `${p.cantidad || p.cant || 1}x ${p.nombre || p.articulo || p.titulo || p.producto || 'Artículo'}`).join(', ') : (v.detalle || 'Venta general');
+                            html += `<div class="stat-item-row"><span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${desc}</span> <span style="font-weight:bold; color:#d9381e;">$${(parseFloat(v.total) || 0).toLocaleString('es-AR')}</span></div>`;
+                        });
+                        contenidoModal.innerHTML = html;
+                    }
+                } else if (tipo === 'stock') {
+                    tituloModal.innerText = '📦 Detalle Stock Actual';
+                    if (datosStockCache.length === 0) {
+                        contenidoModal.innerHTML = '<div style="text-align:center; color:#64748b; padding: 10px;">Sin artículos en stock</div>';
+                    } else {
+                        let html = '';
+                        datosStockCache.forEach(p => {
+                            let nombre = p.producto || p.nombre || p.articulo || p.titulo || p.descripcion || 'Artículo';
+                            let cant = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
+                            html += `<div class="stat-item-row"><span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${nombre}</span> <span style="font-weight:bold;">${cant} un.</span></div>`;
+                        });
+                        contenidoModal.innerHTML = html;
                     }
                 }
-            }
 
-            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
-            let downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `bma_respaldo_total_${new Date().toISOString().split('T')[0]}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
+                document.getElementById('modal-stat-detalle').classList.add('active');
+            };
 
-            setTimeout(() => {
-                for (let i = localStorage.length - 1; i >= 0; i--) {
+            window.cerrarStatModal = function() {
+                document.getElementById('modal-stat-detalle').classList.remove('active');
+            };
+
+            window.abrirModulo = function(url) {
+                fetch(url)
+                    .then(res => res.text())
+                    .then(html => {
+                        const contenedor = document.getElementById('contenido-modal');
+                        contenedor.innerHTML = html;
+                        
+                        const scripts = contenedor.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const nuevoScript = document.createElement('script');
+                            nuevoScript.className = 'bma-script-modulo';
+                            if (script.src) {
+                                nuevoScript.src = script.src;
+                            } else {
+                                nuevoScript.innerHTML = script.innerHTML;
+                            }
+                            document.body.appendChild(nuevoScript);
+                            script.remove();
+                        });
+
+                        document.getElementById('modal-dinamico').classList.add('active');
+                    })
+                    .catch(err => console.error('Error al cargar el módulo:', err));
+            };
+
+            window.cerrarModalDinamico = function() {
+                document.getElementById('modal-dinamico').classList.remove('active');
+                document.getElementById('contenido-modal').innerHTML = '';
+                document.querySelectorAll('.bma-script-modulo').forEach(s => s.remove());
+                window.actualizarEstadisticasMenu();
+            };
+
+            window.reiniciarSistemaDeFabricaBMA = function() {
+                if (!confirm('⚠️ ¡Atención! Esto va a descargar una copia de seguridad de tus datos y dejará el sistema BMA como nuevo. ¿Querés continuar?')) {
+                    return;
+                }
+                
+                let backupData = {};
+                for (let i = 0; i < localStorage.length; i++) {
                     let key = localStorage.key(i);
                     if (key.startsWith('bma_') || key.startsWith('sbo_')) {
-                        localStorage.removeItem(key);
+                        try {
+                            backupData[key] = JSON.parse(localStorage.getItem(key));
+                        } catch(e) {
+                            backupData[key] = localStorage.getItem(key);
+                        }
                     }
                 }
-                alert('🔄 Sistema BMA reiniciado de fábrica con éxito. Respaldo guardado en tu celu.');
-                window.location.reload();
-            }, 1000);
-        }
+
+                let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+                let downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `bma_respaldo_total_${obtenerFechaLocal()}.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+
+                setTimeout(() => {
+                    for (let i = localStorage.length - 1; i >= 0; i--) {
+                        let key = localStorage.key(i);
+                        if (key.startsWith('bma_') || key.startsWith('sbo_')) {
+                            localStorage.removeItem(key);
+                        }
+                    }
+                    alert('🔄 Sistema BMA reiniciado de fábrica con éxito. Respaldo guardado en tu celu.');
+                    window.location.reload();
+                }, 1000);
+            };
+
+            document.addEventListener('DOMContentLoaded', () => {
+                window.actualizarEstadisticasMenu();
+
+                const modalStat = document.getElementById('modal-stat-detalle');
+                if (modalStat) {
+                    modalStat.addEventListener('click', (e) => {
+                        if (e.target.id === 'modal-stat-detalle') window.cerrarStatModal();
+                    });
+                }
+
+                const modalDinamico = document.getElementById('modal-dinamico');
+                if (modalDinamico) {
+                    modalDinamico.addEventListener('click', (e) => {
+                        if (e.target.id === 'modal-dinamico') window.cerrarModalDinamico();
+                    });
+                }
+
+                const btnConfig = document.getElementById('btn-config');
+                const modalConfig = document.getElementById('modal-config');
+                const btnCerrarConfig = document.getElementById('btn-cerrar-config');
+                if (btnConfig && modalConfig && btnCerrarConfig) {
+                    btnConfig.addEventListener('click', () => modalConfig.classList.add('active'));
+                    btnCerrarConfig.addEventListener('click', () => modalConfig.classList.remove('active'));
+                    modalConfig.addEventListener('click', (e) => {
+                        if (e.target === modalConfig) modalConfig.classList.remove('active');
+                    });
+                }
+
+                const btnExportar = document.getElementById('btn-exportar');
+                if (btnExportar) {
+                    btnExportar.addEventListener('click', () => {
+                        let backupData = {};
+                        for (let i = 0; i < localStorage.length; i++) {
+                            let key = localStorage.key(i);
+                            if (key.startsWith('bma_') || key.startsWith('sbo_')) {
+                                try {
+                                    backupData[key] = JSON.parse(localStorage.getItem(key));
+                                } catch(e) {
+                                    backupData[key] = localStorage.getItem(key);
+                                }
+                            }
+                        }
+                        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+                        let downloadAnchor = document.createElement('a');
+                        downloadAnchor.setAttribute("href", dataStr);
+                        downloadAnchor.setAttribute("download", `bma_backup_${obtenerFechaLocal()}.json`);
+                        document.body.appendChild(downloadAnchor);
+                        downloadAnchor.click();
+                        downloadAnchor.remove();
+                    });
+                }
+
+                const inputImportar = document.getElementById('input-importar');
+                if (inputImportar) {
+                    inputImportar.addEventListener('change', (e) => {
+                        let file = e.target.files[0];
+                        if (!file) return;
+                        let reader = new FileReader();
+                        reader.onload = function(event) {
+                            try {
+                                let backupData = JSON.parse(event.target.result);
+                                for (let key in backupData) {
+                                    if (key.startsWith('bma_') || key.startsWith('sbo_')) {
+                                        if (typeof backupData[key] === 'object') {
+                                            localStorage.setItem(key, JSON.stringify(backupData[key]));
+                                        } else {
+                                            localStorage.setItem(key, backupData[key]);
+                                        }
+                                    }
+                                }
+                                alert('¡Copia de seguridad restaurada con éxito!');
+                                location.reload();
+                            } catch (err) {
+                                alert('Error al leer el archivo de backup.');
+                            }
+                        };
+                        reader.readAsText(file);
+                    });
+                }
+            });
+        })();
     </script>
 </body>
 </html>

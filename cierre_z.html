@@ -38,7 +38,9 @@
     <div class="card-internal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">⚡ Cierre Z & Auditoría</h2>
-        <img src="icono.png" alt="Icono" style="width: 32px; height: 32px; object-fit: contain;">
+        <button onclick="window.cerrarVentanaModalCierreZGen()" style="background:none; border:none; padding:0; cursor:pointer;">
+          <img src="icono.png" alt="Icono" style="width: 32px; height: 32px; object-fit: contain;">
+        </button>
       </div>
       
       <div class="dia-banner" id="txtFechaCierre">Cargando...</div>
@@ -76,75 +78,124 @@
       </div>
 
       <button class="btn-main btn-print" onclick="window.print()">🖨️ Imprimir Cierre Z</button>
-      <a href="menu.html" class="btn-main btn-volver"><img src="volver.png" alt="Volver"> Volver al Menú</a>
+      <button onclick="window.cerrarVentanaModalCierreZGen()" class="btn-main btn-volver">
+        <img src="volver.png" alt="Volver"> Volver al Menú
+      </button>
     </div>
   </div>
 
   <script>
-    const ahora = new Date();
-    const hoyStr = ahora.toISOString().slice(0, 10);
-    document.getElementById('txtFechaCierre').innerText = ahora.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    window.cerrarVentanaModalCierreZGen = function() {
+      if (typeof cerrarModalDinamico === 'function') {
+        cerrarModalDinamico();
+      } else {
+        window.location.href = 'menu.html';
+      }
+    };
 
-    function cargarCierreZ() {
-      // 1. Ventas del día y desglose por artículo
-      const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || [];
-      const ventasDia = ventas.filter(v => v.fecha === hoyStr);
-      const totalVentasDinero = ventasDia.reduce((s, v) => s + (v.total || 0), 0);
+    (function() {
+      function obtenerDatosSafe(clave, valorDefecto = []) {
+        try {
+          const item = localStorage.getItem(clave);
+          return item ? JSON.parse(item) : valorDefecto;
+        } catch (e) {
+          console.error(`Error al parsear ${clave}:`, e);
+          return valorDefecto;
+        }
+      }
 
-      document.getElementById('lblCierreVentas').innerText = `$${totalVentasDinero.toLocaleString('es-AR')}`;
-      document.getElementById('lblCierreOps').innerText = ventasDia.length;
+      function obtenerFechaLocal() {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
 
-      let totalUnidades = 0;
-      const mapaArticulos = {};
+      const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
 
-      ventasDia.forEach(v => {
-        if (v.items && Array.isArray(v.items)) {
-          v.items.forEach(i => {
-            const cant = i.cant || i.cantidad || 1;
-            const nombre = i.nombre || i.descripcion || 'Artículo sin nombre';
-            totalUnidades += cant;
-            mapaArticulos[nombre] = (mapaArticulos[nombre] || 0) + cant;
+      function formatearFechaLarga(fechaStr) {
+        if (!fechaStr) return 'Fecha no definida';
+        const partes = fechaStr.split('-');
+        if (partes.length === 3) {
+          const d = new Date(partes[0], partes[1] - 1, partes[2]);
+          return d.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        return fechaStr;
+      }
+
+      function cargarCierreZ() {
+        const bannerFecha = document.getElementById('txtFechaCierre');
+        if (bannerFecha) bannerFecha.innerText = formatearFechaLarga(fechaSesion);
+
+        // 1. Ventas del día y desglose por artículo
+        const ventas = obtenerDatosSafe('bma_ventas', obtenerDatosSafe('sbo_ventas', obtenerDatosSafe('ventas', [])));
+        const ventasDia = ventas.filter(v => v.fecha === fechaSesion);
+        const totalVentasDinero = ventasDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+
+        const lblVentas = document.getElementById('lblCierreVentas');
+        const lblOps = document.getElementById('lblCierreOps');
+        if (lblVentas) lblVentas.innerText = `$${totalVentasDinero.toLocaleString('es-AR')}`;
+        if (lblOps) lblOps.innerText = ventasDia.length;
+
+        let totalUnidades = 0;
+        const mapaArticulos = {};
+
+        ventasDia.forEach(v => {
+          if (v.items && Array.isArray(v.items)) {
+            v.items.forEach(i => {
+              const cant = parseInt(i.cant || i.cantidad || 1);
+              const nombre = i.nombre || i.producto || i.descripcion || 'Artículo sin nombre';
+              totalUnidades += cant;
+              mapaArticulos[nombre] = (mapaArticulos[nombre] || 0) + cant;
+            });
+          }
+        });
+
+        const lblUnidades = document.getElementById('lblTotalUnidades');
+        if (lblUnidades) lblUnidades.innerText = `${totalUnidades} u. total`;
+
+        let htmlVentasArt = '';
+        const keysArticulos = Object.keys(mapaArticulos);
+        if (keysArticulos.length === 0) {
+          htmlVentasArt = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hubo ventas de artículos hoy.</p>';
+        } else {
+          keysArticulos.forEach(art => {
+            htmlVentasArt += `
+              <div class="item-row">
+                <span>${art}</span>
+                <strong>${mapaArticulos[art]} u.</strong>
+              </div>`;
           });
         }
-      });
 
-      document.getElementById('lblTotalUnidades').innerText = `${totalUnidades} u. total`;
+        const contVentasArt = document.getElementById('listaVentasArticulos');
+        if (contVentasArt) contVentasArt.innerHTML = htmlVentasArt;
 
-      let htmlVentasArt = '';
-      const keysArticulos = Object.keys(mapaArticulos);
-      if (keysArticulos.length === 0) {
-        htmlVentasArt = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hubo ventas de artículos hoy.</p>';
-      } else {
-        keysArticulos.forEach(art => {
-          htmlVentasArt += `
-            <div class="item-row">
-              <span>${art}</span>
-              <strong>${mapaArticulos[art]} u.</strong>
-            </div>`;
-        });
+        // 2. Stock Restante
+        const productos = obtenerDatosSafe('bma_stock', obtenerDatosSafe('bma_productos', obtenerDatosSafe('sbo_stock', obtenerDatosSafe('stock', []))));
+        
+        let htmlStock = '';
+        if (productos.length === 0) {
+          htmlStock = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hay productos cargados en el sistema.</p>';
+        } else {
+          productos.forEach(p => {
+            const stockActual = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
+            const nombreProd = p.producto || p.nombre || p.descripcion || 'Sin nombre';
+            htmlStock += `
+              <div class="item-row">
+                <span>${nombreProd}</span>
+                <span class="badge-stock">${stockActual} un.</span>
+              </div>`;
+          });
+        }
+
+        const contStock = document.getElementById('listaAuditoriaStock');
+        if (contStock) contStock.innerHTML = htmlStock;
       }
-      document.getElementById('listaVentasArticulos').innerHTML = htmlVentasArt;
 
-      // 2. Stock Restante
-      const productos = JSON.parse(localStorage.getItem('bma_productos')) || JSON.parse(localStorage.getItem('bma_stock')) || [];
-      
-      let htmlStock = '';
-      if (productos.length === 0) {
-        htmlStock = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hay productos cargados en el sistema.</p>';
-      } else {
-        productos.forEach(p => {
-          const stockActual = p.stock !== undefined ? p.stock : (p.cantidad || 0);
-          htmlStock += `
-            <div class="item-row">
-              <span>${p.nombre || p.descripcion || 'Sin nombre'}</span>
-              <span class="badge-stock">${stockActual} un.</span>
-            </div>`;
-        });
-      }
-      document.getElementById('listaAuditoriaStock').innerHTML = htmlStock;
-    }
-
-    cargarCierreZ();
+      cargarCierreZ();
+    })();
   </script>
 </body>
 </html>

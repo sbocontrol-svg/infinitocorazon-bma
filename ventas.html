@@ -56,22 +56,22 @@
       <div id="lblFechaTrabajoVentas" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
     </div>
     
-    <button onclick="cerrarVentanaModalVentasGen()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+    <button onclick="window.cerrarVentanaModalVentasGen()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
       <img src="icono.png" alt="Logo SBO" style="width: 56px; height: 56px; object-fit: contain;">
     </button>
   </div>
 
-  <button class="ventas-btn-historial" onclick="abrirModalVentasJornada()">
+  <button class="ventas-btn-historial" onclick="window.abrirModalVentasJornada()">
     📋 Ver Ventas de la Jornada (<span id="contadorVentasBadge">0</span>)
   </button>
 
   <label>Tipo de Cliente:</label>
   <div style="display: flex; gap: 12px; margin-top: 4px; margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; color: #334155;">
     <label style="margin: 0; display: flex; align-items: center; gap: 4px; cursor: pointer; text-transform: none; font-weight: 600;">
-      <input type="radio" name="tipoCliente" value="registrado" checked onchange="cambiarModoCliente()" style="width: auto; margin: 0;"> Registrado
+      <input type="radio" name="tipoCliente" value="registrado" checked onchange="window.cambiarModoCliente()" style="width: auto; margin: 0;"> Registrado
     </label>
     <label style="margin: 0; display: flex; align-items: center; gap: 4px; cursor: pointer; text-transform: none; font-weight: 600;">
-      <input type="radio" name="tipoCliente" value="ocasional" onchange="cambiarModoCliente()" style="width: auto; margin: 0;"> Ocasional
+      <input type="radio" name="tipoCliente" value="ocasional" onchange="window.cambiarModoCliente()" style="width: auto; margin: 0;"> Ocasional
     </label>
   </div>
 
@@ -91,7 +91,7 @@
 
   <div style="background:#f8fafc; padding:10px; border-radius:10px; margin-top:8px; border: 1.5px solid #e2e8f0;">
     <label style="margin-top:0;">Seleccionar Producto:</label>
-    <select id="vProducto" onchange="cargarPrecioMaxVentas()"></select>
+    <select id="vProducto" onchange="window.cargarPrecioMaxVentas()"></select>
 
     <div style="display: flex; gap: 8px;">
       <div style="flex: 1;">
@@ -114,7 +114,7 @@
       <option value="Otra">🔷 Otra</option>
     </select>
 
-    <button class="ventas-btn-add" onclick="agregarAlCarritoVentas()">🛒 Agregar al Carrito</button>
+    <button class="ventas-btn-add" onclick="window.agregarAlCarritoVentas()">🛒 Agregar al Carrito</button>
   </div>
 
   <div class="aviso-marquee-container">
@@ -123,7 +123,7 @@
     </div>
   </div>
 
-  <button onclick="cerrarVentanaModalVentasGen()" class="ventas-btn-secundario">Volver al Menú</button>
+  <button onclick="window.cerrarVentanaModalVentasGen()" class="ventas-btn-secundario">Volver al Menú</button>
 </div>
 
 <!-- MODAL FLOTANTE DEL CARRITO -->
@@ -141,19 +141,19 @@
       <div style="display: flex; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #cbd5e1; align-items: flex-end;">
         <div style="flex: 1;">
           <label style="margin:0; font-size:10px; color:#334155;">Desc. (%)</label>
-          <input type="number" id="vDescuentoPorc" value="0" min="0" max="100" oninput="renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:13px; background:#fff;">
+          <input type="number" id="vDescuentoPorc" value="0" min="0" max="100" oninput="window.renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:13px; background:#fff;">
         </div>
         <div style="flex: 1;">
           <label style="margin:0; font-size:10px; color:#334155;">Desc. ($)</label>
-          <input type="number" id="vDescuentoPesos" value="0" min="0" oninput="renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:13px; background:#fff;">
+          <input type="number" id="vDescuentoPesos" value="0" min="0" oninput="window.renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:13px; background:#fff;">
         </div>
       </div>
 
       <div class="ventas-total-box" id="lblTotalVenta">Total: $0</div>
     </div>
 
-    <button class="ventas-btn-main" style="background:#16a34a; margin-top:12px;" onclick="confirmarVentaActual()">🚀 Confirmar Venta</button>
-    <button class="ventas-btn-secundario" style="background:#64748b;" onclick="cerrarModalCarritoFlotante()">Volver a Ventas</button>
+    <button class="ventas-btn-main" style="background:#16a34a; margin-top:12px;" onclick="window.confirmarVentaActual()">🚀 Confirmar Venta</button>
+    <button class="ventas-btn-secundario" style="background:#64748b;" onclick="window.cerrarModalCarritoFlotante()">Volver a Ventas</button>
   </div>
 </div>
 
@@ -162,9 +162,9 @@
   <div class="ventas-modal-container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;">
       <h3 style="margin: 0; font-size: 1rem; color: #0f172a;">📋 Ventas de la Jornada</h3>
-      <button onclick="cerrarModalVentasJornada()" style="background:none; border:none; font-size:1.1rem; cursor:pointer; color:#64748b; font-weight:bold;">✕</button>
+      <button onclick="window.cerrarModalVentasJornada()" style="background:none; border:none; font-size:1.1rem; cursor:pointer; color:#64748b; font-weight:bold;">✕</button>
     </div>
-    <input type="text" id="buscarVentaInput" placeholder="🔍 Buscar por cliente o ticket..." onkeyup="renderizarHistorialVentas()" style="margin-top:0;">
+    <input type="text" id="buscarVentaInput" placeholder="🔍 Buscar por cliente o ticket..." onkeyup="window.renderizarHistorialVentas()" style="margin-top:0;">
     <div id="listaVentasJornada" style="margin-top: 8px; max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;"></div>
   </div>
 </div>
@@ -194,444 +194,461 @@
     <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
       <button class="ventas-btn-main" style="background:#16a34a; margin-top:0; padding: 10px;" id="btnWaTicket">💬 Compartir por WhatsApp</button>
       <button class="ventas-btn-main" style="background:#3b82f6; margin-top:0; padding: 10px;" onclick="window.print()">🖨️ Imprimir / Guardar</button>
-      <button class="ventas-btn-secundario" style="background:#64748b; margin-top:0;" onclick="cerrarTicketVentas()">Cerrar</button>
+      <button class="ventas-btn-secundario" style="background:#64748b; margin-top:0;" onclick="window.cerrarTicketVentas()">Cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
-  function cerrarVentanaModalVentasGen() {
+  window.cerrarVentanaModalVentasGen = function() {
     if (typeof cerrarModalDinamico === 'function') {
       cerrarModalDinamico();
     } else {
       window.location.href = 'menu.html';
     }
-  }
+  };
 
-  let stockVentas = [];
-  let clientesVentas = [];
-  let ventasList = [];
-  
-  let configVentas = { nombre: 'Infinito Corazón', eslogan: 'by Bijou Macramé Artesanal' };
-  
-  function obtenerFechaLocal() {
-    const d = new Date();
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+  (function() {
+    function obtenerDatosSafe(clave, valorDefecto = []) {
+      try {
+        const item = localStorage.getItem(clave);
+        return item ? JSON.parse(item) : valorDefecto;
+      } catch (e) {
+        console.error(`Error al parsear ${clave}:`, e);
+        return valorDefecto;
+      }
+    }
 
-  let fechaSesionVentas = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
-
-  function formatearFechaVentas(fechaStr) {
-    if (!fechaStr) return '';
-    const partes = fechaStr.split('-');
-    return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
-  }
-
-  let carritoVentas = [];
-
-  function inicializarModuloVentas() {
-    stockVentas = JSON.parse(localStorage.getItem('bma_stock')) || JSON.parse(localStorage.getItem('sbo_stock')) || JSON.parse(localStorage.getItem('stock')) || [];
-    clientesVentas = JSON.parse(localStorage.getItem('bma_clientes')) || JSON.parse(localStorage.getItem('sbo_clientes')) || JSON.parse(localStorage.getItem('clientes')) || [];
-    ventasList = JSON.parse(localStorage.getItem('bma_ventas')) || JSON.parse(localStorage.getItem('sbo_ventas')) || JSON.parse(localStorage.getItem('ventas')) || [];
-
-    const lblFecha = document.getElementById('lblFechaTrabajoVentas');
-    if (lblFecha) lblFecha.innerText = `Fecha de Trabajo: ${formatearFechaVentas(fechaSesionVentas)}`;
+    let stockVentas = [];
+    let clientesVentas = [];
+    let ventasList = [];
+    let carritoVentas = [];
     
-    cargarDesplegablesVentas();
-    renderizarHistorialVentas();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inicializarModuloVentas);
-  } else {
-    inicializarModuloVentas();
-  }
-
-  function cambiarModoCliente() {
-    const modo = document.querySelector('input[name="tipoCliente"]:checked').value;
-    const divReg = document.getElementById('divClienteRegistrado');
-    const divOcas = document.getElementById('divClienteOcasional');
-    if (modo === 'registrado') {
-      divReg.style.display = 'block';
-      divOcas.style.display = 'none';
-    } else {
-      divReg.style.display = 'none';
-      divOcas.style.display = 'block';
-    }
-  }
-
-  function cargarDesplegablesVentas() {
-    const selCli = document.getElementById('vCliente');
-    if (selCli) {
-      selCli.innerHTML = '<option value="" disabled selected>👤 Seleccionar cliente</option>';
-      if (clientesVentas.length === 0) {
-        selCli.innerHTML += '<option value="" disabled>⚠️ No hay clientes cargados</option>';
-      } else {
-        clientesVentas.forEach(c => {
-          const nombreCli = c.nombre || c.cliente || c.AyN || '';
-          if (nombreCli) {
-            selCli.innerHTML += `<option value="${nombreCli}">${nombreCli} (${c.localidad || c.zona || ''})</option>`;
-          }
-        });
-      }
-    }
-
-    const selProd = document.getElementById('vProducto');
-    if (selProd) {
-      selProd.innerHTML = '<option value="" disabled selected>-- Seleccionar Producto --</option>';
-      if (stockVentas.length === 0) {
-        selProd.innerHTML += '<option value="" disabled>⚠️ No hay stock cargado en el sistema</option>';
-      } else {
-        stockVentas.forEach((p, idx) => {
-          const idProd = p.id !== undefined ? p.id : idx;
-          const nombreProd = p.producto || p.nombre || p.descripcion || '';
-          const stockProd = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
-          const precioProd = p.precio || p.precioVenta || 0;
-          
-          if (nombreProd) {
-            selProd.innerHTML += `<option value="${idProd}">${nombreProd} (Stock: ${stockProd} u. | $${precioProd})</option>`;
-          }
-        });
-      }
-    }
-  }
-
-  function buscarProductoVentasPorId(pId) {
-    return stockVentas.find((p, idx) => (p.id == pId) || (idx == pId) || (p.producto == pId) || (p.nombre == pId));
-  }
-
-  function cargarPrecioMaxVentas() {
-    const pId = document.getElementById('vProducto').value;
-    const prod = buscarProductoVentasPorId(pId);
-    if (prod) {
-      document.getElementById('vPrecioUnit').value = prod.precio || prod.precioVenta || 0;
-    }
-  }
-
-  function agregarAlCarritoVentas() {
-    const pId = document.getElementById('vProducto').value;
-    const cant = parseInt(document.getElementById('vCant').value) || 0;
-    const precio = parseFloat(document.getElementById('vPrecioUnit').value) || 0;
-
-    if (pId === "") return alert('Seleccioná un producto.');
-    if (cant <= 0) return alert('Ingresá una cantidad válida.');
-
-    const prod = buscarProductoVentasPorId(pId);
-    if (!prod) return alert('No se encontró el producto seleccionado.');
-
-    const stockActual = prod.cantidad !== undefined ? prod.cantidad : (prod.stock !== undefined ? prod.stock : 0);
-    const nombreProd = prod.producto || prod.nombre || prod.descripcion || 'Producto';
+    const configVentas = { nombre: 'Infinito Corazón', eslogan: 'by Bijou Macramé Artesanal' };
     
-    if (cant > stockActual) {
-      return alert(`⚠️ Stock insuficiente. Solo quedan ${stockActual} unidades.`);
+    function obtenerFechaLocal() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     }
 
-    carritoVentas.push({
-      productoId: pId,
-      nombre: nombreProd,
-      cant,
-      precio,
-      subtotal: cant * precio
-    });
+    const fechaSesionVentas = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
 
-    renderCarritoVentas();
-    document.getElementById('vProducto').value = '';
-    document.getElementById('vCant').value = 1;
-    document.getElementById('vPrecioUnit').value = '';
-
-    abrirModalCarritoFlotante();
-  }
-
-  function abrirModalCarritoFlotante() {
-    const modal = document.getElementById('modalCarritoFlotante');
-    if (modal) modal.classList.add('active');
-  }
-
-  function cerrarModalCarritoFlotante() {
-    const modal = document.getElementById('modalCarritoFlotante');
-    if (modal) modal.classList.remove('active');
-  }
-
-  function renderCarritoVentas() {
-    const cont = document.getElementById('listaCarritoVentas');
-    const totalBox = document.getElementById('lblTotalVenta');
-    if (!cont) return;
-
-    if (carritoVentas.length === 0) {
-      cont.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:0.78rem; margin:4px 0;">El carrito está vacío</p>';
-      if (totalBox) totalBox.innerText = 'Total: $0';
-      return;
+    function formatearFechaVentas(fechaStr) {
+      if (!fechaStr) return '';
+      const partes = fechaStr.split('-');
+      return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
     }
 
-    let html = '';
-    let subtotalBruto = 0;
+    function inicializarModuloVentas() {
+      stockVentas = obtenerDatosSafe('bma_stock', obtenerDatosSafe('sbo_stock', obtenerDatosSafe('stock', [])));
+      clientesVentas = obtenerDatosSafe('bma_clientes', obtenerDatosSafe('sbo_clientes', obtenerDatosSafe('clientes', [])));
+      ventasList = obtenerDatosSafe('bma_ventas', obtenerDatosSafe('sbo_ventas', obtenerDatosSafe('ventas', [])));
 
-    carritoVentas.forEach((item, idx) => {
-      subtotalBruto += item.subtotal;
-      html += `
-        <div class="ventas-cart-item">
-          <div>
-            <strong>${item.nombre}</strong><br>
-            <small>${item.cant} u. x $${item.precio.toLocaleString('es-AR')}</small>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span><strong>$${item.subtotal.toLocaleString('es-AR')}</strong></span>
-            <button class="ventas-btn-del-cart" onclick="eliminarDelCarritoVentas(${idx})">✕</button>
-          </div>
-        </div>
-      `;
-    });
-
-    cont.innerHTML = html;
-
-    const descPorc = parseFloat(document.getElementById('vDescuentoPorc')?.value) || 0;
-    const descPesos = parseFloat(document.getElementById('vDescuentoPesos')?.value) || 0;
-
-    let montoDescuento = 0;
-    if (descPorc > 0) {
-      montoDescuento = subtotalBruto * (descPorc / 100);
-    } else if (descPesos > 0) {
-      montoDescuento = descPesos;
+      const lblFecha = document.getElementById('lblFechaTrabajoVentas');
+      if (lblFecha) lblFecha.innerText = `Fecha de Trabajo: ${formatearFechaVentas(fechaSesionVentas)}`;
+      
+      window.cargarDesplegablesVentas();
+      window.renderizarHistorialVentas();
     }
 
-    let totalFinal = Math.max(0, subtotalBruto - montoDescuento);
-
-    if (totalBox) {
-      if (montoDescuento > 0) {
-        totalBox.innerHTML = `
-          <div style="font-size: 0.8rem; color: #64748b; font-weight: normal;">Subtotal: $${subtotalBruto.toLocaleString('es-AR')}</div>
-          <div style="font-size: 0.8rem; color: #dc2626; font-weight: normal;">Descuento: -$${montoDescuento.toLocaleString('es-AR')}</div>
-          <div style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-top: 2px;">Total: $${totalFinal.toLocaleString('es-AR')}</div>
-        `;
-      } else {
-        totalBox.innerHTML = `Total: $${totalFinal.toLocaleString('es-AR')}`;
+    window.cambiarModoCliente = function() {
+      const radio = document.querySelector('input[name="tipoCliente"]:checked');
+      if (!radio) return;
+      const modo = radio.value;
+      const divReg = document.getElementById('divClienteRegistrado');
+      const divOcas = document.getElementById('divClienteOcasional');
+      if (divReg && divOcas) {
+        divReg.style.display = modo === 'registrado' ? 'block' : 'none';
+        divOcas.style.display = modo === 'registrado' ? 'none' : 'block';
       }
-    }
-  }
-
-  function eliminarDelCarritoVentas(idx) {
-    carritoVentas.splice(idx, 1);
-    renderCarritoVentas();
-  }
-
-  function confirmarVentaActual() {
-    if (carritoVentas.length === 0) return alert('El carrito está vacío.');
-
-    const modoCliente = document.querySelector('input[name="tipoCliente"]:checked').value;
-    let clienteNombre = "";
-    let clienteTelefono = "";
-
-    if (modoCliente === 'registrado') {
-      clienteNombre = document.getElementById('vCliente').value;
-      if (!clienteNombre) return alert('Por favor, seleccioná un cliente de la lista.');
-      const cliObj = clientesVentas.find(c => (c.nombre || c.cliente || c.AyN) === clienteNombre);
-      if (cliObj) clienteTelefono = cliObj.tel || cliObj.telefono || '';
-    } else {
-      clienteNombre = document.getElementById('vNombreOcasional').value.trim();
-      clienteTelefono = document.getElementById('vTelefonoOcasional').value.trim();
-      if (!clienteNombre) return alert('Por favor, ingresá el nombre del cliente ocasional.');
-    }
-
-    const pago = document.getElementById('vPago').value;
-    
-    const subtotalBruto = carritoVentas.reduce((acc, i) => acc + i.subtotal, 0);
-    const descPorc = parseFloat(document.getElementById('vDescuentoPorc').value) || 0;
-    const descPesos = parseFloat(document.getElementById('vDescuentoPesos').value) || 0;
-
-    let montoDescuento = 0;
-    if (descPorc > 0) {
-      montoDescuento = subtotalBruto * (descPorc / 100);
-    } else if (descPesos > 0) {
-      montoDescuento = descPesos;
-    }
-    const total = Math.max(0, subtotalBruto - montoDescuento);
-
-    carritoVentas.forEach(item => {
-      const prod = buscarProductoVentasPorId(item.productoId);
-      if (prod) {
-        if (prod.cantidad !== undefined) prod.cantidad = Math.max(0, prod.cantidad - item.cant);
-        else if (prod.stock !== undefined) prod.stock = Math.max(0, prod.stock - item.cant);
-      }
-    });
-    localStorage.setItem('bma_stock', JSON.stringify(stockVentas));
-
-    const nuevaVenta = {
-      id: Date.now(),
-      numTicket: String(ventasList.length + 1).padStart(4, '0'),
-      fecha: fechaSesionVentas,
-      hora: new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }),
-      cliente: clienteNombre,
-      telefono: clienteTelefono,
-      pago,
-      items: [...carritoVentas],
-      subtotalBruto,
-      descuentoAplicado: montoDescuento,
-      total
     };
 
-    ventasList.unshift(nuevaVenta);
-    localStorage.setItem('bma_ventas', JSON.stringify(ventasList));
-
-    carritoVentas = [];
-    if (document.getElementById('vDescuentoPorc')) document.getElementById('vDescuentoPorc').value = 0;
-    if (document.getElementById('vDescuentoPesos')) document.getElementById('vDescuentoPesos').value = 0;
-
-    renderCarritoVentas();
-    cerrarModalCarritoFlotante();
-    cargarDesplegablesVentas();
-    renderizarHistorialVentas();
-
-    document.getElementById('vNombreOcasional').value = '';
-    document.getElementById('vTelefonoOcasional').value = '';
-    document.querySelector('input[name="tipoCliente"][value="registrado"]').checked = true;
-    cambiarModoCliente();
-
-    verTicketVentas(nuevaVenta.id);
-  }
-
-  function abrirModalVentasJornada() {
-    const modal = document.getElementById('modalVentasJornada');
-    if (modal) modal.classList.add('active');
-    renderizarHistorialVentas();
-  }
-
-  function cerrarModalVentasJornada() {
-    const modal = document.getElementById('modalVentasJornada');
-    if (modal) modal.classList.remove('active');
-  }
-
-  function renderizarHistorialVentas() {
-    const filtro = document.getElementById('buscarVentaInput') ? document.getElementById('buscarVentaInput').value.toLowerCase() : '';
-    const cont = document.getElementById('listaVentasJornada');
-    const badge = document.getElementById('contadorVentasBadge');
-    if (badge) badge.innerText = ventasList.length;
-    if (!cont) return;
-
-    let html = '';
-    const filtradas = ventasList.filter(v => v.cliente.toLowerCase().includes(filtro) || v.numTicket.includes(filtro));
-
-    filtradas.forEach(v => {
-      html += `
-        <div class="venta-item">
-          <div class="venta-header">
-            <span>Ticket N° ${v.numTicket} - ${v.cliente}</span>
-            <span style="color:#0f172a;">$${v.total.toLocaleString('es-AR')}</span>
-          </div>
-          <div class="venta-detalles">
-            📅 ${formatearFechaVentas(v.fecha)} ${v.hora} hs | 💳 ${v.pago}<br>
-            📦 ${v.items.map(i => `${i.cant}x ${i.nombre}`).join(', ')}
-            ${v.descuentoAplicado > 0 ? `<br><span style="color:#dc2626;">🏷️ Descuento aplicado: -$${v.descuentoAplicado.toLocaleString('es-AR')}</span>` : ''}
-          </div>
-          <div class="ventas-acciones">
-            <button class="ventas-btn-action" style="background: #e0f2fe; color: #0369a1;" onclick="verTicketVentas(${v.id})">📄 Ver</button>
-            <button class="ventas-btn-action" style="background: #fee2e2; color: #b91c1c;" onclick="anularVentaActual(${v.id})">🚫 Anular</button>
-          </div>
-        </div>
-      `;
-    });
-
-    if (filtradas.length === 0) {
-      html = '<p style="text-align:center; color:#94a3b8; font-size: 0.8rem; padding: 10px;">No hay ventas registradas.</p>';
-    }
-
-    cont.innerHTML = html;
-  }
-
-  function verTicketVentas(idVenta) {
-    const v = ventasList.find(x => x.id === idVenta);
-    if (!v) return;
-
-    document.getElementById('tNombreEmpresa').innerText = configVentas.nombre;
-    document.getElementById('tEsloganEmpresa').innerText = configVentas.eslogan;
-    document.getElementById('tNumComprobante').innerText = `COMPROBANTE N° ${v.numTicket}`;
-    document.getElementById('tFechaHora').innerText = `${formatearFechaVentas(v.fecha)} - ${v.hora} hs`;
-    document.getElementById('tCliente').innerText = v.cliente;
-    document.getElementById('tPago').innerText = v.pago;
-
-    let itemsHtml = '';
-    let textoWa = `*${configVentas.nombre}*\n_${configVentas.eslogan}_\n_Comprobante N° ${v.numTicket}_\n📱 *WhatsApp:* 2364716004\n\n📌 *Cliente:* ${v.cliente}\n📅 *Fecha:* ${formatearFechaVentas(v.fecha)}\n💳 *Pago:* ${v.pago}\n\n*Detalle:*\n`;
-
-    v.items.forEach(i => {
-      let descItem = `${i.cant}x ${i.nombre}`;
-      if (i.cant > 1) descItem += ` ($${i.precio.toLocaleString('es-AR')} c/u)`;
-
-      itemsHtml += `
-        <div style="display: flex; justify-content: space-between; font-size: 0.72rem; margin: 3px 0;">
-          <span>${descItem}</span>
-          <span>$${i.subtotal.toLocaleString('es-AR')}</span>
-        </div>
-      `;
-      textoWa += `• ${i.cant}x ${i.nombre}${i.cant > 1 ? ` ($${i.precio.toLocaleString('es-AR')} c/u)` : ''} - $${i.subtotal.toLocaleString('es-AR')}\n`;
-    });
-
-    if (v.descuentoAplicado && v.descuentoAplicado > 0) {
-      const subBruto = v.subtotalBruto || (v.total + v.descuentoAplicado);
-      itemsHtml += `
-        <div style="border-top: 1px dashed #000; margin-top: 4px; padding-top: 4px;">
-          <div style="display: flex; justify-content: space-between; font-size: 0.72rem;">
-            <span>Subtotal:</span>
-            <span>$${subBruto.toLocaleString('es-AR')}</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: #b91c1c;">
-            <span>Descuento:</span>
-            <span>-$${v.descuentoAplicado.toLocaleString('es-AR')}</span>
-          </div>
-        </div>
-      `;
-      textoWa += `\nSubtotal: $${subBruto.toLocaleString('es-AR')}\nDescuento: -$${v.descuentoAplicado.toLocaleString('es-AR')}\n`;
-    }
-
-    textoWa += `\n*TOTAL: $${v.total.toLocaleString('es-AR')}*\n\n¡Muchas gracias!`;
-
-    document.getElementById('tDetalleProductos').innerHTML = itemsHtml;
-    document.getElementById('tTotal').innerText = `TOTAL: $${v.total.toLocaleString('es-AR')}`;
-
-    let telCliente = v.telefono || '';
-    if (!telCliente && v.cliente) {
-      const cliObj = clientesVentas.find(c => (c.nombre || c.cliente || c.AyN) === v.cliente);
-      telCliente = cliObj ? (cliObj.tel || cliObj.telefono || '') : '';
-    }
-    const telWa = telCliente.replace(/\D/g,'');
-    const urlWa = telWa 
-      ? `https://wa.me/549${telWa}?text=${encodeURIComponent(textoWa)}` 
-      : `https://api.whatsapp.com/send?text=${encodeURIComponent(textoWa)}`;
-
-    const btnWa = document.getElementById('btnWaTicket');
-    if (btnWa) btnWa.onclick = () => window.open(urlWa, '_blank');
-
-    const modalT = document.getElementById('modalTicketVentas');
-    if (modalT) modalT.classList.add('active');
-  }
-
-  function cerrarTicketVentas() {
-    const modalT = document.getElementById('modalTicketVentas');
-    if (modalT) modalT.classList.remove('active');
-  }
-
-  function anularVentaActual(idVenta) {
-    if (confirm('¿Anular esta venta? El stock será devuelto.')) {
-      const idx = ventasList.findIndex(v => v.id === idVenta);
-      if (idx !== -1) {
-        const ventaAnulada = ventasList[idx];
-        ventaAnulada.items.forEach(item => {
-          const prod = buscarProductoVentasPorId(item.productoId);
-          if (prod) {
-            if (prod.cantidad !== undefined) prod.cantidad += item.cant;
-            else if (prod.stock !== undefined) prod.stock += item.cant;
-          }
-        });
-
-        localStorage.setItem('bma_stock', JSON.stringify(stockVentas));
-        ventasList.splice(idx, 1);
-        localStorage.setItem('bma_ventas', JSON.stringify(ventasList));
-
-        alert('✅ Venta anulada y stock devuelto.');
-        cargarDesplegablesVentas();
-        renderizarHistorialVentas();
+    window.cargarDesplegablesVentas = function() {
+      const selCli = document.getElementById('vCliente');
+      if (selCli) {
+        selCli.innerHTML = '<option value="" disabled selected>👤 Seleccionar cliente</option>';
+        if (clientesVentas.length === 0) {
+          selCli.innerHTML += '<option value="" disabled>⚠️ No hay clientes cargados</option>';
+        } else {
+          clientesVentas.forEach(c => {
+            const nombreCli = c.nombre || c.cliente || c.AyN || '';
+            if (nombreCli) {
+              selCli.innerHTML += `<option value="${nombreCli}">${nombreCli} (${c.localidad || c.zona || ''})</option>`;
+            }
+          });
+        }
       }
+
+      const selProd = document.getElementById('vProducto');
+      if (selProd) {
+        selProd.innerHTML = '<option value="" disabled selected>-- Seleccionar Producto --</option>';
+        if (stockVentas.length === 0) {
+          selProd.innerHTML += '<option value="" disabled>⚠️ No hay stock cargado en el sistema</option>';
+        } else {
+          stockVentas.forEach((p, idx) => {
+            const idProd = p.id !== undefined ? p.id : idx;
+            const nombreProd = p.producto || p.nombre || p.descripcion || '';
+            const stockProd = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
+            const precioProd = p.precio || p.precioVenta || 0;
+            
+            if (nombreProd) {
+              selProd.innerHTML += `<option value="${idProd}">${nombreProd} (Stock: ${stockProd} u. | $${precioProd})</option>`;
+            }
+          });
+        }
+      }
+    };
+
+    function buscarProductoVentasPorId(pId) {
+      return stockVentas.find((p, idx) => (p.id == pId) || (idx == pId) || (p.producto == pId) || (p.nombre == pId));
     }
-  }
+
+    window.cargarPrecioMaxVentas = function() {
+      const pElem = document.getElementById('vProducto');
+      if (!pElem) return;
+      const pId = pElem.value;
+      const prod = buscarProductoVentasPorId(pId);
+      if (prod) {
+        document.getElementById('vPrecioUnit').value = prod.precio || prod.precioVenta || 0;
+      }
+    };
+
+    window.agregarAlCarritoVentas = function() {
+      const pElem = document.getElementById('vProducto');
+      if (!pElem || pElem.value === "") return alert('Seleccioná un producto.');
+      const pId = pElem.value;
+
+      const cant = parseInt(document.getElementById('vCant').value) || 0;
+      const precio = parseFloat(document.getElementById('vPrecioUnit').value) || 0;
+
+      if (cant <= 0) return alert('Ingresá una cantidad válida.');
+
+      const prod = buscarProductoVentasPorId(pId);
+      if (!prod) return alert('No se encontró el producto seleccionado.');
+
+      const stockActual = prod.cantidad !== undefined ? prod.cantidad : (prod.stock !== undefined ? prod.stock : 0);
+      const nombreProd = prod.producto || prod.nombre || prod.descripcion || 'Producto';
+      
+      if (cant > stockActual) {
+        return alert(`⚠️ Stock insuficiente. Solo quedan ${stockActual} unidades.`);
+      }
+
+      carritoVentas.push({
+        productoId: pId,
+        nombre: nombreProd,
+        cant,
+        precio,
+        subtotal: cant * precio
+      });
+
+      window.renderCarritoVentas();
+      document.getElementById('vProducto').value = '';
+      document.getElementById('vCant').value = 1;
+      document.getElementById('vPrecioUnit').value = '';
+
+      window.abrirModalCarritoFlotante();
+    };
+
+    window.abrirModalCarritoFlotante = function() {
+      const modal = document.getElementById('modalCarritoFlotante');
+      if (modal) modal.classList.add('active');
+    };
+
+    window.cerrarModalCarritoFlotante = function() {
+      const modal = document.getElementById('modalCarritoFlotante');
+      if (modal) modal.classList.remove('active');
+    };
+
+    window.renderCarritoVentas = function() {
+      const cont = document.getElementById('listaCarritoVentas');
+      const totalBox = document.getElementById('lblTotalVenta');
+      if (!cont) return;
+
+      if (carritoVentas.length === 0) {
+        cont.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:0.78rem; margin:4px 0;">El carrito está vacío</p>';
+        if (totalBox) totalBox.innerText = 'Total: $0';
+        return;
+      }
+
+      let html = '';
+      let subtotalBruto = 0;
+
+      carritoVentas.forEach((item, idx) => {
+        subtotalBruto += item.subtotal;
+        html += `
+          <div class="ventas-cart-item">
+            <div>
+              <strong>${item.nombre}</strong><br>
+              <small>${item.cant} u. x $${item.precio.toLocaleString('es-AR')}</small>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span><strong>$${item.subtotal.toLocaleString('es-AR')}</strong></span>
+              <button class="ventas-btn-del-cart" onclick="window.eliminarDelCarritoVentas(${idx})">✕</button>
+            </div>
+          </div>
+        `;
+      });
+
+      cont.innerHTML = html;
+
+      const descPorc = parseFloat(document.getElementById('vDescuentoPorc')?.value) || 0;
+      const descPesos = parseFloat(document.getElementById('vDescuentoPesos')?.value) || 0;
+
+      let montoDescuento = 0;
+      if (descPorc > 0) {
+        montoDescuento = subtotalBruto * (descPorc / 100);
+      } else if (descPesos > 0) {
+        montoDescuento = descPesos;
+      }
+
+      const totalFinal = Math.max(0, subtotalBruto - montoDescuento);
+
+      if (totalBox) {
+        if (montoDescuento > 0) {
+          totalBox.innerHTML = `
+            <div style="font-size: 0.8rem; color: #64748b; font-weight: normal;">Subtotal: $${subtotalBruto.toLocaleString('es-AR')}</div>
+            <div style="font-size: 0.8rem; color: #dc2626; font-weight: normal;">Descuento: -$${montoDescuento.toLocaleString('es-AR')}</div>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-top: 2px;">Total: $${totalFinal.toLocaleString('es-AR')}</div>
+          `;
+        } else {
+          totalBox.innerHTML = `Total: $${totalFinal.toLocaleString('es-AR')}`;
+        }
+      }
+    };
+
+    window.eliminarDelCarritoVentas = function(idx) {
+      carritoVentas.splice(idx, 1);
+      window.renderCarritoVentas();
+    };
+
+    window.confirmarVentaActual = function() {
+      if (carritoVentas.length === 0) return alert('El carrito está vacío.');
+
+      const modoRadio = document.querySelector('input[name="tipoCliente"]:checked');
+      const modoCliente = modoRadio ? modoRadio.value : 'registrado';
+      let clienteNombre = "";
+      let clienteTelefono = "";
+
+      if (modoCliente === 'registrado') {
+        clienteNombre = document.getElementById('vCliente').value;
+        if (!clienteNombre) return alert('Por favor, seleccioná un cliente de la lista.');
+        const cliObj = clientesVentas.find(c => (c.nombre || c.cliente || c.AyN) === clienteNombre);
+        if (cliObj) clienteTelefono = cliObj.tel || cliObj.telefono || '';
+      } else {
+        clienteNombre = document.getElementById('vNombreOcasional').value.trim();
+        clienteTelefono = document.getElementById('vTelefonoOcasional').value.trim();
+        if (!clienteNombre) return alert('Por favor, ingresá el nombre del cliente ocasional.');
+      }
+
+      const pago = document.getElementById('vPago').value;
+      
+      const subtotalBruto = carritoVentas.reduce((acc, i) => acc + i.subtotal, 0);
+      const descPorc = parseFloat(document.getElementById('vDescuentoPorc').value) || 0;
+      const descPesos = parseFloat(document.getElementById('vDescuentoPesos').value) || 0;
+
+      let montoDescuento = 0;
+      if (descPorc > 0) {
+        montoDescuento = subtotalBruto * (descPorc / 100);
+      } else if (descPesos > 0) {
+        montoDescuento = descPesos;
+      }
+      const total = Math.max(0, subtotalBruto - montoDescuento);
+
+      carritoVentas.forEach(item => {
+        const prod = buscarProductoVentasPorId(item.productoId);
+        if (prod) {
+          if (prod.cantidad !== undefined) prod.cantidad = Math.max(0, prod.cantidad - item.cant);
+          else if (prod.stock !== undefined) prod.stock = Math.max(0, prod.stock - item.cant);
+        }
+      });
+      localStorage.setItem('bma_stock', JSON.stringify(stockVentas));
+
+      const nuevaVenta = {
+        id: Date.now(),
+        numTicket: String(ventasList.length + 1).padStart(4, '0'),
+        fecha: fechaSesionVentas,
+        hora: new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }),
+        cliente: clienteNombre,
+        telefono: clienteTelefono,
+        pago,
+        items: [...carritoVentas],
+        subtotalBruto,
+        descuentoAplicado: montoDescuento,
+        total
+      };
+
+      ventasList.unshift(nuevaVenta);
+      localStorage.setItem('bma_ventas', JSON.stringify(ventasList));
+
+      carritoVentas = [];
+      if (document.getElementById('vDescuentoPorc')) document.getElementById('vDescuentoPorc').value = 0;
+      if (document.getElementById('vDescuentoPesos')) document.getElementById('vDescuentoPesos').value = 0;
+
+      window.renderCarritoVentas();
+      window.cerrarModalCarritoFlotante();
+      window.cargarDesplegablesVentas();
+      window.renderizarHistorialVentas();
+
+      document.getElementById('vNombreOcasional').value = '';
+      document.getElementById('vTelefonoOcasional').value = '';
+      const radioReg = document.querySelector('input[name="tipoCliente"][value="registrado"]');
+      if (radioReg) radioReg.checked = true;
+      window.cambiarModoCliente();
+
+      window.verTicketVentas(nuevaVenta.id);
+    };
+
+    window.abrirModalVentasJornada = function() {
+      const modal = document.getElementById('modalVentasJornada');
+      if (modal) modal.classList.add('active');
+      window.renderizarHistorialVentas();
+    };
+
+    window.cerrarModalVentasJornada = function() {
+      const modal = document.getElementById('modalVentasJornada');
+      if (modal) modal.classList.remove('active');
+    };
+
+    window.renderizarHistorialVentas = function() {
+      const filtro = document.getElementById('buscarVentaInput') ? document.getElementById('buscarVentaInput').value.toLowerCase() : '';
+      const cont = document.getElementById('listaVentasJornada');
+      const badge = document.getElementById('contadorVentasBadge');
+      if (badge) badge.innerText = ventasList.length;
+      if (!cont) return;
+
+      let html = '';
+      const filtradas = ventasList.filter(v => (v.cliente && v.cliente.toLowerCase().includes(filtro)) || (v.numTicket && v.numTicket.includes(filtro)));
+
+      filtradas.forEach(v => {
+        html += `
+          <div class="venta-item">
+            <div class="venta-header">
+              <span>Ticket N° ${v.numTicket} - ${v.cliente}</span>
+              <span style="color:#0f172a;">$${v.total.toLocaleString('es-AR')}</span>
+            </div>
+            <div class="venta-detalles">
+              📅 ${formatearFechaVentas(v.fecha)} ${v.hora} hs | 💳 ${v.pago}<br>
+              📦 ${v.items ? v.items.map(i => `${i.cant}x ${i.nombre}`).join(', ') : ''}
+              ${v.descuentoAplicado > 0 ? `<br><span style="color:#dc2626;">🏷️ Descuento aplicado: -$${v.descuentoAplicado.toLocaleString('es-AR')}</span>` : ''}
+            </div>
+            <div class="ventas-acciones">
+              <button class="ventas-btn-action" style="background: #e0f2fe; color: #0369a1;" onclick="window.verTicketVentas(${v.id})">📄 Ver</button>
+              <button class="ventas-btn-action" style="background: #fee2e2; color: #b91c1c;" onclick="window.anularVentaActual(${v.id})">🚫 Anular</button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (filtradas.length === 0) {
+        html = '<p style="text-align:center; color:#94a3b8; font-size: 0.8rem; padding: 10px;">No hay ventas registradas.</p>';
+      }
+
+      cont.innerHTML = html;
+    };
+
+    window.verTicketVentas = function(idVenta) {
+      const v = ventasList.find(x => x.id === idVenta);
+      if (!v) return;
+
+      document.getElementById('tNombreEmpresa').innerText = configVentas.nombre;
+      document.getElementById('tEsloganEmpresa').innerText = configVentas.eslogan;
+      document.getElementById('tNumComprobante').innerText = `COMPROBANTE N° ${v.numTicket}`;
+      document.getElementById('tFechaHora').innerText = `${formatearFechaVentas(v.fecha)} - ${v.hora} hs`;
+      document.getElementById('tCliente').innerText = v.cliente;
+      document.getElementById('tPago').innerText = v.pago;
+
+      let itemsHtml = '';
+      let textoWa = `*${configVentas.nombre}*\n_${configVentas.eslogan}_\n_Comprobante N° ${v.numTicket}_\n📱 *WhatsApp:* 2364716004\n\n📌 *Cliente:* ${v.cliente}\n📅 *Fecha:* ${formatearFechaVentas(v.fecha)}\n💳 *Pago:* ${v.pago}\n\n*Detalle:*\n`;
+
+      if (v.items) {
+        v.items.forEach(i => {
+          let descItem = `${i.cant}x ${i.nombre}`;
+          if (i.cant > 1) descItem += ` ($${i.precio.toLocaleString('es-AR')} c/u)`;
+
+          itemsHtml += `
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; margin: 3px 0;">
+              <span>${descItem}</span>
+              <span>$${i.subtotal.toLocaleString('es-AR')}</span>
+            </div>
+          `;
+          textoWa += `• ${i.cant}x ${i.nombre}${i.cant > 1 ? ` ($${i.precio.toLocaleString('es-AR')} c/u)` : ''} - $${i.subtotal.toLocaleString('es-AR')}\n`;
+        });
+      }
+
+      if (v.descuentoAplicado && v.descuentoAplicado > 0) {
+        const subBruto = v.subtotalBruto || (v.total + v.descuentoAplicado);
+        itemsHtml += `
+          <div style="border-top: 1px dashed #000; margin-top: 4px; padding-top: 4px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem;">
+              <span>Subtotal:</span>
+              <span>$${subBruto.toLocaleString('es-AR')}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: #b91c1c;">
+              <span>Descuento:</span>
+              <span>-$${v.descuentoAplicado.toLocaleString('es-AR')}</span>
+            </div>
+          </div>
+        `;
+        textoWa += `\nSubtotal: $${subBruto.toLocaleString('es-AR')}\nDescuento: -$${v.descuentoAplicado.toLocaleString('es-AR')}\n`;
+      }
+
+      textoWa += `\n*TOTAL: $${v.total.toLocaleString('es-AR')}*\n\n¡Muchas gracias!`;
+
+      document.getElementById('tDetalleProductos').innerHTML = itemsHtml;
+      document.getElementById('tTotal').innerText = `TOTAL: $${v.total.toLocaleString('es-AR')}`;
+
+      let telCliente = v.telefono || '';
+      if (!telCliente && v.cliente) {
+        const cliObj = clientesVentas.find(c => (c.nombre || c.cliente || c.AyN) === v.cliente);
+        telCliente = cliObj ? (cliObj.tel || cliObj.telefono || '') : '';
+      }
+      const telWa = telCliente.replace(/\D/g,'');
+      const urlWa = telWa 
+        ? `https://wa.me/549${telWa}?text=${encodeURIComponent(textoWa)}` 
+        : `https://api.whatsapp.com/send?text=${encodeURIComponent(textoWa)}`;
+
+      const btnWa = document.getElementById('btnWaTicket');
+      if (btnWa) btnWa.onclick = () => window.open(urlWa, '_blank');
+
+      const modalT = document.getElementById('modalTicketVentas');
+      if (modalT) modalT.classList.add('active');
+    };
+
+    window.cerrarTicketVentas = function() {
+      const modalT = document.getElementById('modalTicketVentas');
+      if (modalT) modalT.classList.remove('active');
+    };
+
+    window.anularVentaActual = function(idVenta) {
+      if (confirm('¿Anular esta venta? El stock será devuelto.')) {
+        const idx = ventasList.findIndex(v => v.id === idVenta);
+        if (idx !== -1) {
+          const ventaAnulada = ventasList[idx];
+          if (ventaAnulada.items) {
+            ventaAnulada.items.forEach(item => {
+              const prod = buscarProductoVentasPorId(item.productoId);
+              if (prod) {
+                if (prod.cantidad !== undefined) prod.cantidad += item.cant;
+                else if (prod.stock !== undefined) prod.stock += item.cant;
+              }
+            });
+          }
+
+          localStorage.setItem('bma_stock', JSON.stringify(stockVentas));
+          ventasList.splice(idx, 1);
+          localStorage.setItem('bma_ventas', JSON.stringify(ventasList));
+
+          alert('✅ Venta anulada y stock devuelto.');
+          window.cargarDesplegablesVentas();
+          window.renderizarHistorialVentas();
+        }
+      }
+    };
+
+    // Ejecución inmediata al inyectarse en el DOM
+    inicializarModuloVentas();
+  })();
 </script>

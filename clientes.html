@@ -5,7 +5,7 @@
     <div id="lblFechaTrabajo" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
   </div>
   
-  <button onclick="cerrarVentanaModal()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+  <button onclick="window.cerrarVentanaModal()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
     <img src="icono.png" alt="Logo BMA" style="width: 44px; height: 44px; object-fit: contain;">
   </button>
 </div>
@@ -24,33 +24,42 @@
   <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">E-mail:</label>
   <input type="email" id="txtEmail" placeholder="Ej: juan@email.com" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
 
-  <button id="btnAccion" onclick="guardarCliente()" style="background: #0f172a; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.95rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,0.3);">➕ Registrar Cliente</button>
-  <button onclick="alternarVistaLista(true)" style="background: #475569; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-top: 8px; cursor: pointer;">📋 Mostrar Registros</button>
-  <button id="btnCancelarEdicion" onclick="cancelarEdicion()" style="background: #64748b; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.85rem; margin-top: 8px; cursor: pointer; display: none;">Cancelar Edición</button>
-  <button onclick="cerrarVentanaModal()" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">Volver al Menú</button>
+  <button id="btnAccion" onclick="window.guardarCliente()" style="background: #0f172a; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.95rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,0.3);">➕ Registrar Cliente</button>
+  <button onclick="window.alternarVistaLista(true)" style="background: #475569; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-top: 8px; cursor: pointer;">📋 Mostrar Registros</button>
+  <button id="btnCancelarEdicion" onclick="window.cancelarEdicion()" style="background: #64748b; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.85rem; margin-top: 8px; cursor: pointer; display: none;">Cancelar Edición</button>
+  <button onclick="window.cerrarVentanaModal()" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">Volver al Menú</button>
 </div>
 
 <!-- VISTA 2: LISTADO -->
 <div id="vista-listado" style="display: none;">
   <div style="margin-bottom: 8px;">
     <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 0; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">🔍 Buscar Registro:</label>
-    <input type="text" id="txtBuscar" placeholder="Nombre, localidad, tel..." oninput="actualizarPantallaClientes()" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
+    <input type="text" id="txtBuscar" placeholder="Nombre, localidad, tel..." oninput="window.actualizarPantallaClientes()" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
   </div>
 
   <div id="listaClientes" style="margin-top: 8px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;">
     <div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No hay clientes registrados.</div>
   </div>
 
-  <button onclick="alternarVistaLista(false)" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">⬅️ Volver al Formulario</button>
+  <button onclick="window.alternarVistaLista(false)" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">⬅️ Volver al Formulario</button>
 </div>
 
 <script>
-    function cerrarVentanaModal() {
-        if (typeof cerrarModalDinamico === 'function') {
-            cerrarModalDinamico();
-        } else {
-            window.location.href = 'menu.html';
-        }
+  window.cerrarVentanaModal = function() {
+    if (typeof cerrarModalDinamico === 'function') {
+      cerrarModalDinamico();
+    } else {
+      window.location.href = 'menu.html';
+    }
+  };
+
+  (function() {
+    function obtenerFechaLocal() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     }
 
     function formatearFechaLocal(fechaStr) {
@@ -59,29 +68,39 @@
       return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
     }
 
-    let fechaSesionLocal = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || new Date().toISOString().split('T')[0];
+    const fechaSesionLocal = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
     const lblFecha = document.getElementById('lblFechaTrabajo');
     if (lblFecha) lblFecha.innerText = `Fecha de Trabajo: ${formatearFechaLocal(fechaSesionLocal)}`;
 
     let clientes = [];
     let editIndex = null;
 
-    try {
-      const guardados = localStorage.getItem('bma_clientes') || localStorage.getItem('sbo_clientes') || localStorage.getItem('clientes');
-      if (guardados) clientes = JSON.parse(guardados);
-    } catch (e) {
-      clientes = [];
+    function obtenerClientesSafe() {
+      try {
+        const guardados = localStorage.getItem('bma_clientes') || localStorage.getItem('sbo_clientes') || localStorage.getItem('clientes');
+        return guardados ? JSON.parse(guardados) : [];
+      } catch (e) {
+        console.error("Error al cargar clientes:", e);
+        return [];
+      }
     }
 
-    function alternarVistaLista(mostrarLista) {
-      document.getElementById('vista-formulario').style.display = mostrarLista ? 'none' : 'block';
-      document.getElementById('vista-listado').style.display = mostrarLista ? 'block' : 'none';
-      if (mostrarLista) actualizarPantallaClientes();
-    }
+    clientes = obtenerClientesSafe();
 
-    function actualizarPantallaClientes() {
+    window.alternarVistaLista = function(mostrarLista) {
+      const vistaForm = document.getElementById('vista-formulario');
+      const vistaList = document.getElementById('vista-listado');
+      if (vistaForm) vistaForm.style.display = mostrarLista ? 'none' : 'block';
+      if (vistaList) vistaList.style.display = mostrarLista ? 'block' : 'none';
+      if (mostrarLista) window.actualizarPantallaClientes();
+    };
+
+    window.actualizarPantallaClientes = function() {
       const listaContainer = document.getElementById('listaClientes');
-      const filtro = document.getElementById('txtBuscar').value.toLowerCase().trim();
+      const txtBuscar = document.getElementById('txtBuscar');
+      if (!listaContainer) return;
+
+      const filtro = txtBuscar ? txtBuscar.value.toLowerCase().trim() : '';
       listaContainer.innerHTML = '';
 
       const filtrados = clientes.filter(c => {
@@ -93,7 +112,7 @@
       });
 
       if (filtrados.length === 0) {
-        listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.8rem; padding: 15px;">No se encontraron clientes.</div>';
+        listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No se encontraron clientes.</div>';
       } else {
         filtrados.forEach((c) => {
           const realIndex = clientes.indexOf(c);
@@ -111,82 +130,108 @@
               <span style="font-size: 0.78rem; color: #64748b;">✉️ ${emailCli}</span>
             </div>
             <div style="display: flex; gap: 6px; align-items: center;">
-              <button onclick="cargarEdicionCliente(${realIndex})" style="background: #e0f2fe; border: none; color: #0369a1; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Editar">✏️</button>
-              <button onclick="eliminarClienteItem(${realIndex})" style="background: #fee2e2; border: none; color: #b91c1c; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Eliminar">❌</button>
+              <button onclick="window.cargarEdicionCliente(${realIndex})" style="background: #e0f2fe; border: none; color: #0369a1; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Editar">✏️</button>
+              <button onclick="window.eliminarClienteItem(${realIndex})" style="background: #fee2e2; border: none; color: #b91c1c; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Eliminar">❌</button>
             </div>
           `;
           listaContainer.appendChild(item);
         });
       }
-    }
+    };
 
-    function guardarCliente() {
-      const nombre = document.getElementById('txtNombre').value.trim();
-      const telefono = document.getElementById('txtTelefono').value.trim();
-      const localidad = document.getElementById('txtLocalidad').value.trim();
-      const email = document.getElementById('txtEmail').value.trim();
+    window.guardarCliente = function() {
+      const txtNom = document.getElementById('txtNombre');
+      const txtTel = document.getElementById('txtTelefono');
+      const txtLoc = document.getElementById('txtLocalidad');
+      const txtEm = document.getElementById('txtEmail');
+
+      const nombre = txtNom ? txtNom.value.trim() : '';
+      const telefono = txtTel ? txtTel.value.trim() : '';
+      const localidad = txtLoc ? txtLoc.value.trim() : '';
+      const email = txtEm ? txtEm.value.trim() : '';
 
       if (!nombre) return alert('Por favor, ingresá el nombre del cliente.');
 
+      const clienteObj = { 
+        nombre, 
+        cliente: nombre, 
+        AyN: nombre, 
+        telefono, 
+        tel: telefono, 
+        localidad, 
+        email 
+      };
+
       if (editIndex !== null) {
-        clientes[editIndex] = { nombre, telefono, localidad, email };
-        cancelarEdicion();
+        clientes[editIndex] = clienteObj;
+        window.cancelarEdicion();
       } else {
-        clientes.push({ nombre, telefono, localidad, email });
-        document.getElementById('txtNombre').value = '';
-        document.getElementById('txtTelefono').value = '';
-        document.getElementById('txtLocalidad').value = '';
-        document.getElementById('txtEmail').value = '';
+        clientes.push(clienteObj);
+        if (txtNom) txtNom.value = '';
+        if (txtTel) txtTel.value = '';
+        if (txtLoc) txtLoc.value = '';
+        if (txtEm) txtEm.value = '';
       }
 
       guardarYActualizarClientes();
-    }
+    };
 
-    function cargarEdicionCliente(index) {
+    window.cargarEdicionCliente = function(index) {
       const c = clientes[index];
-      document.getElementById('txtNombre').value = c.nombre || c.cliente || c.AyN || '';
-      document.getElementById('txtTelefono').value = c.telefono || c.tel || '';
-      document.getElementById('txtLocalidad').value = c.localidad || '';
-      document.getElementById('txtEmail').value = c.email || '';
+      if (!c) return;
+
+      if (document.getElementById('txtNombre')) document.getElementById('txtNombre').value = c.nombre || c.cliente || c.AyN || '';
+      if (document.getElementById('txtTelefono')) document.getElementById('txtTelefono').value = c.telefono || c.tel || '';
+      if (document.getElementById('txtLocalidad')) document.getElementById('txtLocalidad').value = c.localidad || '';
+      if (document.getElementById('txtEmail')) document.getElementById('txtEmail').value = c.email || '';
 
       editIndex = index;
-      document.getElementById('lblTituloForm').innerText = '✏️ Editar Cliente';
+      const lblTit = document.getElementById('lblTituloForm');
+      if (lblTit) lblTit.innerText = '✏️ Editar Cliente';
       const btnAccion = document.getElementById('btnAccion');
-      btnAccion.innerText = '💾 Actualizar Cliente';
-      btnAccion.style.background = '#3b82f6';
-      document.getElementById('btnCancelarEdicion').style.display = 'block';
+      if (btnAccion) {
+        btnAccion.innerText = '💾 Actualizar Cliente';
+        btnAccion.style.background = '#3b82f6';
+      }
+      const btnCanc = document.getElementById('btnCancelarEdicion');
+      if (btnCanc) btnCanc.style.display = 'block';
 
-      alternarVistaLista(false);
-    }
+      window.alternarVistaLista(false);
+    };
 
-    function cancelarEdicion() {
+    window.cancelarEdicion = function() {
       editIndex = null;
-      document.getElementById('txtNombre').value = '';
-      document.getElementById('txtTelefono').value = '';
-      document.getElementById('txtLocalidad').value = '';
-      document.getElementById('txtEmail').value = '';
+      if (document.getElementById('txtNombre')) document.getElementById('txtNombre').value = '';
+      if (document.getElementById('txtTelefono')) document.getElementById('txtTelefono').value = '';
+      if (document.getElementById('txtLocalidad')) document.getElementById('txtLocalidad').value = '';
+      if (document.getElementById('txtEmail')) document.getElementById('txtEmail').value = '';
 
-      document.getElementById('lblTituloForm').innerText = '👥 Registrar Cliente';
+      const lblTit = document.getElementById('lblTituloForm');
+      if (lblTit) lblTit.innerText = '👥 Registrar Cliente';
       const btnAccion = document.getElementById('btnAccion');
-      btnAccion.innerText = '➕ Registrar Cliente';
-      btnAccion.style.background = '#0f172a';
-      document.getElementById('btnCancelarEdicion').style.display = 'none';
-    }
+      if (btnAccion) {
+        btnAccion.innerText = '➕ Registrar Cliente';
+        btnAccion.style.background = '#0f172a';
+      }
+      const btnCanc = document.getElementById('btnCancelarEdicion');
+      if (btnCanc) btnCanc.style.display = 'none';
+    };
 
-    function eliminarClienteItem(index) {
+    window.eliminarClienteItem = function(index) {
       if (confirm('¿Querés eliminar este cliente?')) {
         if (editIndex === index) {
-          cancelarEdicion();
+          window.cancelarEdicion();
         } else if (editIndex !== null && editIndex > index) {
           editIndex--;
         }
         clientes.splice(index, 1);
         guardarYActualizarClientes();
-        actualizarPantallaClientes();
+        window.actualizarPantallaClientes();
       }
-    }
+    };
 
     function guardarYActualizarClientes() {
       localStorage.setItem('bma_clientes', JSON.stringify(clientes));
     }
+  })();
 </script>

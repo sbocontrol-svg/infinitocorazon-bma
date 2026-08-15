@@ -10,48 +10,44 @@
     :root { --primary-color: #111827; }
     * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
     
-    /* Fondo transparente para que el menú de abajo se vea blanco/normal */
     body { background: transparent; margin: 0; padding: 12px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
     
     .container { background: transparent; width: 100%; max-width: 410px; padding: 0; }
+    .card-internal { background: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
-    .card-internal { background: white; padding: 18px; border-radius: 12px; }
-
-    /* FECHA FIJA */
     .mes-banner { background: #f1f5f9; color: #1e293b; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; text-align: center; margin-bottom: 15px; border: 1px solid #cbd5e1; text-transform: capitalize; }
 
-    /* KPIs */
     .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
     .kpi-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 4px; text-align: center; }
     .kpi-title { font-size: 0.6rem; text-transform: uppercase; font-weight: bold; color: #64748b; }
     .kpi-value { font-size: 0.9rem; font-weight: 800; color: #0f172a; margin-top: 2px; }
 
-    /* PAGOS */
     .pagos-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
-    .pago-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 3px 0; border-bottom: 1px dashed #cbd5e1; }
+    .pago-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; }
     .pago-row:last-child { border-bottom: none; }
 
-    /* BOTONES */
-    .btn-main { width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; border: none; margin-bottom: 6px; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn-main { width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; border: none; margin-bottom: 8px; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; }
     .btn-registros { background: #475569; color: white; }
     .btn-print { background: #1e293b; color: white; }
     .btn-volver { background: #1e293b; color: white; }
     .btn-volver img { width: 20px; height: 20px; }
 
-    /* MODAL */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
     .modal-overlay.active { display: flex; }
-    .modal-container { background: white; width: 100%; max-width: 360px; border-radius: 12px; padding: 15px; max-height: 80vh; display: flex; flex-direction: column; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .lista-meses { overflow-y: auto; flex-grow: 1; margin-bottom: 10px; }
-    .mes-row { display: flex; justify-content: space-between; padding: 8px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+    .modal-container { background: white; width: 100%; max-width: 380px; border-radius: 16px; padding: 16px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+    
+    .lista-meses { overflow-y: auto; flex-grow: 1; margin-bottom: 10px; padding-right: 4px; }
+    .lista-meses::-webkit-scrollbar { width: 6px; }
+    .lista-meses::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+    .mes-row { display: flex; justify-content: space-between; padding: 10px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; margin-bottom: 6px; }
   </style>
 </head>
 <body>
 
   <div class="container">
     <div class="card-internal">
-      <!-- Encabezado con icono a la derecha -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">📊 Libro Mensual</h2>
         <img src="icono.png" alt="Icono" style="width: 32px; height: 32px; object-fit: contain;">
@@ -76,70 +72,105 @@
 
       <button class="btn-main btn-registros" id="btnAbrirModal">📅 Ver Resumen Mes por Mes</button>
       <button class="btn-main btn-print" onclick="window.print()">🖨️ Imprimir Balance</button>
-      <a href="menu.html" class="btn-main btn-volver"><img src="volver.png" alt="Volver"> Volver al Menú</a>
+      <button class="btn-main btn-volver" onclick="cerrarVentanaMensualGen()"><img src="volver.png" alt="Volver"> Volver al Menú</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="modal-meses">
     <div class="modal-container">
-      <div class="modal-header"><strong>Histórico Mensual</strong> <button onclick="modal.classList.remove('active')" style="border:none; background:none; font-weight:bold; cursor:pointer;">✕</button></div>
+      <div class="modal-header">
+        <strong style="color:#0f172a;">Histórico Mensual</strong> 
+        <button onclick="window.cerrarModalMensual()" style="border:none; background:none; font-size:1.2rem; font-weight:bold; cursor:pointer; color:#64748b;">✕</button>
+      </div>
       <div id="listaMeses" class="lista-meses"></div>
-      <button class="btn-main btn-registros" onclick="modal.classList.remove('active')">Cerrar</button>
+      <button class="btn-main btn-registros" style="margin-bottom:0;" onclick="window.cerrarModalMensual()">Cerrar</button>
     </div>
   </div>
 
   <script>
-    const modal = document.getElementById('modal-meses');
-    const ahora = new Date();
-    const mesActualStr = ahora.toISOString().slice(0, 7); 
-    
-    const nombreMes = ahora.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
-    document.getElementById('txtMesActual').innerText = nombreMes;
+    function cerrarVentanaMensualGen() {
+      typeof cerrarModalDinamico === 'function' ? cerrarModalDinamico() : window.location.href = 'menu.html';
+    }
 
-    function cargarDatos() {
-      const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || [];
-      const ventasMes = ventas.filter(v => v.fecha && v.fecha.startsWith(mesActualStr));
-
-      let movsMes = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('bma_cajachica_' + mesActualStr)) {
-          JSON.parse(localStorage.getItem(key)).forEach(m => {
-            if (m.tipo === 'egreso') movsMes.push(m);
-          });
+    (function() {
+      function obtenerDatosBma(clave, valorDefecto = null) {
+        try {
+          const item = localStorage.getItem(clave);
+          return item ? JSON.parse(item) : valorDefecto;
+        } catch (e) {
+          console.error(`Error al leer ${clave}:`, e);
+          return valorDefecto;
         }
       }
 
-      const totalV = ventasMes.reduce((s, v) => s + (v.total || 0), 0);
-      const totalG = movsMes.reduce((s, m) => s + Number(m.monto || 0), 0);
-      
-      document.getElementById('lblMesVentas').innerText = `$${totalV.toLocaleString('es-AR')}`;
-      document.getElementById('lblMesGastos').innerText = `$${totalG.toLocaleString('es-AR')}`;
-      document.getElementById('lblMesNeto').innerText = `$${(totalV - totalG).toLocaleString('es-AR')}`;
-      
-      document.getElementById('lblMesEfectivo').innerText = `$${ventasMes.filter(v=>v.pago?.includes('Efectivo')).reduce((s,v)=>s+v.total,0).toLocaleString('es-AR')}`;
-      document.getElementById('lblMesTransf').innerText = `$${ventasMes.filter(v=>v.pago?.includes('Transferencia bancaria')).reduce((s,v)=>s+v.total,0).toLocaleString('es-AR')}`;
-      document.getElementById('lblMesMP').innerText = `$${ventasMes.filter(v=>v.pago?.includes('Mercado Pago')).reduce((s,v)=>s+v.total,0).toLocaleString('es-AR')}`;
-      document.getElementById('lblMesDNI').innerText = `$${ventasMes.filter(v=>v.pago?.includes('Cuenta D. N. I.')).reduce((s,v)=>s+v.total,0).toLocaleString('es-AR')}`;
-      document.getElementById('lblMesNaranja').innerText = `$${ventasMes.filter(v=>v.pago?.includes('Naranja X')).reduce((s,v)=>s+v.total,0).toLocaleString('es-AR')}`;
-      document.getElementById('lblMesOtra').innerText = `$${ventasMes.filter(v=>v.pago?.includes('Otra (por otra billetera)')).reduce((s,v)=>s+v.total,0).toLocaleString('es-AR')}`;
-    }
+      const modal = document.getElementById('modal-meses');
+      const fechaSesion = localStorage.getItem('bma_fechaSesion') || new Date().toISOString().split('T')[0];
+      const mesActualStr = fechaSesion.slice(0, 7);
 
-    document.getElementById('btnAbrirModal').addEventListener('click', () => {
-      modal.classList.add('active');
-      const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || [];
-      const meses = [...new Set(ventas.map(v => v.fecha.slice(0, 7)))].sort().reverse();
+      const partesFecha = fechaSesion.split('-');
+      const objetoFecha = new Date(partesFecha[0], partesFecha[1] - 1, 1);
+      const nombreMes = objetoFecha.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
       
-      let html = '';
-      meses.forEach(m => {
-        const vMes = ventas.filter(v => v.fecha.startsWith(m));
-        const total = vMes.reduce((s, v) => s + (v.total || 0), 0);
-        html += `<div class="mes-row"><span>${m}</span> <strong>$${total.toLocaleString('es-AR')}</strong></div>`;
-      });
-      document.getElementById('listaMeses').innerHTML = html || 'Sin datos';
-    });
+      const elBanner = document.getElementById('txtMesActual');
+      if (elBanner) elBanner.innerText = nombreMes;
 
-    cargarDatos();
+      window.cerrarModalMensual = function() {
+        if (modal) modal.classList.remove('active');
+      };
+
+      function cargarDatos() {
+        const ventas = obtenerDatosBma('bma_ventas', []);
+        const ventasMes = ventas.filter(v => v.fecha && v.fecha.startsWith(mesActualStr));
+
+        // Lectura unificada desde la clave global bma_caja_chica
+        const cajachica = obtenerDatosBma('bma_caja_chica', []);
+        const movsMes = cajachica.filter(m => m.fecha && m.fecha.startsWith(mesActualStr) && (m.tipo && m.tipo.toLowerCase() === 'egreso'));
+
+        const totalV = ventasMes.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+        const totalG = movsMes.reduce((s, m) => s + (parseFloat(m.monto) || 0), 0);
+        
+        document.getElementById('lblMesVentas').innerText = `$${totalV.toLocaleString('es-AR')}`;
+        document.getElementById('lblMesGastos').innerText = `$${totalG.toLocaleString('es-AR')}`;
+        document.getElementById('lblMesNeto').innerText = `$${(totalV - totalG).toLocaleString('es-AR')}`;
+        
+        const calcularPorPago = (metodo) => ventasMes
+          .filter(v => v.pago && v.pago.toLowerCase().includes(metodo.toLowerCase()))
+          .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+
+        document.getElementById('lblMesEfectivo').innerText = `$${calcularPorPago('Efectivo').toLocaleString('es-AR')}`;
+        document.getElementById('lblMesTransf').innerText = `$${calcularPorPago('Transferencia').toLocaleString('es-AR')}`;
+        document.getElementById('lblMesMP').innerText = `$${calcularPorPago('Mercado Pago').toLocaleString('es-AR')}`;
+        document.getElementById('lblMesDNI').innerText = `$${calcularPorPago('Cuenta D. N. I.').toLocaleString('es-AR')}`;
+        document.getElementById('lblMesNaranja').innerText = `$${calcularPorPago('Naranja X').toLocaleString('es-AR')}`;
+        document.getElementById('lblMesOtra').innerText = `$${calcularPorPago('Otra').toLocaleString('es-AR')}`;
+      }
+
+      const btnAbrir = document.getElementById('btnAbrirModal');
+      if (btnAbrir) {
+        btnAbrir.addEventListener('click', () => {
+          if (modal) modal.classList.add('active');
+          const ventas = obtenerDatosBma('bma_ventas', []);
+          const meses = [...new Set(ventas.map(v => v.fecha ? v.fecha.slice(0, 7) : ''))].filter(Boolean).sort().reverse();
+          
+          let html = '';
+          meses.forEach(m => {
+            const vMes = ventas.filter(v => v.fecha && v.fecha.startsWith(m));
+            const total = vMes.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+            
+            const [anio, mes] = m.split('-');
+            const dMes = new Date(anio, mes - 1, 1);
+            const nombreM = dMes.toLocaleDateString('es-AR', { month: 'short', year: 'numeric' });
+
+            html += `<div class="mes-row"><span style="text-transform: capitalize;">📅 ${nombreM}</span> <strong>$${total.toLocaleString('es-AR')}</strong></div>`;
+          });
+          
+          const lista = document.getElementById('listaMeses');
+          if (lista) lista.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:15px;">Sin ventas registradas.</p>';
+        });
+      }
+
+      cargarDatos();
+    })();
   </script>
 </body>
 </html>
