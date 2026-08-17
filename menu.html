@@ -92,10 +92,7 @@
     .menu-card:active { transform: scale(0.98); }
     .menu-card h3 { font-size: 0.95rem; }
     
-    .full-card { background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
-    .full-card:active { transform: scale(0.98); }
-    
-    .full-card-salir { background: #4e4b46; border-radius: 8px; padding: 10px 12px; color: #fff; cursor: pointer; border: 1.5px solid #57534e; display: flex; align-items: center; gap: 10px; }
+    .full-card-salir { background: #4e4b46; border-radius: 8px; padding: 10px 12px; color: #fff; cursor: pointer; border: 1.5px solid #57534e; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
     .full-card-salir:active { transform: scale(0.98); }
     .full-card-salir h3 { color: #f87171; font-size: 0.95rem; }
 
@@ -174,27 +171,21 @@
         </div>
 
         <div class="menu-grid">
+            <div class="menu-card" onclick="window.abrirModulo('pedidos.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📌</span><div><h3>Pedidos</h3></div></div>
             <div class="menu-card" onclick="window.abrirModulo('clientes.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">👥</span><div><h3>Clientes</h3></div></div>
             <div class="menu-card" onclick="window.abrirModulo('stock.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📦</span><div><h3>Stock</h3></div></div>
             <div class="menu-card" onclick="window.abrirModulo('caja_chica.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">💵</span><div><h3>Caja Chica</h3></div></div>
             <div class="menu-card" onclick="window.abrirModulo('cierre_z.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">🔒</span><div><h3>Cierre Z</h3></div></div>
             <div class="menu-card" onclick="window.abrirModulo('libro_diario.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📖</span><div><h3>Libro Diario</h3></div></div>
             <div class="menu-card" onclick="window.abrirModulo('libro_mensual.html')"><span class="emoji mono-icon" style="font-size: 1.4rem;">📊</span><div><h3>Libro Mensual</h3></div></div>
+            <div class="menu-card" id="btn-config"><span class="emoji mono-icon" style="font-size: 1.4rem;">⚙️</span><div><h3>Configuración</h3></div></div>
         </div>
 
-        <div class="full-card" id="btn-config">
-            <span class="mono-icon" style="font-size: 20px;">⚙️</span>
-            <div>
-                <h3 style="color: #000000; font-size: 0.95rem;">Configuración</h3>
-                <p style="font-size: 0.62rem; color: #64748b; line-height: 1.2;">Copias de seguridad y reinicio de fábrica</p>
-            </div>
-        </div>
-
-        <div class="full-card-salir" onclick="window.location.href='index.html'">
+        <div class="full-card-salir" onclick="window.location.href='salida.html'">
             <span class="mono-icon" style="font-size: 20px;">🚪</span>
             <div>
-                <h3>Salir al Inicio</h3>
-                <p style="font-size: 0.62rem; color: #d6d3d1; line-height: 1.2;">Volver al principio de la app</p>
+                <h3>Cerrar y Salir</h3>
+                <p style="font-size: 0.62rem; color: #d6d3d1; line-height: 1.2;">Salir definitivamente.</p>
             </div>
         </div>
 

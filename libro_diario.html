@@ -42,6 +42,12 @@
     .lista-dias::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
     .dia-row { display: flex; justify-content: space-between; padding: 10px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; margin-bottom: 6px; }
+
+    @media print {
+      body { padding: 0; background: white; }
+      .card-internal { box-shadow: none; border: none; padding: 0; }
+      .btn-main, .modal-overlay { display: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -50,7 +56,7 @@
     <div class="card-internal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">📖 Libro Diario</h2>
-        <img src="icono.png" alt="Icono" style="width: 32px; height: 32px; object-fit: contain;">
+        <img src="icono.png" alt="Logo BMA" style="width: 32px; height: 32px; object-fit: contain;">
       </div>
       
       <div class="dia-banner" id="txtDiaActual">Cargando...</div>
@@ -72,11 +78,11 @@
 
       <button class="btn-main btn-registros" id="btnAbrirModal">📅 Ver Resumen Día por Día</button>
       <button class="btn-main btn-print" onclick="window.print()">🖨️ Imprimir Balance</button>
-      <button class="btn-main btn-volver" onclick="cerrarVentanaDiarioGen()"><img src="volver.png" alt="Volver"> Volver al Menú</button>
+      <button class="btn-main btn-volver" onclick="window.cerrarVentanaDiarioGen()"><img src="volver.png" alt="Volver"> Volver al Menú</button>
     </div>
   </div>
 
-  <div class="modal-overlay" id="modal-dias">
+  <div class="modal-overlay" id="modal-dias" onclick="if(event.target === this) window.cerrarModalDiario()">
     <div class="modal-container">
       <div class="modal-header">
         <strong style="color:#0f172a;">Histórico Diario</strong> 
@@ -88,11 +94,27 @@
   </div>
 
   <script>
-    function cerrarVentanaDiarioGen() {
-      typeof cerrarModalDinamico === 'function' ? cerrarModalDinamico() : window.location.href = 'menu.html';
-    }
+    window.cerrarVentanaDiarioGen = function() {
+      if (typeof cerrarModalDinamico === 'function') {
+        cerrarModalDinamico();
+      } else {
+        window.location.href = 'menu.html';
+      }
+    };
 
     (function() {
+      function obtenerFechaLocal() {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      function formatearMoneda(val) {
+        return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val || 0);
+      }
+
       function obtenerDatosBma(clave, valorDefecto = null) {
         try {
           const item = localStorage.getItem(clave);
@@ -104,14 +126,15 @@
       }
 
       const modal = document.getElementById('modal-dias');
-      const fechaSesion = localStorage.getItem('bma_fechaSesion') || new Date().toISOString().split('T')[0];
+      const fechaSesion = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
       
       const partesFecha = fechaSesion.split('-');
-      const objetoFecha = new Date(partesFecha[0], partesFecha[1] - 1, partesFecha[2]);
-      const nombreDia = objetoFecha.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-      
-      const elBanner = document.getElementById('txtDiaActual');
-      if (elBanner) elBanner.innerText = nombreDia;
+      if (partesFecha.length === 3) {
+        const objetoFecha = new Date(partesFecha[0], partesFecha[1] - 1, partesFecha[2]);
+        const nombreDia = objetoFecha.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const elBanner = document.getElementById('txtDiaActual');
+        if (elBanner) elBanner.innerText = nombreDia;
+      }
 
       window.cerrarModalDiario = function() {
         if (modal) modal.classList.remove('active');
@@ -127,20 +150,45 @@
         const totalV = ventasDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
         const totalG = movsDia.reduce((s, m) => s + (parseFloat(m.monto) || 0), 0);
         
-        document.getElementById('lblDiaVentas').innerText = `$${totalV.toLocaleString('es-AR')}`;
-        document.getElementById('lblDiaGastos').innerText = `$${totalG.toLocaleString('es-AR')}`;
-        document.getElementById('lblDiaNeto').innerText = `$${(totalV - totalG).toLocaleString('es-AR')}`;
+        const lblV = document.getElementById('lblDiaVentas');
+        const lblG = document.getElementById('lblDiaGastos');
+        const lblN = document.getElementById('lblDiaNeto');
+
+        if (lblV) lblV.innerText = `$${formatearMoneda(totalV)}`;
+        if (lblG) lblG.innerText = `$${formatearMoneda(totalG)}`;
+        if (lblN) lblN.innerText = `$${formatearMoneda(totalV - totalG)}`;
         
-        const calcularPorPago = (metodo) => ventasDia
-          .filter(v => v.pago && v.pago.toLowerCase().includes(metodo.toLowerCase()))
+        const calcularPorPago = (metodos) => ventasDia
+          .filter(v => {
+            if (!v.pago) return false;
+            const p = v.pago.toLowerCase();
+            return metodos.some(m => p.includes(m.toLowerCase()));
+          })
           .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
 
-        document.getElementById('lblDiaEfectivo').innerText = `$${calcularPorPago('Efectivo').toLocaleString('es-AR')}`;
-        document.getElementById('lblDiaTransf').innerText = `$${calcularPorPago('Transferencia').toLocaleString('es-AR')}`;
-        document.getElementById('lblDiaMP').innerText = `$${calcularPorPago('Mercado Pago').toLocaleString('es-AR')}`;
-        document.getElementById('lblDiaDNI').innerText = `$${calcularPorPago('Cuenta D. N. I.').toLocaleString('es-AR')}`;
-        document.getElementById('lblDiaNaranja').innerText = `$${calcularPorPago('Naranja X').toLocaleString('es-AR')}`;
-        document.getElementById('lblDiaOtra').innerText = `$${calcularPorPago('Otra').toLocaleString('es-AR')}`;
+        const metodosDefinidos = ['efectivo', 'transferencia', 'mercado pago', 'mp', 'cuenta dni', 'dni', 'naranja'];
+        
+        const totalEf = calcularPorPago(['efectivo']);
+        const totalTr = calcularPorPago(['transferencia']);
+        const totalMP = calcularPorPago(['mercado pago', 'mp']);
+        const totalDNI = calcularPorPago(['cuenta dni', 'dni']);
+        const totalNar = calcularPorPago(['naranja']);
+
+        // "Otra" captura lo que no coincida con los principales
+        const totalOtra = ventasDia
+          .filter(v => {
+            if (!v.pago) return true;
+            const p = v.pago.toLowerCase();
+            return !metodosDefinidos.some(m => p.includes(m));
+          })
+          .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+
+        if (document.getElementById('lblDiaEfectivo')) document.getElementById('lblDiaEfectivo').innerText = `$${formatearMoneda(totalEf)}`;
+        if (document.getElementById('lblDiaTransf')) document.getElementById('lblDiaTransf').innerText = `$${formatearMoneda(totalTr)}`;
+        if (document.getElementById('lblDiaMP')) document.getElementById('lblDiaMP').innerText = `$${formatearMoneda(totalMP)}`;
+        if (document.getElementById('lblDiaDNI')) document.getElementById('lblDiaDNI').innerText = `$${formatearMoneda(totalDNI)}`;
+        if (document.getElementById('lblDiaNaranja')) document.getElementById('lblDiaNaranja').innerText = `$${formatearMoneda(totalNar)}`;
+        if (document.getElementById('lblDiaOtra')) document.getElementById('lblDiaOtra').innerText = `$${formatearMoneda(totalOtra)}`;
       }
 
       const btnAbrir = document.getElementById('btnAbrirModal');
@@ -154,12 +202,13 @@
           dias.forEach(d => {
             const vDia = ventas.filter(v => v.fecha === d);
             const total = vDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
-            const fechaFormat = d.split('-').reverse().join('/');
-            html += `<div class="dia-row"><span>📅 ${fechaFormat}</span> <strong>$${total.toLocaleString('es-AR')}</strong></div>`;
+            const partes = d.split('-');
+            const fechaFormat = partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : d;
+            html += `<div class="dia-row"><span>📅 ${fechaFormat}</span> <strong>$${formatearMoneda(total)}</strong></div>`;
           });
           
           const lista = document.getElementById('listaDias');
-          if (lista) lista.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:15px;">Sin ventas registradas.</p>';
+          if (lista) lista.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:15px;">Sin ventas registradas.</p>';
         });
       }
 

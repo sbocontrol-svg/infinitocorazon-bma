@@ -143,7 +143,8 @@
       return `${year}-${month}-${day}`;
     }
 
-    const fechaSesionStock = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
+    // Únicamente datos de BMA
+    const fechaSesionStock = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
 
     function formatearFechaStock(fechaStr) {
       if (!fechaStr) return '';
@@ -161,10 +162,10 @@
 
     function obtenerStockSafe() {
       try {
-        const guardados = localStorage.getItem('bma_stock') || localStorage.getItem('sbo_stock') || localStorage.getItem('stock');
+        const guardados = localStorage.getItem('bma_stock');
         return guardados ? JSON.parse(guardados) : [];
       } catch (e) {
-        console.error("Error cargando stock:", e);
+        console.error("Error cargando stock BMA:", e);
         return [];
       }
     }
@@ -185,6 +186,10 @@
           const cantActual = p.cantidad !== undefined ? p.cantidad : (p.stock || 0);
           const precioActual = Number(p.precio || 0).toFixed(2);
 
+          const esStockCritico = cantActual <= 3;
+          const colorCant = esStockCritico ? '#ef4444' : '#0f172a';
+          const avisoCriticoHtml = esStockCritico ? '<span style="background: #fee2e2; color: #ef4444; font-size: 0.68rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">⚠️ Stock Bajo</span>' : '';
+
           const item = document.createElement('div');
           item.className = 'stock-item';
           item.innerHTML = `
@@ -193,7 +198,10 @@
               <span style="font-size: 0.8rem; color: #64748b;">Precio: $${precioActual}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-weight: bold; font-size: 0.95rem; color: #0f172a;">${cantActual} un.</span>
+              <div style="display: flex; align-items: center; gap: 2px;">
+                <span style="font-weight: bold; font-size: 0.95rem; color: ${colorCant};">${cantActual} un.</span>
+                ${avisoCriticoHtml}
+              </div>
               <div style="display:flex; gap:4px;">
                 <button style="background: none; border: none; color: #3b82f6; font-size: 1.1rem; cursor: pointer; padding: 4px;" onclick="window.cargarParaEditarStock(${i})" title="Editar">✏️</button>
                 <button style="background: none; border: none; color: #ef4444; font-size: 1.1rem; cursor: pointer; padding: 4px;" onclick="window.eliminarProductoStock(${i})" title="Eliminar">❌</button>
@@ -300,6 +308,7 @@
     };
 
     function guardarYActualizarStock() {
+      // Exclusivo de BMA
       localStorage.setItem('bma_stock', JSON.stringify(inventarioStock));
       window.actualizarPantallaStock();
     }
@@ -374,7 +383,6 @@
       btnCerrarStockX.onclick = function() { modalStockActual.classList.remove('active'); };
     }
     
-    // Cierre al tocar el fondo oscuro fuera del modal
     if (modalStockActual) {
       modalStockActual.onclick = function(e) {
         if (e.target === modalStockActual) modalStockActual.classList.remove('active');

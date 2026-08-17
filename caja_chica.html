@@ -132,8 +132,8 @@
       <h3 style="font-size: 1.05rem; color: #0f172a; font-weight: 800; margin: 0; line-height: 1;">💵 Caja Chica</h3>
       <div id="lblFechaTrabajoCaja" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
     </div>
-    <button onclick="cerrarVentanaModalCajaGen()" style="background: none; border: none; cursor: pointer; padding: 0;">
-      <img src="icono.png" alt="Logo" style="width: 44px; height: 44px; object-fit: contain;">
+    <button onclick="window.cerrarVentanaModalCajaGen()" style="background: none; border: none; cursor: pointer; padding: 0;">
+      <img src="icono.png" alt="Logo BMA" style="width: 44px; height: 44px; object-fit: contain;">
     </button>
   </div>
 
@@ -154,30 +154,30 @@
       <option value="Egreso">📤 Egreso</option>
     </select>
     <input type="text" id="cajaConcepto" placeholder="Concepto (ej: Vuelto, Gasto)">
-    <input type="number" id="cajaMonto" placeholder="Monto ($)">
-    <button class="caja-btn-main" style="background:#475569;" onclick="agregarMovimientoCaja()">➕ Registrar Movimiento</button>
+    <input type="number" id="cajaMonto" placeholder="Monto ($)" step="any">
+    <button class="caja-btn-main" style="background:#475569;" onclick="window.agregarMovimientoCaja()">➕ Registrar Movimiento</button>
   </div>
 
   <!-- Botón abrir Historial Flotante -->
-  <button class="caja-btn-secundario" style="background:#1e293b;" onclick="abrirModalMovimientos()">
+  <button class="caja-btn-secundario" style="background:#1e293b;" onclick="window.abrirModalMovimientos()">
     📋 Ver Historial de Movimientos
   </button>
 
-  <button onclick="cerrarVentanaModalCajaGen()" class="caja-btn-secundario">Volver</button>
+  <button onclick="window.cerrarVentanaModalCajaGen()" class="caja-btn-secundario">Volver al Menú</button>
 </div>
 
 <!-- Modal Flotante de Historial -->
-<div id="modalMovimientosCaja" class="caja-modal-overlay">
+<div id="modalMovimientosCaja" class="caja-modal-overlay" onclick="if(event.target === this) window.cerrarModalMovimientos()">
   <div class="caja-modal-card">
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
       <strong style="font-size: 1rem; color: #0f172a;">📋 Movimientos del Día</strong>
-      <button onclick="cerrarModalMovimientos()" style="background:none; border:none; font-size: 1.2rem; cursor:pointer; color:#64748b;">✕</button>
+      <button onclick="window.cerrarModalMovimientos()" style="background:none; border:none; font-size: 1.2rem; cursor:pointer; color:#64748b;">✕</button>
     </div>
 
     <div id="listaMovimientosCajaModal" class="caja-scroll-list"></div>
 
     <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: auto;">
-      <button class="caja-btn-main" style="background:#0f172a; margin: 0;" onclick="cerrarModalMovimientos()">
+      <button class="caja-btn-main" style="background:#0f172a; margin: 0;" onclick="window.cerrarModalMovimientos()">
         Volver
       </button>
     </div>
@@ -185,125 +185,170 @@
 </div>
 
 <script>
-  function obtenerDatosBma(clave, valorDefecto = null) {
-    try {
-      const item = localStorage.getItem(clave);
-      return item ? JSON.parse(item) : valorDefecto;
-    } catch (e) {
-      console.error(`Error al leer ${clave}:`, e);
-      return valorDefecto;
-    }
-  }
-
-  function guardarDatosBma(clave, valor) {
-    try {
-      localStorage.setItem(clave, JSON.stringify(valor));
-    } catch (e) {
-      console.error(`Error al guardar ${clave}:`, e);
-    }
-  }
-
-  function cerrarVentanaModalCajaGen() { 
-    typeof cerrarModalDinamico === 'function' ? cerrarModalDinamico() : window.location.href = 'menu.html'; 
-  }
-
-  const fechaSesion = localStorage.getItem('bma_fechaSesion') || new Date().toISOString().split('T')[0];
-  let movimientosCajaList = obtenerDatosBma('bma_caja_chica', []);
-  let saldoInicialData = obtenerDatosBma('bma_saldo_inicial_data', {});
-
-  function habilitarEdicionSaldo() {
-    document.getElementById('cajaBloqueSaldoInicial').innerHTML = `
-      <label>Saldo Inicial de hoy ($):</label>
-      <div style="display: flex; gap: 8px;">
-        <input type="number" id="cajaInputSaldo" placeholder="Ej: 5000" style="margin-top:0;">
-        <button class="caja-btn-main" style="margin-top:0; width: auto;" onclick="guardarSaldoInicial()">OK</button>
-      </div>
-    `;
-  }
-
-  function guardarSaldoInicial() {
-    const val = parseFloat(document.getElementById('cajaInputSaldo').value);
-    if (isNaN(val)) return alert('Ingresá un número válido');
-    saldoInicialData[fechaSesion] = val;
-    guardarDatosBma('bma_saldo_inicial_data', saldoInicialData);
-    renderizarCajaChica();
-  }
-
-  function agregarMovimientoCaja() {
-    const tipo = document.getElementById('cajaTipo').value;
-    const concepto = document.getElementById('cajaConcepto').value.trim();
-    const monto = parseFloat(document.getElementById('cajaMonto').value) || 0;
-    if (!concepto || monto <= 0) return alert('Completá los datos.');
-    
-    movimientosCajaList.unshift({ id: Date.now(), fecha: fechaSesion, tipo, concepto, monto });
-    guardarDatosBma('bma_caja_chica', movimientosCajaList);
-    document.getElementById('cajaConcepto').value = '';
-    document.getElementById('cajaMonto').value = '';
-    renderizarCajaChica();
-  }
-
-  function eliminarMovimientoCaja(id) {
-    movimientosCajaList = movimientosCajaList.filter(m => m.id !== id);
-    guardarDatosBma('bma_caja_chica', movimientosCajaList);
-    renderizarCajaChica();
-    renderizarMovimientosModal();
-  }
-
-  function renderizarCajaChica() {
-    document.getElementById('lblFechaTrabajoCaja').innerText = `Fecha: ${fechaSesion.split('-').reverse().join('/')}`;
-    
-    const saldoIni = saldoInicialData[fechaSesion] || 0;
-    if (saldoInicialData[fechaSesion] !== undefined) {
-      document.getElementById('cajaBloqueSaldoInicial').innerHTML = `
-        <p style="font-size:0.8rem; text-align:center; margin:5px 0;">
-           Saldo inicial fijado: <strong>$${saldoIni.toLocaleString('es-AR')}</strong> 
-           <button onclick="habilitarEdicionSaldo()" style="background:none; border:none; color:#3b82f6; text-decoration:underline; cursor:pointer; font-size:0.8rem; font-weight:700;">Editar</button>
-        </p>`;
-    } else {
-      habilitarEdicionSaldo();
+  (function() {
+    function obtenerFechaLocal() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     }
 
-    const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
-    let saldoCalculado = saldoIni;
-    movimientosJornada.forEach(m => {
-      saldoCalculado += (m.tipo === 'Ingreso' ? m.monto : -m.monto);
-    });
+    function formatearMoneda(val) {
+      return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val || 0);
+    }
 
-    document.getElementById('cajaSaldoActual').innerText = `$${saldoCalculado.toLocaleString('es-AR')}`;
-  }
+    function obtenerDatosBma(clave, valorDefecto = null) {
+      try {
+        const item = localStorage.getItem(clave);
+        return item ? JSON.parse(item) : valorDefecto;
+      } catch (e) {
+        console.error(`Error al leer ${clave}:`, e);
+        return valorDefecto;
+      }
+    }
 
-  function abrirModalMovimientos() {
-    renderizarMovimientosModal();
-    document.getElementById('modalMovimientosCaja').style.display = 'flex';
-  }
+    function guardarDatosBma(clave, valor) {
+      try {
+        localStorage.setItem(clave, JSON.stringify(valor));
+      } catch (e) {
+        console.error(`Error al guardar ${clave}:`, e);
+      }
+    }
 
-  function cerrarModalMovimientos() {
-    document.getElementById('modalMovimientosCaja').style.display = 'none';
-  }
+    window.cerrarVentanaModalCajaGen = function() { 
+      if (typeof cerrarModalDinamico === 'function') {
+        cerrarModalDinamico();
+      } else {
+        window.location.href = 'menu.html';
+      }
+    };
 
-  function renderizarMovimientosModal() {
-    const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
-    let html = '';
+    const fechaSesion = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
+    let movimientosCajaList = obtenerDatosBma('bma_caja_chica', []);
+    let saldoInicialData = obtenerDatosBma('bma_saldo_inicial_data', {});
 
-    movimientosJornada.forEach(m => {
-      html += `
-        <div class="caja-mov-item">
-          <div>
-            <strong style="font-size:0.85rem; color:#0f172a;">${m.concepto}</strong><br>
-            <small style="color:#64748b;">${m.tipo}</small>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-weight:700; color:${m.tipo === 'Ingreso' ? '#16a34a' : '#dc2626'}">
-              $${m.monto.toLocaleString('es-AR')}
-            </span>
-            <button class="caja-btn-del" onclick="eliminarMovimientoCaja(${m.id})">✕</button>
-          </div>
-        </div>`;
-    });
+    window.habilitarEdicionSaldo = function() {
+      const bloque = document.getElementById('cajaBloqueSaldoInicial');
+      if (!bloque) return;
+      bloque.innerHTML = `
+        <label>Saldo Inicial de hoy ($):</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="number" id="cajaInputSaldo" placeholder="Ej: 5000" style="margin-top:0;" step="any">
+          <button class="caja-btn-main" style="margin-top:0; width: auto; padding: 0 16px;" onclick="window.guardarSaldoInicial()">OK</button>
+        </div>
+      `;
+    };
 
-    document.getElementById('listaMovimientosCajaModal').innerHTML = 
-      html || '<p style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top: 20px;">Sin movimientos hoy.</p>';
-  }
+    window.guardarSaldoInicial = function() {
+      const input = document.getElementById('cajaInputSaldo');
+      const val = parseFloat(input ? input.value : 0);
+      if (isNaN(val)) return alert('Ingresá un número válido.');
+      saldoInicialData[fechaSesion] = val;
+      guardarDatosBma('bma_saldo_inicial_data', saldoInicialData);
+      window.renderizarCajaChica();
+    };
 
-  renderizarCajaChica();
+    window.agregarMovimientoCaja = function() {
+      const tipoElem = document.getElementById('cajaTipo');
+      const concElem = document.getElementById('cajaConcepto');
+      const montElem = document.getElementById('cajaMonto');
+
+      const tipo = tipoElem ? tipoElem.value : 'Ingreso';
+      const concepto = concElem ? concElem.value.trim() : '';
+      const monto = parseFloat(montElem ? montElem.value : 0) || 0;
+
+      if (!concepto || monto <= 0) return alert('Por favor completá el concepto y un monto válido.');
+      
+      movimientosCajaList.unshift({ id: Date.now(), fecha: fechaSesion, tipo, concepto, monto });
+      guardarDatosBma('bma_caja_chica', movimientosCajaList);
+      
+      if (concElem) concElem.value = '';
+      if (montElem) montElem.value = '';
+      
+      window.renderizarCajaChica();
+    };
+
+    window.eliminarMovimientoCaja = function(id) {
+      if (confirm('¿Querés eliminar este movimiento?')) {
+        movimientosCajaList = movimientosCajaList.filter(m => m.id !== id);
+        guardarDatosBma('bma_caja_chica', movimientosCajaList);
+        window.renderizarCajaChica();
+        window.renderizarMovimientosModal();
+      }
+    };
+
+    window.renderizarCajaChica = function() {
+      const lblFecha = document.getElementById('lblFechaTrabajoCaja');
+      if (lblFecha) {
+        const partes = fechaSesion.split('-');
+        const fechaFmt = partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaSesion;
+        lblFecha.innerText = `Fecha: ${fechaFmt}`;
+      }
+      
+      const saldoIni = saldoInicialData[fechaSesion] !== undefined ? saldoInicialData[fechaSesion] : null;
+      const bloqueSaldo = document.getElementById('cajaBloqueSaldoInicial');
+      
+      if (bloqueSaldo) {
+        if (saldoIni !== null) {
+          bloqueSaldo.innerHTML = `
+            <p style="font-size:0.85rem; text-align:center; margin:2px 0; color:#1e293b;">
+               Saldo inicial fijado: <strong>$${formatearMoneda(saldoIni)}</strong> 
+               <button onclick="window.habilitarEdicionSaldo()" style="background:none; border:none; color:#3b82f6; text-decoration:underline; cursor:pointer; font-size:0.8rem; font-weight:700; margin-left:6px;">Editar</button>
+            </p>`;
+        } else {
+          window.habilitarEdicionSaldo();
+        }
+      }
+
+      const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
+      let saldoCalculado = saldoIni || 0;
+      movimientosJornada.forEach(m => {
+        saldoCalculado += (m.tipo === 'Ingreso' ? m.monto : -m.monto);
+      });
+
+      const elemSaldo = document.getElementById('cajaSaldoActual');
+      if (elemSaldo) elemSaldo.innerText = `$${formatearMoneda(saldoCalculado)}`;
+    };
+
+    window.abrirModalMovimientos = function() {
+      window.renderizarMovimientosModal();
+      const modal = document.getElementById('modalMovimientosCaja');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.cerrarModalMovimientos = function() {
+      const modal = document.getElementById('modalMovimientosCaja');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.renderizarMovimientosModal = function() {
+      const listaContainer = document.getElementById('listaMovimientosCajaModal');
+      if (!listaContainer) return;
+
+      const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
+      let html = '';
+
+      movimientosJornada.forEach(m => {
+        html += `
+          <div class="caja-mov-item">
+            <div>
+              <strong style="font-size:0.85rem; color:#0f172a;">${m.concepto}</strong><br>
+              <small style="color:#64748b;">${m.tipo}</small>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-weight:700; color:${m.tipo === 'Ingreso' ? '#16a34a' : '#dc2626'}">
+                ${m.tipo === 'Ingreso' ? '+' : '-'}$${formatearMoneda(m.monto)}
+              </span>
+              <button class="caja-btn-del" onclick="window.eliminarMovimientoCaja(${m.id})">✕</button>
+            </div>
+          </div>`;
+      });
+
+      listaContainer.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top: 20px;">Sin movimientos hoy.</p>';
+    };
+
+    // Render inicial
+    window.renderizarCajaChica();
+  })();
 </script>

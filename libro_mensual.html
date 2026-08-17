@@ -42,6 +42,12 @@
     .lista-meses::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
     .mes-row { display: flex; justify-content: space-between; padding: 10px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; margin-bottom: 6px; }
+
+    @media print {
+      body { padding: 0; background: white; }
+      .card-internal { box-shadow: none; border: none; padding: 0; }
+      .btn-main, .modal-overlay { display: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -50,7 +56,7 @@
     <div class="card-internal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">📊 Libro Mensual</h2>
-        <img src="icono.png" alt="Icono" style="width: 32px; height: 32px; object-fit: contain;">
+        <img src="icono.png" alt="Logo BMA" style="width: 32px; height: 32px; object-fit: contain;">
       </div>
       
       <div class="mes-banner" id="txtMesActual">Cargando...</div>
@@ -72,11 +78,11 @@
 
       <button class="btn-main btn-registros" id="btnAbrirModal">📅 Ver Resumen Mes por Mes</button>
       <button class="btn-main btn-print" onclick="window.print()">🖨️ Imprimir Balance</button>
-      <button class="btn-main btn-volver" onclick="cerrarVentanaMensualGen()"><img src="volver.png" alt="Volver"> Volver al Menú</button>
+      <button class="btn-main btn-volver" onclick="window.cerrarVentanaMensualGen()"><img src="volver.png" alt="Volver"> Volver al Menú</button>
     </div>
   </div>
 
-  <div class="modal-overlay" id="modal-meses">
+  <div class="modal-overlay" id="modal-meses" onclick="if(event.target === this) window.cerrarModalMensual()">
     <div class="modal-container">
       <div class="modal-header">
         <strong style="color:#0f172a;">Histórico Mensual</strong> 
@@ -88,11 +94,27 @@
   </div>
 
   <script>
-    function cerrarVentanaMensualGen() {
-      typeof cerrarModalDinamico === 'function' ? cerrarModalDinamico() : window.location.href = 'menu.html';
-    }
+    window.cerrarVentanaMensualGen = function() {
+      if (typeof cerrarModalDinamico === 'function') {
+        cerrarModalDinamico();
+      } else {
+        window.location.href = 'menu.html';
+      }
+    };
 
     (function() {
+      function obtenerFechaLocal() {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      function formatearMoneda(val) {
+        return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val || 0);
+      }
+
       function obtenerDatosBma(clave, valorDefecto = null) {
         try {
           const item = localStorage.getItem(clave);
@@ -104,15 +126,16 @@
       }
 
       const modal = document.getElementById('modal-meses');
-      const fechaSesion = localStorage.getItem('bma_fechaSesion') || new Date().toISOString().split('T')[0];
+      const fechaSesion = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
       const mesActualStr = fechaSesion.slice(0, 7);
 
       const partesFecha = fechaSesion.split('-');
-      const objetoFecha = new Date(partesFecha[0], partesFecha[1] - 1, 1);
-      const nombreMes = objetoFecha.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
-      
-      const elBanner = document.getElementById('txtMesActual');
-      if (elBanner) elBanner.innerText = nombreMes;
+      if (partesFecha.length === 3) {
+        const objetoFecha = new Date(partesFecha[0], partesFecha[1] - 1, 1);
+        const nombreMes = objetoFecha.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
+        const elBanner = document.getElementById('txtMesActual');
+        if (elBanner) elBanner.innerText = nombreMes;
+      }
 
       window.cerrarModalMensual = function() {
         if (modal) modal.classList.remove('active');
@@ -122,27 +145,50 @@
         const ventas = obtenerDatosBma('bma_ventas', []);
         const ventasMes = ventas.filter(v => v.fecha && v.fecha.startsWith(mesActualStr));
 
-        // Lectura unificada desde la clave global bma_caja_chica
         const cajachica = obtenerDatosBma('bma_caja_chica', []);
         const movsMes = cajachica.filter(m => m.fecha && m.fecha.startsWith(mesActualStr) && (m.tipo && m.tipo.toLowerCase() === 'egreso'));
 
         const totalV = ventasMes.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
         const totalG = movsMes.reduce((s, m) => s + (parseFloat(m.monto) || 0), 0);
         
-        document.getElementById('lblMesVentas').innerText = `$${totalV.toLocaleString('es-AR')}`;
-        document.getElementById('lblMesGastos').innerText = `$${totalG.toLocaleString('es-AR')}`;
-        document.getElementById('lblMesNeto').innerText = `$${(totalV - totalG).toLocaleString('es-AR')}`;
+        const lblV = document.getElementById('lblMesVentas');
+        const lblG = document.getElementById('lblMesGastos');
+        const lblN = document.getElementById('lblMesNeto');
+
+        if (lblV) lblV.innerText = `$${formatearMoneda(totalV)}`;
+        if (lblG) lblG.innerText = `$${formatearMoneda(totalG)}`;
+        if (lblN) lblN.innerText = `$${formatearMoneda(totalV - totalG)}`;
         
-        const calcularPorPago = (metodo) => ventasMes
-          .filter(v => v.pago && v.pago.toLowerCase().includes(metodo.toLowerCase()))
+        const calcularPorPago = (metodos) => ventasMes
+          .filter(v => {
+            if (!v.pago) return false;
+            const p = v.pago.toLowerCase();
+            return metodos.some(m => p.includes(m.toLowerCase()));
+          })
           .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
 
-        document.getElementById('lblMesEfectivo').innerText = `$${calcularPorPago('Efectivo').toLocaleString('es-AR')}`;
-        document.getElementById('lblMesTransf').innerText = `$${calcularPorPago('Transferencia').toLocaleString('es-AR')}`;
-        document.getElementById('lblMesMP').innerText = `$${calcularPorPago('Mercado Pago').toLocaleString('es-AR')}`;
-        document.getElementById('lblMesDNI').innerText = `$${calcularPorPago('Cuenta D. N. I.').toLocaleString('es-AR')}`;
-        document.getElementById('lblMesNaranja').innerText = `$${calcularPorPago('Naranja X').toLocaleString('es-AR')}`;
-        document.getElementById('lblMesOtra').innerText = `$${calcularPorPago('Otra').toLocaleString('es-AR')}`;
+        const metodosDefinidos = ['efectivo', 'transferencia', 'mercado pago', 'mp', 'cuenta dni', 'dni', 'naranja'];
+
+        const totalEf = calcularPorPago(['efectivo']);
+        const totalTr = calcularPorPago(['transferencia']);
+        const totalMP = calcularPorPago(['mercado pago', 'mp']);
+        const totalDNI = calcularPorPago(['cuenta dni', 'dni']);
+        const totalNar = calcularPorPago(['naranja']);
+
+        const totalOtra = ventasMes
+          .filter(v => {
+            if (!v.pago) return true;
+            const p = v.pago.toLowerCase();
+            return !metodosDefinidos.some(m => p.includes(m));
+          })
+          .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+
+        if (document.getElementById('lblMesEfectivo')) document.getElementById('lblMesEfectivo').innerText = `$${formatearMoneda(totalEf)}`;
+        if (document.getElementById('lblMesTransf')) document.getElementById('lblMesTransf').innerText = `$${formatearMoneda(totalTr)}`;
+        if (document.getElementById('lblMesMP')) document.getElementById('lblMesMP').innerText = `$${formatearMoneda(totalMP)}`;
+        if (document.getElementById('lblMesDNI')) document.getElementById('lblMesDNI').innerText = `$${formatearMoneda(totalDNI)}`;
+        if (document.getElementById('lblMesNaranja')) document.getElementById('lblMesNaranja').innerText = `$${formatearMoneda(totalNar)}`;
+        if (document.getElementById('lblMesOtra')) document.getElementById('lblMesOtra').innerText = `$${formatearMoneda(totalOtra)}`;
       }
 
       const btnAbrir = document.getElementById('btnAbrirModal');
@@ -161,11 +207,11 @@
             const dMes = new Date(anio, mes - 1, 1);
             const nombreM = dMes.toLocaleDateString('es-AR', { month: 'short', year: 'numeric' });
 
-            html += `<div class="mes-row"><span style="text-transform: capitalize;">📅 ${nombreM}</span> <strong>$${total.toLocaleString('es-AR')}</strong></div>`;
+            html += `<div class="mes-row"><span style="text-transform: capitalize;">📅 ${nombreM}</span> <strong>$${formatearMoneda(total)}</strong></div>`;
           });
           
           const lista = document.getElementById('listaMeses');
-          if (lista) lista.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:15px;">Sin ventas registradas.</p>';
+          if (lista) lista.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:15px;">Sin ventas registradas.</p>';
         });
       }
 

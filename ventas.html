@@ -57,7 +57,7 @@
     </div>
     
     <button onclick="window.cerrarVentanaModalVentasGen()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
-      <img src="icono.png" alt="Logo SBO" style="width: 56px; height: 56px; object-fit: contain;">
+      <img src="icono.png" alt="Logo BMA" style="width: 56px; height: 56px; object-fit: contain;">
     </button>
   </div>
 
@@ -138,14 +138,18 @@
         <p style="text-align:center; color:#94a3b8; font-size:0.78rem; margin:4px 0;">El carrito está vacío</p>
       </div>
 
-      <div style="display: flex; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #cbd5e1; align-items: flex-end;">
+      <div style="display: flex; gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #cbd5e1; align-items: flex-end;">
         <div style="flex: 1;">
           <label style="margin:0; font-size:10px; color:#334155;">Desc. (%)</label>
-          <input type="number" id="vDescuentoPorc" value="0" min="0" max="100" oninput="window.renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:13px; background:#fff;">
+          <input type="number" id="vDescuentoPorc" value="0" min="0" max="100" oninput="window.renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:12px; background:#fff;">
         </div>
         <div style="flex: 1;">
           <label style="margin:0; font-size:10px; color:#334155;">Desc. ($)</label>
-          <input type="number" id="vDescuentoPesos" value="0" min="0" oninput="window.renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:13px; background:#fff;">
+          <input type="number" id="vDescuentoPesos" value="0" min="0" oninput="window.renderCarritoVentas()" style="margin-top:2px; padding:6px; font-size:12px; background:#fff;">
+        </div>
+        <div style="flex: 1.2;">
+          <label style="margin:0; font-size:10px; color:#334155; font-weight:bold;">Envío/Cadete ($)</label>
+          <input type="number" id="vCostoEnvio" value="0" min="0" oninput="window.renderCarritoVentas()" placeholder="0" style="margin-top:2px; padding:6px; font-size:12px; background:#fff; border-color: #3b82f6;">
         </div>
       </div>
 
@@ -209,12 +213,18 @@
   };
 
   (function() {
-    function obtenerDatosSafe(clave, valorDefecto = []) {
+    function obtenerDatosSafe(clavePrincipal, clavesFallback = [], valorDefecto = []) {
       try {
-        const item = localStorage.getItem(clave);
-        return item ? JSON.parse(item) : valorDefecto;
+        let item = localStorage.getItem(clavePrincipal);
+        if (item) return JSON.parse(item);
+        
+        for (let alt of clavesFallback) {
+          item = localStorage.getItem(alt);
+          if (item) return JSON.parse(item);
+        }
+        return valorDefecto;
       } catch (e) {
-        console.error(`Error al parsear ${clave}:`, e);
+        console.error(`Error al parsear ${clavePrincipal}:`, e);
         return valorDefecto;
       }
     }
@@ -243,9 +253,9 @@
     }
 
     function inicializarModuloVentas() {
-      stockVentas = obtenerDatosSafe('bma_stock', obtenerDatosSafe('sbo_stock', obtenerDatosSafe('stock', [])));
-      clientesVentas = obtenerDatosSafe('bma_clientes', obtenerDatosSafe('sbo_clientes', obtenerDatosSafe('clientes', [])));
-      ventasList = obtenerDatosSafe('bma_ventas', obtenerDatosSafe('sbo_ventas', obtenerDatosSafe('ventas', [])));
+      stockVentas = obtenerDatosSafe('bma_stock', ['sbo_stock', 'stock']);
+      clientesVentas = obtenerDatosSafe('bma_clientes', ['sbo_clientes', 'clientes']);
+      ventasList = obtenerDatosSafe('bma_ventas', ['sbo_ventas', 'ventas']);
 
       const lblFecha = document.getElementById('lblFechaTrabajoVentas');
       if (lblFecha) lblFecha.innerText = `Fecha de Trabajo: ${formatearFechaVentas(fechaSesionVentas)}`;
@@ -331,9 +341,11 @@
 
       const stockActual = prod.cantidad !== undefined ? prod.cantidad : (prod.stock !== undefined ? prod.stock : 0);
       const nombreProd = prod.producto || prod.nombre || prod.descripcion || 'Producto';
-      
-      if (cant > stockActual) {
-        return alert(`⚠️ Stock insuficiente. Solo quedan ${stockActual} unidades.`);
+
+      // Validación acumulada con lo que ya está en el carrito
+      const yaEnCarrito = carritoVentas.filter(item => item.productoId == pId).reduce((acc, item) => acc + item.cant, 0);
+      if ((cant + yaEnCarrito) > stockActual) {
+        return alert(`⚠️ Stock insuficiente. Quedan ${stockActual} unidades y ya tenés ${yaEnCarrito} en el carrito.`);
       }
 
       carritoVentas.push({
@@ -396,6 +408,7 @@
 
       const descPorc = parseFloat(document.getElementById('vDescuentoPorc')?.value) || 0;
       const descPesos = parseFloat(document.getElementById('vDescuentoPesos')?.value) || 0;
+      const costoEnvio = parseFloat(document.getElementById('vCostoEnvio')?.value) || 0;
 
       let montoDescuento = 0;
       if (descPorc > 0) {
@@ -404,15 +417,20 @@
         montoDescuento = descPesos;
       }
 
-      const totalFinal = Math.max(0, subtotalBruto - montoDescuento);
+      const totalFinal = Math.max(0, subtotalBruto - montoDescuento + costoEnvio);
 
       if (totalBox) {
-        if (montoDescuento > 0) {
-          totalBox.innerHTML = `
-            <div style="font-size: 0.8rem; color: #64748b; font-weight: normal;">Subtotal: $${subtotalBruto.toLocaleString('es-AR')}</div>
-            <div style="font-size: 0.8rem; color: #dc2626; font-weight: normal;">Descuento: -$${montoDescuento.toLocaleString('es-AR')}</div>
-            <div style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-top: 2px;">Total: $${totalFinal.toLocaleString('es-AR')}</div>
-          `;
+        let desglosesHtml = '';
+        if (montoDescuento > 0 || costoEnvio > 0) {
+          desglosesHtml += `<div style="font-size: 0.8rem; color: #64748b; font-weight: normal;">Subtotal Productos: $${subtotalBruto.toLocaleString('es-AR')}</div>`;
+          if (montoDescuento > 0) {
+            desglosesHtml += `<div style="font-size: 0.8rem; color: #dc2626; font-weight: normal;">Descuento: -$${montoDescuento.toLocaleString('es-AR')}</div>`;
+          }
+          if (costoEnvio > 0) {
+            desglosesHtml += `<div style="font-size: 0.8rem; color: #2563eb; font-weight: normal;">Envío / Cadetería: +$${costoEnvio.toLocaleString('es-AR')}</div>`;
+          }
+          desglosesHtml += `<div style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-top: 2px;">Total: $${totalFinal.toLocaleString('es-AR')}</div>`;
+          totalBox.innerHTML = desglosesHtml;
         } else {
           totalBox.innerHTML = `Total: $${totalFinal.toLocaleString('es-AR')}`;
         }
@@ -448,6 +466,7 @@
       const subtotalBruto = carritoVentas.reduce((acc, i) => acc + i.subtotal, 0);
       const descPorc = parseFloat(document.getElementById('vDescuentoPorc').value) || 0;
       const descPesos = parseFloat(document.getElementById('vDescuentoPesos').value) || 0;
+      const costoEnvio = parseFloat(document.getElementById('vCostoEnvio').value) || 0;
 
       let montoDescuento = 0;
       if (descPorc > 0) {
@@ -455,7 +474,7 @@
       } else if (descPesos > 0) {
         montoDescuento = descPesos;
       }
-      const total = Math.max(0, subtotalBruto - montoDescuento);
+      const total = Math.max(0, subtotalBruto - montoDescuento + costoEnvio);
 
       carritoVentas.forEach(item => {
         const prod = buscarProductoVentasPorId(item.productoId);
@@ -477,6 +496,7 @@
         items: [...carritoVentas],
         subtotalBruto,
         descuentoAplicado: montoDescuento,
+        costoEnvio,
         total
       };
 
@@ -486,6 +506,7 @@
       carritoVentas = [];
       if (document.getElementById('vDescuentoPorc')) document.getElementById('vDescuentoPorc').value = 0;
       if (document.getElementById('vDescuentoPesos')) document.getElementById('vDescuentoPesos').value = 0;
+      if (document.getElementById('vCostoEnvio')) document.getElementById('vCostoEnvio').value = 0;
 
       window.renderCarritoVentas();
       window.cerrarModalCarritoFlotante();
@@ -532,7 +553,8 @@
             <div class="venta-detalles">
               📅 ${formatearFechaVentas(v.fecha)} ${v.hora} hs | 💳 ${v.pago}<br>
               📦 ${v.items ? v.items.map(i => `${i.cant}x ${i.nombre}`).join(', ') : ''}
-              ${v.descuentoAplicado > 0 ? `<br><span style="color:#dc2626;">🏷️ Descuento aplicado: -$${v.descuentoAplicado.toLocaleString('es-AR')}</span>` : ''}
+              ${v.descuentoAplicado > 0 ? `<br><span style="color:#dc2626;">🏷️ Descuento: -$${v.descuentoAplicado.toLocaleString('es-AR')}</span>` : ''}
+              ${v.costoEnvio > 0 ? `<br><span style="color:#2563eb;">🛵 Envío/Cadetería: +$${v.costoEnvio.toLocaleString('es-AR')}</span>` : ''}
             </div>
             <div class="ventas-acciones">
               <button class="ventas-btn-action" style="background: #e0f2fe; color: #0369a1;" onclick="window.verTicketVentas(${v.id})">📄 Ver</button>
@@ -578,21 +600,41 @@
         });
       }
 
-      if (v.descuentoAplicado && v.descuentoAplicado > 0) {
-        const subBruto = v.subtotalBruto || (v.total + v.descuentoAplicado);
+      const tieneDesc = v.descuentoAplicado && v.descuentoAplicado > 0;
+      const tieneEnvio = v.costoEnvio && v.costoEnvio > 0;
+
+      if (tieneDesc || tieneEnvio) {
+        const subBruto = v.subtotalBruto || (v.total + (v.descuentoAplicado || 0) - (v.costoEnvio || 0));
+        itemsHtml += `<div style="border-top: 1px dashed #000; margin-top: 4px; padding-top: 4px;">`;
         itemsHtml += `
-          <div style="border-top: 1px dashed #000; margin-top: 4px; padding-top: 4px;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.72rem;">
-              <span>Subtotal:</span>
-              <span>$${subBruto.toLocaleString('es-AR')}</span>
-            </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.72rem;">
+            <span>Subtotal:</span>
+            <span>$${subBruto.toLocaleString('es-AR')}</span>
+          </div>
+        `;
+        textoWa += `\nSubtotal: $${subBruto.toLocaleString('es-AR')}\n`;
+
+        if (tieneDesc) {
+          itemsHtml += `
             <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: #b91c1c;">
               <span>Descuento:</span>
               <span>-$${v.descuentoAplicado.toLocaleString('es-AR')}</span>
             </div>
-          </div>
-        `;
-        textoWa += `\nSubtotal: $${subBruto.toLocaleString('es-AR')}\nDescuento: -$${v.descuentoAplicado.toLocaleString('es-AR')}\n`;
+          `;
+          textoWa += `Descuento: -$${v.descuentoAplicado.toLocaleString('es-AR')}\n`;
+        }
+
+        if (tieneEnvio) {
+          itemsHtml += `
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: #2563eb;">
+              <span>Envío / Cadetería:</span>
+              <span>+$${v.costoEnvio.toLocaleString('es-AR')}</span>
+            </div>
+          `;
+          textoWa += `Envío/Cadetería: +$${v.costoEnvio.toLocaleString('es-AR')}\n`;
+        }
+
+        itemsHtml += `</div>`;
       }
 
       textoWa += `\n*TOTAL: $${v.total.toLocaleString('es-AR')}*\n\n¡Muchas gracias!`;
@@ -648,7 +690,17 @@
       }
     };
 
-    // Ejecución inmediata al inyectarse en el DOM
+    // Cierre por clic en el fondo (Overlay) de todos los modales
+    const modales = ['modalCarritoFlotante', 'modalVentasJornada', 'modalTicketVentas'];
+    modales.forEach(idModal => {
+      const el = document.getElementById(idModal);
+      if (el) {
+        el.onclick = function(e) {
+          if (e.target === el) el.classList.remove('active');
+        };
+      }
+    });
+
     inicializarModuloVentas();
   })();
 </script>

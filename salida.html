@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <link rel="icon" type="image/png" href="icono.png">
-  <link rel="apple-touch-icon" href="icono.png">
-  <link rel="manifest" href="manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#000000" id="themeColorMeta">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Infinito Corazón</title>
+  <title>Infinito Corazón - Cierre de Jornada</title>
   
   <style>
     :root {
@@ -244,7 +237,7 @@
     <hr class="divider">
 
     <div class="client-display-section">
-      <div class="client-box-label">¡Bienvenido!</div>
+      <div class="client-box-label">¡Hasta luego!</div>
       <div class="client-box-name" id="lblNombreCliente">Juan Ma</div>
     </div>
 
@@ -253,11 +246,11 @@
 
     <!-- Marquesina móvil de derecha a izquierda -->
     <div class="marquee-container">
-      <div class="marquee-text">Preparando la interfase...</div>
+      <div class="marquee-text">Preparando interfase para la nueva jornada...</div>
     </div>
 
     <div class="bottom-actions">
-      <button class="btn-ingresar" onclick="entrarAlSistema()">Entrar ahora</button>
+      <button class="btn-ingresar" onclick="cerrarAplicacion()">Salir ahora</button>
     </div>
 
     <div class="footer-zocalo">
@@ -267,8 +260,6 @@
   </div>
 
   <script>
-    let fechaActualSistema = '';
-
     function formatearFechaEntera(fechaStr) {
       if (!fechaStr) return '';
       const partes = fechaStr.split('-');
@@ -286,58 +277,24 @@
       const anio = ahora.getFullYear();
       const mes = String(ahora.getMonth() + 1).padStart(2, '0');
       const dia = String(ahora.getDate()).padStart(2, '0');
-      fechaActualSistema = `${anio}-${mes}-${dia}`;
+      const fechaActual = `${anio}-${mes}-${dia}`;
 
-      document.getElementById('lblFechaFormateada').textContent = formatearFechaEntera(fechaActualSistema);
+      document.getElementById('lblFechaFormateada').textContent = formatearFechaEntera(fechaActual);
 
-      cargarClienteInfinito();
-
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-          .then(() => console.log("Service Worker registrado con éxito."))
-          .catch(err => console.log("Fallo al registrar el Service Worker:", err));
-      }
-
-      // Temporizador de 5 segundos para redirigir automáticamente al menú
+      // Cierra la aplicación automáticamente tras 5 segundos
       setTimeout(() => {
-        entrarAlSistema();
+        cerrarAplicacion();
       }, 5000);
     });
 
-    function cargarClienteInfinito() {
-      const clientes = JSON.parse(localStorage.getItem('sbo_db_clientes')) || [];
-
-      let clienteTarget = clientes.find(c => 
-        c.nombreCliente && (
-          c.nombreCliente.toLowerCase().includes('infinito') || 
-          c.nombreCliente.toLowerCase().includes('bijou')
-        )
-      );
-
-      if (!clienteTarget) {
-        clienteTarget = clientes.find(c => 
-          c.licencia && (
-            c.licencia.toLowerCase().includes('vida') || 
-            c.licencia.toLowerCase().includes('vitalicia')
-          )
-        );
-      }
-
-      if (clienteTarget && clienteTarget.nombreCliente) {
-        document.getElementById('lblNombreCliente').textContent = clienteTarget.nombreCliente;
-      }
-    }
-
-    function entrarAlSistema() {
-      const fechaFormateadaTexto = formatearFechaEntera(fechaActualSistema);
-      const nombreUsuario = document.getElementById('lblNombreCliente').textContent;
-
-      localStorage.setItem('bma_fechaSesion', fechaActualSistema);
-      localStorage.setItem('sbo_fechaSesion', fechaActualSistema);
-      localStorage.setItem('bma_fechaSesionTexto', fechaFormateadaTexto);
-      localStorage.setItem('bma_nombre', nombreUsuario);
-
-      window.location.href = 'menu.html';
+    function cerrarAplicacion() {
+      // Intenta cerrar la pestaña/ventana del navegador
+      window.close();
+      
+      // Resguardo: Si el navegador bloquea 'window.close()', redirige a una pantalla en blanco limpia
+      setTimeout(() => {
+        document.body.innerHTML = '<div style="color: #ffffff; text-align: center; font-family: sans-serif; padding-top: 40vh;"><h2>Jornada finalizada.</h2><p>Ya podés cerrar esta pestaña o app.</p></div>';
+      }, 300);
     }
   </script>
 </body>

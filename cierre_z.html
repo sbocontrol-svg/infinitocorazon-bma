@@ -30,6 +30,14 @@
     .btn-print { background: #1e293b; color: white; }
     .btn-volver { background: #334155; color: white; }
     .btn-volver img { width: 20px; height: 20px; }
+
+    /* Ocultar botones e interfaz innecesaria al exportar/imprimir en PDF */
+    @media print {
+      body { padding: 0; background: white; }
+      .card-internal { box-shadow: none; border: none; padding: 0; }
+      .btn-main, .no-print { display: none !important; }
+      .lista-scroll { max-height: none; overflow: visible; }
+    }
   </style>
 </head>
 <body>
@@ -38,8 +46,8 @@
     <div class="card-internal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">⚡ Cierre Z & Auditoría</h2>
-        <button onclick="window.cerrarVentanaModalCierreZGen()" style="background:none; border:none; padding:0; cursor:pointer;">
-          <img src="icono.png" alt="Icono" style="width: 32px; height: 32px; object-fit: contain;">
+        <button class="no-print" onclick="window.cerrarVentanaModalCierreZGen()" style="background:none; border:none; padding:0; cursor:pointer;">
+          <img src="icono.png" alt="Icono BMA" style="width: 32px; height: 32px; object-fit: contain;">
         </button>
       </div>
       
@@ -77,8 +85,8 @@
         </div>
       </div>
 
-      <button class="btn-main btn-print" onclick="window.print()">🖨️ Imprimir Cierre Z</button>
-      <button onclick="window.cerrarVentanaModalCierreZGen()" class="btn-main btn-volver">
+      <button class="btn-main btn-print" onclick="window.print()">📄 Guardar Cierre / Exportar PDF</button>
+      <button onclick="window.cerrarVentanaModalCierreZGen()" class="btn-main btn-volver no-print">
         <img src="volver.png" alt="Volver"> Volver al Menú
       </button>
     </div>
@@ -112,7 +120,12 @@
         return `${year}-${month}-${day}`;
       }
 
-      const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
+      function formatearMoneda(val) {
+        return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val || 0);
+      }
+
+      // Exclusivo BMA
+      const fechaSesion = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
 
       function formatearFechaLarga(fechaStr) {
         if (!fechaStr) return 'Fecha no definida';
@@ -128,14 +141,14 @@
         const bannerFecha = document.getElementById('txtFechaCierre');
         if (bannerFecha) bannerFecha.innerText = formatearFechaLarga(fechaSesion);
 
-        // 1. Ventas del día y desglose por artículo
-        const ventas = obtenerDatosSafe('bma_ventas', obtenerDatosSafe('sbo_ventas', obtenerDatosSafe('ventas', [])));
+        // 1. Ventas del día y desglose por artículo (exclusivo bma_ventas)
+        const ventas = obtenerDatosSafe('bma_ventas', []);
         const ventasDia = ventas.filter(v => v.fecha === fechaSesion);
         const totalVentasDinero = ventasDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
 
         const lblVentas = document.getElementById('lblCierreVentas');
         const lblOps = document.getElementById('lblCierreOps');
-        if (lblVentas) lblVentas.innerText = `$${totalVentasDinero.toLocaleString('es-AR')}`;
+        if (lblVentas) lblVentas.innerText = `$${formatearMoneda(totalVentasDinero)}`;
         if (lblOps) lblOps.innerText = ventasDia.length;
 
         let totalUnidades = 0;
@@ -172,8 +185,8 @@
         const contVentasArt = document.getElementById('listaVentasArticulos');
         if (contVentasArt) contVentasArt.innerHTML = htmlVentasArt;
 
-        // 2. Stock Restante
-        const productos = obtenerDatosSafe('bma_stock', obtenerDatosSafe('bma_productos', obtenerDatosSafe('sbo_stock', obtenerDatosSafe('stock', []))));
+        // 2. Stock Restante (exclusivo bma_stock)
+        const productos = obtenerDatosSafe('bma_stock', []);
         
         let htmlStock = '';
         if (productos.length === 0) {

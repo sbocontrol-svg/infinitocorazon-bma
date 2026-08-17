@@ -68,7 +68,8 @@
       return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
     }
 
-    const fechaSesionLocal = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
+    // Exclusivo de BMA
+    const fechaSesionLocal = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
     const lblFecha = document.getElementById('lblFechaTrabajo');
     if (lblFecha) lblFecha.innerText = `Fecha de Trabajo: ${formatearFechaLocal(fechaSesionLocal)}`;
 
@@ -77,10 +78,10 @@
 
     function obtenerClientesSafe() {
       try {
-        const guardados = localStorage.getItem('bma_clientes') || localStorage.getItem('sbo_clientes') || localStorage.getItem('clientes');
+        const guardados = localStorage.getItem('bma_clientes');
         return guardados ? JSON.parse(guardados) : [];
       } catch (e) {
-        console.error("Error al cargar clientes:", e);
+        console.error("Error al cargar clientes BMA:", e);
         return [];
       }
     }
@@ -231,6 +232,7 @@
     };
 
     function guardarYActualizarClientes() {
+      // Exclusivo de BMA
       localStorage.setItem('bma_clientes', JSON.stringify(clientes));
     }
   })();
