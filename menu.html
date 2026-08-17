@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menú Principal - B. M. A. Artesanías</title>
 
+  <!-- Vinculación del Manifest y compatibilidad PWA Mobile -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="icono.png">
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
 
@@ -225,6 +230,7 @@
             </div>
             <div class="modal-desc">Gestioná tus respaldos o ejecutá un reinicio limpio:</div>
             <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="btn-volver-menu" id="btn-instalar-pwa" style="margin-top: 0; background-color: #3b82f6; color: #ffffff; display: none;">📲 Instalar App PWA</button>
                 <button class="btn-volver-menu" id="btn-exportar" style="margin-top: 0; background-color: #e2e8f0; color: #000000;">📥 Exportar Datos (JSON)</button>
                 <label class="btn-volver-menu" style="background-color: #334155; text-align: center; cursor: pointer; display: block; margin-top: 0;">
                     📤 Restaurar Datos
@@ -239,6 +245,23 @@
     </div>
 
     <script>
+        // --- REGISTRO DE SERVICE WORKER Y EVENTO PWA ---
+        let diferirPromptPWA;
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+                    .catch(err => console.error('Error al registrar Service Worker:', err));
+            });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            diferirPromptPWA = e;
+            const btnPwa = document.getElementById('btn-instalar-pwa');
+            if (btnPwa) btnPwa.style.display = 'block';
+        });
+
         (function() {
             let datosVentasJornadaCache = [];
             let datosStockCache = [];
@@ -397,6 +420,23 @@
 
             document.addEventListener('DOMContentLoaded', () => {
                 window.actualizarEstadisticasMenu();
+
+                // Botón de instalación PWA desde Configuración
+                const btnInstalar = document.getElementById('btn-instalar-pwa');
+                if (btnInstalar) {
+                    btnInstalar.addEventListener('click', () => {
+                        if (diferirPromptPWA) {
+                            diferirPromptPWA.prompt();
+                            diferirPromptPWA.userChoice.then((choiceResult) => {
+                                if (choiceResult.outcome === 'accepted') {
+                                    console.log('El usuario aceptó instalar la PWA');
+                                }
+                                diferirPromptPWA = null;
+                                btnInstalar.style.display = 'none';
+                            });
+                        }
+                    });
+                }
 
                 const modalStat = document.getElementById('modal-stat-detalle');
                 if (modalStat) {
