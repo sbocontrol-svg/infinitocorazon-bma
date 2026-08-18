@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinito Corazón - Cobro</title>
+    
+    <link rel="icon" type="image/jpeg" href="icono.png">
+    <meta name="theme-color" content="#d9381e">
+
+    <style>
+        body { 
+            background: #0f172a; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 16px; 
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .card { 
+            background: white; 
+            width: 100%; 
+            max-width: 380px; 
+            padding: 20px; 
+            border-radius: 16px; 
+            text-align: center; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .font-segoe-script {
+            font-family: 'Segoe Script', 'Brush Script MT', cursive;
+        }
+        .monto-container { margin: 10px 0; }
+        .monto-label {
+            font-size: 0.75rem; 
+            color: #475569; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            margin-bottom: 2px;
+        }
+        .monto-input { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            color: #d9381e; 
+            width: 100%; 
+            text-align: center; 
+            border: 2px dashed #cbd5e1; 
+            border-radius: 10px; 
+            padding: 6px; 
+            background: #f8fafc; 
+            outline: none; 
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .monto-input:focus { border-color: #d9381e; background: #fff; }
+        .billetera-tag { display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; }
+        .qr-box { background: #fff; padding: 10px; border: 1.5px solid #e2e8f0; border-radius: 12px; display: inline-block; margin-top: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .qr-box img { width: 180px; height: 180px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px;">
+        <img src="icono.png" alt="Logo" style="width: 2.0rem; height: 2.0rem; object-fit: contain;">
+        <div style="text-align: left;">
+            <h2 id="tituloNegocio" style="margin: 0; font-size: 2.0rem; color: #d9381e; font-weight: 800; line-height: 1.1;" class="font-segoe-script">Infinito Corazón</h2>
+            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Caja de Cobro QR</span>
+        </div>
+    </div>
+    
+    <div id="tagBilletera" class="billetera-tag" style="background: #e0f2fe; color: #0369a1;">Mercado Pago</div>
+    
+    <div class="monto-container">
+        <div class="monto-label">Importe a cobrar:</div>
+        <input type="text" id="inputMonto" class="monto-input" inputmode="numeric" value="$ 0">
+    </div>
+    
+    <div id="contenedorPago">
+        <!-- El QR enmascarado se genera dinámicamente acá -->
+    </div>
+    
+    <button onclick="window.history.back()" style="margin-top: 16px; width: 100%; border:none; background:#334155; color:white; font-weight: 700; padding: 12px; border-radius: 10px; cursor:pointer; font-size: 0.95rem; font-family: system-ui, -apple-system, sans-serif;">Volver</button>
+</div>
+
+<script>
+    let montoInicial = localStorage.getItem('bma_monto_actual') || localStorage.getItem('sbo_monto_actual') || '0';
+    let alias = localStorage.getItem('bma_alias') || localStorage.getItem('sbo_alias') || 'juanmabali.mp';
+    
+    if (!alias || alias.trim() === '' || !isNaN(alias)) {
+        alias = 'juanmabali.mp';
+    }
+
+    const billetera = (localStorage.getItem('bma_billetera') || localStorage.getItem('sbo_billetera') || 'Mercado Pago').toLowerCase();
+    const nombreNegocio = localStorage.getItem('bma_config_nombre') || localStorage.getItem('sbo_config_nombre') || 'Infinito Corazón';
+
+    const inputMonto = document.getElementById('inputMonto');
+    document.getElementById('tituloNegocio').innerText = nombreNegocio;
+
+    const tag = document.getElementById('tagBilletera');
+    const cont = document.getElementById('contenedorPago');
+
+    function formatearNumeroMoneda(valor) {
+        const soloNumeros = valor.replace(/\D/g, '');
+        if (!soloNumeros) return '$ 0';
+        const numeroLimpio = parseInt(soloNumeros, 10);
+        return `$ ${numeroLimpio.toLocaleString('es-AR')}`;
+    }
+
+    function obtenerValorNumericoPuro() {
+        return inputMonto.value.replace(/\D/g, '') || '0';
+    }
+
+    // Inicializar con el monto que vino guardado
+    inputMonto.value = formatearNumeroMoneda(String(montoInicial));
+
+    function actualizarVista() {
+        const montoActual = obtenerValorNumericoPuro();
+        
+        if (billetera.includes('mercado') || billetera === 'mp') {
+            tag.innerText = 'Mercado Pago';
+            tag.style.background = '#e0f2fe';
+            tag.style.color = '#0369a1';
+            
+            const urlPago = `https://link.mercadopago.com.ar/${alias.trim()}`;
+            const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlPago)}`;
+
+            cont.innerHTML = `
+                <div class="qr-box">
+                    <img src="${qrApi}" alt="QR Enmascarado">
+                </div>
+                <p style="font-size: 0.78rem; color: #64748b; margin: 8px 0 0;">Escaneá el código para abonar <strong>$${Number(montoActual).toLocaleString('es-AR')}</strong></p>
+            `;
+        } else if (billetera.includes('ualá') || billetera === 'uala') {
+            tag.innerText = 'Ualá';
+            tag.style.background = '#fef3c7';
+            tag.style.color = '#92400e';
+            
+            const urlUala = `https://ualaria.com/${alias.trim()}`;
+            const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlUala)}`;
+
+            cont.innerHTML = `
+                <div class="qr-box">
+                    <img src="${qrApi}" alt="QR Ualá">
+                </div>
+                <p style="font-size: 0.78rem; color: #64748b; margin: 8px 0 0;">Escaneá el código para abonar <strong>$${Number(montoActual).toLocaleString('es-AR')}</strong></p>
+            `;
+        } else {
+            tag.innerText = billetera.toUpperCase();
+            tag.style.background = '#f1f5f9';
+            tag.style.color = '#334155';
+            
+            const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(alias)}`;
+
+            cont.innerHTML = `
+                <div class="qr-box">
+                    <img src="${qrApi}" alt="QR Transferencia">
+                </div>
+                <p style="font-size: 0.78rem; color: #64748b; margin-top:8px;">Escaneá con tu billetera para transferir.</p>
+            `;
+        }
+    }
+
+    inputMonto.addEventListener('input', function(e) {
+        const cursorPos = e.target.selectionStart;
+        const valorPrevio = e.target.value;
+        
+        e.target.value = formatearNumeroMoneda(e.target.value);
+        actualizarVista();
+    });
+
+    actualizarVista();
+</script>
+
+</body>
+</html>

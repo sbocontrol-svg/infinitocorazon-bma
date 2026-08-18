@@ -4,11 +4,17 @@
   .ventas-container-box input, .ventas-container-box select { width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none; }
   .ventas-container-box input:focus, .ventas-container-box select:focus { border-color: #3b82f6; background: #fff; }
   
+  .ventas-importe-label { font-size: 0.75rem; color: #475569; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+  .ventas-input-monto { font-size: 1.6rem; font-weight: 800; color: #0f172a; width: 100%; text-align: center; border: 2px dashed #cbd5e1; border-radius: 10px; padding: 6px; background: #f8fafc; outline: none; }
+  .ventas-input-monto:focus { border-color: #d9381e; background: #fff; }
+
   .ventas-btn-main { background: #0f172a; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.95rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,0.3); }
   .ventas-btn-add { background: #475569; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; }
   .ventas-btn-historial { background: #475569; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; width: 100%; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .ventas-btn-secundario { background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
-  
+  .ventas-btn-qr { background: #ffffff; color: #0f172a; border: 1.5px solid #cbd5e1; padding: 10px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+  .ventas-btn-qr:hover { background: #f8fafc; border-color: #3b82f6; }
+
   .ventas-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; }
   .ventas-modal-overlay.active { display: flex; }
   .ventas-modal-container { background: white; width: 100%; max-width: 380px; border-radius: 16px; padding: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); max-height: 85vh; display: flex; flex-direction: column; overflow-y: auto; }
@@ -105,14 +111,23 @@
     </div>
 
     <label>Método de Pago:</label>
-    <select id="vPago">
-      <option value="Efectivo">💵 Efectivo</option>
-      <option value="Transferencia">🏦 Transferencia Bancaria</option>
-      <option value="Mercado Pago">📱 Mercado Pago</option>
-      <option value="Cuenta D.N.I.">🟢 Cuenta D.N.I.</option>
-      <option value="Naranja X">🟠 Naranja X</option>
-      <option value="Otra">🔷 Otra</option>
-    </select>
+    <div style="display: flex; gap: 8px; align-items: flex-end; margin-top: 4px;">
+      <div style="flex: 1;">
+        <select id="vPago" style="margin-top: 0; padding: 8px 10px; font-size: 13px;">
+          <option value="Efectivo">💵 Efectivo</option>
+          <option value="Transferencia">🏦 Transferencia Bancaria</option>
+          <option value="Mercado Pago">📱 Mercado Pago</option>
+          <option value="Cuenta D.N.I.">🟢 Cuenta D.N.I.</option>
+          <option value="Naranja X">🟠 Naranja X</option>
+          <option value="Otra">🔷 Otra</option>
+        </select>
+      </div>
+      <div style="flex: 1;">
+        <a href="cobro.html" class="ventas-btn-qr" style="margin-top: 0; padding: 8px 10px;">
+          📱 Pagar QR
+        </a>
+      </div>
+    </div>
 
     <button class="ventas-btn-add" onclick="window.agregarAlCarritoVentas()">🛒 Agregar al Carrito</button>
   </div>
@@ -342,7 +357,6 @@
       const stockActual = prod.cantidad !== undefined ? prod.cantidad : (prod.stock !== undefined ? prod.stock : 0);
       const nombreProd = prod.producto || prod.nombre || prod.descripcion || 'Producto';
 
-      // Validación acumulada con lo que ya está en el carrito
       const yaEnCarrito = carritoVentas.filter(item => item.productoId == pId).reduce((acc, item) => acc + item.cant, 0);
       if ((cant + yaEnCarrito) > stockActual) {
         return alert(`⚠️ Stock insuficiente. Quedan ${stockActual} unidades y ya tenés ${yaEnCarrito} en el carrito.`);
@@ -583,7 +597,17 @@
       document.getElementById('tPago').innerText = v.pago;
 
       let itemsHtml = '';
-      let textoWa = `*${configVentas.nombre}*\n_${configVentas.eslogan}_\n_Comprobante N° ${v.numTicket}_\n📱 *WhatsApp:* 2364716004\n\n📌 *Cliente:* ${v.cliente}\n📅 *Fecha:* ${formatearFechaVentas(v.fecha)}\n💳 *Pago:* ${v.pago}\n\n*Detalle:*\n`;
+      let textoWa = `*${configVentas.nombre}*
+_${configVentas.eslogan}_
+_Comprobante N° ${v.numTicket}_
+📱 *WhatsApp:* 2364716004
+
+📌 *Cliente:* ${v.cliente}
+📅 *Fecha:* ${formatearFechaVentas(v.fecha)}
+💳 *Pago:* ${v.pago}
+
+*Detalle:*
+`;
 
       if (v.items) {
         v.items.forEach(i => {
@@ -596,7 +620,8 @@
               <span>$${i.subtotal.toLocaleString('es-AR')}</span>
             </div>
           `;
-          textoWa += `• ${i.cant}x ${i.nombre}${i.cant > 1 ? ` ($${i.precio.toLocaleString('es-AR')} c/u)` : ''} - $${i.subtotal.toLocaleString('es-AR')}\n`;
+          textoWa += `• ${i.cant}x ${i.nombre}${i.cant > 1 ? ` ($${i.precio.toLocaleString('es-AR')} c/u)` : ''} - $${i.subtotal.toLocaleString('es-AR')}
+`;
         });
       }
 
@@ -612,7 +637,9 @@
             <span>$${subBruto.toLocaleString('es-AR')}</span>
           </div>
         `;
-        textoWa += `\nSubtotal: $${subBruto.toLocaleString('es-AR')}\n`;
+        textoWa += `
+Subtotal: $${subBruto.toLocaleString('es-AR')}
+`;
 
         if (tieneDesc) {
           itemsHtml += `
@@ -621,7 +648,8 @@
               <span>-$${v.descuentoAplicado.toLocaleString('es-AR')}</span>
             </div>
           `;
-          textoWa += `Descuento: -$${v.descuentoAplicado.toLocaleString('es-AR')}\n`;
+          textoWa += `Descuento: -$${v.descuentoAplicado.toLocaleString('es-AR')}
+`;
         }
 
         if (tieneEnvio) {
@@ -631,13 +659,17 @@
               <span>+$${v.costoEnvio.toLocaleString('es-AR')}</span>
             </div>
           `;
-          textoWa += `Envío/Cadetería: +$${v.costoEnvio.toLocaleString('es-AR')}\n`;
+          textoWa += `Envío/Cadetería: +$${v.costoEnvio.toLocaleString('es-AR')}
+`;
         }
 
         itemsHtml += `</div>`;
       }
 
-      textoWa += `\n*TOTAL: $${v.total.toLocaleString('es-AR')}*\n\n¡Muchas gracias!`;
+      textoWa += `
+*TOTAL: $${v.total.toLocaleString('es-AR')}*
+
+¡Muchas gracias!`;
 
       document.getElementById('tDetalleProductos').innerHTML = itemsHtml;
       document.getElementById('tTotal').innerText = `TOTAL: $${v.total.toLocaleString('es-AR')}`;
@@ -690,7 +722,6 @@
       }
     };
 
-    // Cierre por clic en el fondo (Overlay) de todos los modales
     const modales = ['modalCarritoFlotante', 'modalVentasJornada', 'modalTicketVentas'];
     modales.forEach(idModal => {
       const el = document.getElementById(idModal);
