@@ -1,99 +1,134 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
-  <title>Libro Diario - B. M. A. Artesanías</title>
+<style>
+  .libro-diario-wrapper {
+    width: 100%;
+  }
+  .ld-header-card { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 12px; 
+    border-bottom: 1.5px solid #e2e8f0; 
+    padding-bottom: 8px; 
+  }
+  .ld-header-card h2 { 
+    margin: 0; 
+    font-size: 1.8rem; 
+    color: #d9381e; 
+    font-weight: 800; 
+    line-height: 1.1; 
+    font-family: 'Segoe Script', 'Brush Script MT', cursive;
+  }
+  .ld-header-card img { 
+    width: 2.0rem; 
+    height: 2.0rem; 
+    object-fit: contain; 
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+  }
 
-  <style>
-    :root { --primary-color: #111827; }
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    
-    body { background: transparent; margin: 0; padding: 12px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-    
-    .container { background: transparent; width: 100%; max-width: 410px; padding: 0; }
-    .card-internal { background: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .ld-dia-banner { 
+    background: #f8fafc; 
+    color: #334155; 
+    padding: 10px; 
+    border-radius: 10px; 
+    font-weight: 700; 
+    font-size: 0.85rem; 
+    text-align: center; 
+    margin-bottom: 12px; 
+    border: 1.5px solid #e2e8f0; 
+    text-transform: capitalize; 
+  }
 
-    .dia-banner { background: #f1f5f9; color: #1e293b; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; margin-bottom: 15px; border: 1px solid #cbd5e1; text-transform: capitalize; }
+  .ld-kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+  .ld-kpi-card { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px 4px; text-align: center; }
+  .ld-kpi-title { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: #64748b; }
+  .ld-kpi-value { font-size: 1rem; font-weight: 800; color: #0f172a; margin-top: 3px; }
 
-    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
-    .kpi-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 4px; text-align: center; }
-    .kpi-title { font-size: 0.6rem; text-transform: uppercase; font-weight: bold; color: #64748b; }
-    .kpi-value { font-size: 0.9rem; font-weight: 800; color: #0f172a; margin-top: 2px; }
+  .ld-pagos-container { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+  .ld-pago-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; color: #334155; font-weight: 500; }
+  .ld-pago-row:last-child { border-bottom: none; }
+  .ld-pago-row strong { color: #0f172a; }
 
-    .pagos-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
-    .pago-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; }
-    .pago-row:last-child { border-bottom: none; }
+  .ld-btn-main { width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; margin-bottom: 8px; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: sans-serif; transition: background 0.2s; }
+  .ld-btn-registros { background: #475569; color: white; }
+  .ld-btn-registros:active { transform: scale(0.98); background: #334155; }
+  
+  /* Botón Imprimir Balance en Gris Plata */
+  .ld-btn-print { background: #cbd5e1; color: #0f172a; }
+  .ld-btn-print:active { transform: scale(0.98); background: #b8c2cc; }
 
-    .btn-main { width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; border: none; margin-bottom: 8px; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; }
-    .btn-registros { background: #475569; color: white; }
-    .btn-print { background: #1e293b; color: white; }
-    .btn-volver { background: #1e293b; color: white; }
-    .btn-volver img { width: 20px; height: 20px; }
+  /* Botón Volver con letras e ícono en Bermellón */
+  .ld-btn-volver { background: #1e293b; color: #d9381e; }
+  .ld-btn-volver:active { transform: scale(0.98); background: #0f172a; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
-    .modal-overlay.active { display: flex; }
-    .modal-container { background: white; width: 100%; max-width: 380px; border-radius: 16px; padding: 16px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-    
-    .lista-dias { overflow-y: auto; flex-grow: 1; margin-bottom: 10px; padding-right: 4px; }
-    .lista-dias::-webkit-scrollbar { width: 6px; }
-    .lista-dias::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+  .ld-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1100; padding: 16px; }
+  .ld-modal-overlay.active { display: flex; }
+  .ld-modal-container { background: white; width: 100%; max-width: 380px; border-radius: 16px; padding: 20px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); }
+  
+  .ld-lista-dias { overflow-y: auto; flex-grow: 1; margin-bottom: 12px; padding-right: 4px; max-height: 220px; }
+  .ld-lista-dias::-webkit-scrollbar { width: 6px; }
+  .ld-lista-dias::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-    .dia-row { display: flex; justify-content: space-between; padding: 10px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; margin-bottom: 6px; }
+  .ld-dia-row { display: flex; justify-content: space-between; padding: 10px 12px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.85rem; margin-bottom: 6px; color: #334155; font-weight: 600; }
+</style>
 
-    @media print {
-      body { padding: 0; background: white; }
-      .card-internal { box-shadow: none; border: none; padding: 0; }
-      .btn-main, .modal-overlay { display: none !important; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <div class="card-internal">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">📖 Libro Diario</h2>
-        <img src="icono.png" alt="Logo BMA" style="width: 32px; height: 32px; object-fit: contain;">
-      </div>
-      
-      <div class="dia-banner" id="txtDiaActual">Cargando...</div>
-
-      <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-title">Ventas</div><div class="kpi-value" id="lblDiaVentas">$0</div></div>
-        <div class="kpi-card"><div class="kpi-title">Gastos</div><div class="kpi-value" id="lblDiaGastos">$0</div></div>
-        <div class="kpi-card"><div class="kpi-title">Neto</div><div class="kpi-value" id="lblDiaNeto">$0</div></div>
-      </div>
-
-      <div class="pagos-container">
-        <div class="pago-row"><span>💵 Efectivo:</span> <strong id="lblDiaEfectivo">$0</strong></div>
-        <div class="pago-row"><span>🏦 Transferencia bancaria:</span> <strong id="lblDiaTransf">$0</strong></div>
-        <div class="pago-row"><span>📱 Mercado Pago:</span> <strong id="lblDiaMP">$0</strong></div>
-        <div class="pago-row"><span>🟢 Cuenta D. N. I.:</span> <strong id="lblDiaDNI">$0</strong></div>
-        <div class="pago-row"><span>🟠 Naranja X:</span> <strong id="lblDiaNaranja">$0</strong></div>
-        <div class="pago-row"><span>🔷 Otra:</span> <strong id="lblDiaOtra">$0</strong></div>
-      </div>
-
-      <button class="btn-main btn-registros" id="btnAbrirModal">📅 Ver Resumen Día por Día</button>
-      <button class="btn-main btn-print" onclick="window.print()">🖨️ Imprimir Balance</button>
-      <button class="btn-main btn-volver" onclick="window.cerrarVentanaDiarioGen()"><img src="volver.png" alt="Volver"> Volver al Menú</button>
+<div class="libro-diario-wrapper">
+  <div class="ld-header-card">
+    <div>
+      <h2>Libro Diario</h2>
+      <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Control de Caja</span>
     </div>
+    <img src="icono.png" alt="Logo BMA">
+  </div>
+  
+  <div class="ld-dia-banner" id="txtDiaActual">Cargando...</div>
+
+  <div class="ld-kpi-grid">
+    <div class="ld-kpi-card"><div class="ld-kpi-title">Ventas</div><div class="ld-kpi-value" id="lblDiaVentas">$0</div></div>
+    <div class="ld-kpi-card"><div class="ld-kpi-title">Gastos</div><div class="ld-kpi-value" id="lblDiaGastos">$0</div></div>
+    <div class="ld-kpi-card"><div class="ld-kpi-title">Neto</div><div class="ld-kpi-value" id="lblDiaNeto">$0</div></div>
   </div>
 
-  <div class="modal-overlay" id="modal-dias" onclick="if(event.target === this) window.cerrarModalDiario()">
-    <div class="modal-container">
-      <div class="modal-header">
-        <strong style="color:#0f172a;">Histórico Diario</strong> 
-        <button onclick="window.cerrarModalDiario()" style="border:none; background:none; font-size:1.2rem; font-weight:bold; cursor:pointer; color:#64748b;">✕</button>
-      </div>
-      <div id="listaDias" class="lista-dias"></div>
-      <button class="btn-main btn-registros" style="margin-bottom:0;" onclick="window.cerrarModalDiario()">Cerrar</button>
-    </div>
+  <div class="ld-pagos-container">
+    <div class="ld-pago-row"><span>Efectivo:</span> <strong id="lblDiaEfectivo">$0</strong></div>
+    <div class="ld-pago-row"><span>Transferencia:</span> <strong id="lblDiaTransf">$0</strong></div>
+    <div class="ld-pago-row"><span>Mercado Pago:</span> <strong id="lblDiaMP">$0</strong></div>
+    <div class="ld-pago-row"><span>Cuenta D. N. I.:</span> <strong id="lblDiaDNI">$0</strong></div>
+    <div class="ld-pago-row"><span>Naranja X:</span> <strong id="lblDiaNaranja">$0</strong></div>
+    <div class="ld-pago-row"><span>Otra:</span> <strong id="lblDiaOtra">$0</strong></div>
   </div>
 
-  <script>
+  <button class="ld-btn-main ld-btn-registros" id="btnAbrirModalDiario">Ver Resumen Día por Día</button>
+  <button class="ld-btn-main ld-btn-print" onclick="window.print()">Imprimir Balance</button>
+  <button class="ld-btn-main ld-btn-volver" onclick="window.cerrarVentanaDiarioGen()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d9381e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span style="color: #d9381e;">Volver al Menú</span>
+  </button>
+</div>
+
+<!-- Modal secundario para día por día actualizado -->
+<div class="ld-modal-overlay" id="modal-dias-historico" onclick="if(event.target === this) window.cerrarModalDiarioHist()">
+  <div class="ld-modal-container">
+    <div class="ld-header-card">
+      <div>
+        <h2>Histórico Diario</h2>
+        <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Resumen día por día</span>
+      </div>
+      <img src="icono.png" alt="Logo BMA">
+    </div>
+    
+    <div id="listaDiasHistorico" class="ld-lista-dias"></div>
+    
+    <button class="ld-btn-main ld-btn-print" onclick="window.print()">Imprimir / Guardar PDF</button>
+    <button class="ld-btn-main ld-btn-volver" onclick="window.cerrarModalDiarioHist()" style="margin-bottom:0;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d9381e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span style="color: #d9381e;">Volver</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  (function() {
     window.cerrarVentanaDiarioGen = function() {
       if (typeof cerrarModalDinamico === 'function') {
         cerrarModalDinamico();
@@ -102,118 +137,114 @@
       }
     };
 
-    (function() {
-      function obtenerFechaLocal() {
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-      }
+    function obtenerFechaLocal() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
 
-      function formatearMoneda(val) {
-        return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val || 0);
-      }
+    function formatearMoneda(val) {
+      return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val || 0);
+    }
 
-      function obtenerDatosBma(clave, valorDefecto = null) {
-        try {
-          const item = localStorage.getItem(clave);
-          return item ? JSON.parse(item) : valorDefecto;
-        } catch (e) {
-          console.error(`Error al leer ${clave}:`, e);
-          return valorDefecto;
-        }
+    function obtenerDatosBma(clave, valorDefecto = null) {
+      try {
+        const item = localStorage.getItem(clave);
+        return item ? JSON.parse(item) : valorDefecto;
+      } catch (e) {
+        console.error(`Error al leer ${clave}:`, e);
+        return valorDefecto;
       }
+    }
 
-      const modal = document.getElementById('modal-dias');
-      const fechaSesion = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
+    const modalHistorico = document.getElementById('modal-dias-historico');
+    const fechaSesion = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
+    
+    const partesFecha = fechaSesion.split('-');
+    if (partesFecha.length === 3) {
+      const objetoFecha = new Date(partesFecha[0], partesFecha[1] - 1, partesFecha[2]);
+      const nombreDia = objetoFecha.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const elBanner = document.getElementById('txtDiaActual');
+      if (elBanner) elBanner.innerText = nombreDia;
+    }
+
+    window.cerrarModalDiarioHist = function() {
+      if (modalHistorico) modalHistorico.classList.remove('active');
+    };
+
+    function cargarDatosDiario() {
+      const ventas = obtenerDatosBma('bma_ventas', []);
+      const ventasDia = ventas.filter(v => v.fecha === fechaSesion);
+
+      const cajachica = obtenerDatosBma('bma_caja_chica', []);
+      const movsDia = cajachica.filter(m => m.fecha === fechaSesion && (m.tipo && m.tipo.toLowerCase() === 'egreso'));
+
+      const totalV = ventasDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+      const totalG = movsDia.reduce((s, m) => s + (parseFloat(m.monto) || 0), 0);
       
-      const partesFecha = fechaSesion.split('-');
-      if (partesFecha.length === 3) {
-        const objetoFecha = new Date(partesFecha[0], partesFecha[1] - 1, partesFecha[2]);
-        const nombreDia = objetoFecha.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        const elBanner = document.getElementById('txtDiaActual');
-        if (elBanner) elBanner.innerText = nombreDia;
-      }
+      const lblV = document.getElementById('lblDiaVentas');
+      const lblG = document.getElementById('lblDiaGastos');
+      const lblN = document.getElementById('lblDiaNeto');
 
-      window.cerrarModalDiario = function() {
-        if (modal) modal.classList.remove('active');
-      };
+      if (lblV) lblV.innerText = `$${formatearMoneda(totalV)}`;
+      if (lblG) lblG.innerText = `$${formatearMoneda(totalG)}`;
+      if (lblN) lblN.innerText = `$${formatearMoneda(totalV - totalG)}`;
+      
+      const calcularPorPago = (metodos) => ventasDia
+        .filter(v => {
+          if (!v.pago) return false;
+          const p = v.pago.toLowerCase();
+          return metodos.some(m => p.includes(m.toLowerCase()));
+        })
+        .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
 
-      function cargarDatos() {
+      const metodosDefinidos = ['efectivo', 'transferencia', 'mercado pago', 'mp', 'cuenta dni', 'dni', 'naranja'];
+      
+      const totalEf = calcularPorPago(['efectivo']);
+      const totalTr = calcularPorPago(['transferencia']);
+      const totalMP = calcularPorPago(['mercado pago', 'mp']);
+      const totalDNI = calcularPorPago(['cuenta dni', 'dni']);
+      const totalNar = calcularPorPago(['naranja']);
+
+      const totalOtra = ventasDia
+        .filter(v => {
+          if (!v.pago) return true;
+          const p = v.pago.toLowerCase();
+          return !metodosDefinidos.some(m => p.includes(m));
+        })
+        .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+
+      if (document.getElementById('lblDiaEfectivo')) document.getElementById('lblDiaEfectivo').innerText = `$${formatearMoneda(totalEf)}`;
+      if (document.getElementById('lblDiaTransf')) document.getElementById('lblDiaTransf').innerText = `$${formatearMoneda(totalTr)}`;
+      if (document.getElementById('lblDiaMP')) document.getElementById('lblDiaMP').innerText = `$${formatearMoneda(totalMP)}`;
+      if (document.getElementById('lblDiaDNI')) document.getElementById('lblDiaDNI').innerText = `$${formatearMoneda(totalDNI)}`;
+      if (document.getElementById('lblDiaNaranja')) document.getElementById('lblDiaNaranja').innerText = `$${formatearMoneda(totalNar)}`;
+      if (document.getElementById('lblDiaOtra')) document.getElementById('lblDiaOtra').innerText = `$${formatearMoneda(totalOtra)}`;
+    }
+
+    const btnAbrirHistorico = document.getElementById('btnAbrirModalDiario');
+    if (btnAbrirHistorico) {
+      btnAbrirHistorico.addEventListener('click', () => {
+        if (modalHistorico) modalHistorico.classList.add('active');
         const ventas = obtenerDatosBma('bma_ventas', []);
-        const ventasDia = ventas.filter(v => v.fecha === fechaSesion);
-
-        const cajachica = obtenerDatosBma('bma_caja_chica', []);
-        const movsDia = cajachica.filter(m => m.fecha === fechaSesion && (m.tipo && m.tipo.toLowerCase() === 'egreso'));
-
-        const totalV = ventasDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
-        const totalG = movsDia.reduce((s, m) => s + (parseFloat(m.monto) || 0), 0);
+        const dias = [...new Set(ventas.map(v => v.fecha))].sort().reverse();
         
-        const lblV = document.getElementById('lblDiaVentas');
-        const lblG = document.getElementById('lblDiaGastos');
-        const lblN = document.getElementById('lblDiaNeto');
-
-        if (lblV) lblV.innerText = `$${formatearMoneda(totalV)}`;
-        if (lblG) lblG.innerText = `$${formatearMoneda(totalG)}`;
-        if (lblN) lblN.innerText = `$${formatearMoneda(totalV - totalG)}`;
-        
-        const calcularPorPago = (metodos) => ventasDia
-          .filter(v => {
-            if (!v.pago) return false;
-            const p = v.pago.toLowerCase();
-            return metodos.some(m => p.includes(m.toLowerCase()));
-          })
-          .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
-
-        const metodosDefinidos = ['efectivo', 'transferencia', 'mercado pago', 'mp', 'cuenta dni', 'dni', 'naranja'];
-        
-        const totalEf = calcularPorPago(['efectivo']);
-        const totalTr = calcularPorPago(['transferencia']);
-        const totalMP = calcularPorPago(['mercado pago', 'mp']);
-        const totalDNI = calcularPorPago(['cuenta dni', 'dni']);
-        const totalNar = calcularPorPago(['naranja']);
-
-        // "Otra" captura lo que no coincida con los principales
-        const totalOtra = ventasDia
-          .filter(v => {
-            if (!v.pago) return true;
-            const p = v.pago.toLowerCase();
-            return !metodosDefinidos.some(m => p.includes(m));
-          })
-          .reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
-
-        if (document.getElementById('lblDiaEfectivo')) document.getElementById('lblDiaEfectivo').innerText = `$${formatearMoneda(totalEf)}`;
-        if (document.getElementById('lblDiaTransf')) document.getElementById('lblDiaTransf').innerText = `$${formatearMoneda(totalTr)}`;
-        if (document.getElementById('lblDiaMP')) document.getElementById('lblDiaMP').innerText = `$${formatearMoneda(totalMP)}`;
-        if (document.getElementById('lblDiaDNI')) document.getElementById('lblDiaDNI').innerText = `$${formatearMoneda(totalDNI)}`;
-        if (document.getElementById('lblDiaNaranja')) document.getElementById('lblDiaNaranja').innerText = `$${formatearMoneda(totalNar)}`;
-        if (document.getElementById('lblDiaOtra')) document.getElementById('lblDiaOtra').innerText = `$${formatearMoneda(totalOtra)}`;
-      }
-
-      const btnAbrir = document.getElementById('btnAbrirModal');
-      if (btnAbrir) {
-        btnAbrir.addEventListener('click', () => {
-          if (modal) modal.classList.add('active');
-          const ventas = obtenerDatosBma('bma_ventas', []);
-          const dias = [...new Set(ventas.map(v => v.fecha))].sort().reverse();
-          
-          let html = '';
-          dias.forEach(d => {
-            const vDia = ventas.filter(v => v.fecha === d);
-            const total = vDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
-            const partes = d.split('-');
-            const fechaFormat = partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : d;
-            html += `<div class="dia-row"><span>📅 ${fechaFormat}</span> <strong>$${formatearMoneda(total)}</strong></div>`;
-          });
-          
-          const lista = document.getElementById('listaDias');
-          if (lista) lista.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:15px;">Sin ventas registradas.</p>';
+        let html = '';
+        dias.forEach(d => {
+          const vDia = ventas.filter(v => v.fecha === d);
+          const total = vDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+          const partes = d.split('-');
+          const fechaFormat = partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : d;
+          html += `<div class="ld-dia-row"><span>${fechaFormat}</span> <strong>$${formatearMoneda(total)}</strong></div>`;
         });
-      }
+        
+        const lista = document.getElementById('listaDiasHistorico');
+        if (lista) lista.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:15px;">Sin ventas registradas.</p>';
+      });
+    }
 
-      cargarDatos();
-    })();
-  </script>
-</body>
-</html>
+    cargarDatosDiario();
+  })();
+</script>

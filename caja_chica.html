@@ -3,20 +3,28 @@
     box-sizing: border-box; 
     font-family: system-ui, -apple-system, sans-serif; 
   }
+  
+  .caja-container-box {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 4px;
+  }
+
   .caja-container-box label { 
-    font-size: 11px; 
+    font-size: 14px; 
     font-weight: 700; 
-    color: #475569; 
+    color: #334155; 
     display: block; 
     margin-top: 10px; 
     text-align: left; 
     text-transform: uppercase; 
-    letter-spacing: 0.5px; 
   }
+  
   .caja-container-box input, .caja-container-box select { 
     width: 100%; 
-    padding: 10px; 
-    margin-top: 4px; 
+    padding: 12px 14px; 
+    margin-top: 5px; 
     border: 1.5px solid #cbd5e1; 
     border-radius: 10px; 
     font-size: 14px; 
@@ -25,26 +33,32 @@
     outline: none; 
   }
   
+  .caja-container-box input:focus, .caja-container-box select:focus {
+    border-color: #3b82f6;
+    background: #fff;
+  }
+  
   .caja-btn-main { 
-    background: #0f172a; 
-    color: white; 
-    border: none; 
-    padding: 12px; 
-    border-radius: 8px; 
-    font-weight: 700; 
+    background: #e2e8f0; 
+    color: #1e293b; 
+    border: 1.5px solid #cbd5e1; 
+    padding: 13px; 
+    border-radius: 10px; 
+    font-weight: bold; 
+    font-size: 1rem; 
     cursor: pointer; 
     width: 100%; 
-    margin-top: 8px; 
-    min-height: 44px; 
+    margin-top: 14px; 
   }
+  
   .caja-btn-secundario { 
-    background: #334155; 
-    color: white; 
-    border: none; 
+    background: #0f172a; 
+    color: #d9381e; 
+    border: 1.5px solid #d9381e; 
     padding: 12px; 
     width: 100%; 
     border-radius: 10px; 
-    font-weight: bold; 
+    font-weight: 800; 
     font-size: 0.95rem; 
     margin-top: 10px; 
     cursor: pointer; 
@@ -53,7 +67,33 @@
     justify-content: center; 
     gap: 6px; 
     text-decoration: none; 
-    min-height: 44px; 
+  }
+  
+  .caja-btn-historial {
+    background: #475569; 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    width: 100%; 
+    border-radius: 10px; 
+    font-weight: bold; 
+    font-size: 1rem; 
+    margin-top: 8px; 
+    cursor: pointer;
+  }
+  
+  .caja-btn-print { 
+    background: #64748b; 
+    color: white; 
+    border: none; 
+    padding: 11px; 
+    width: 100%; 
+    border-radius: 10px; 
+    font-weight: bold; 
+    font-size: 0.9rem; 
+    margin-top: 8px; 
+    cursor: pointer; 
+    box-shadow: 0 2px 8px rgba(100,116,139,0.3); 
   }
   
   .caja-card { 
@@ -63,16 +103,18 @@
     padding: 12px; 
     margin-top: 10px; 
   }
+  
   .caja-mov-item { 
     background: #fff; 
-    border: 1px solid #e2e8f0; 
-    padding: 8px 10px; 
-    border-radius: 8px; 
-    margin-bottom: 6px; 
+    border: 1.5px solid #e2e8f0; 
+    padding: 10px 12px; 
+    border-radius: 10px; 
+    margin-bottom: 8px; 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
   }
+  
   .caja-btn-del { 
     background: #fee2e2; 
     color: #ef4444; 
@@ -81,33 +123,34 @@
     border-radius: 6px; 
     font-weight: bold; 
     cursor: pointer; 
-    font-size: 0.8rem; 
-    min-height: 36px; 
+    font-size: 0.85rem; 
   }
 
-  /* Modal Flotante */
+  /* Modal Flotante Ajustado */
   .caja-modal-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(3px);
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(15, 23, 42, 0.75);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    padding: 16px;
+    padding: 12px;
   }
 
   .caja-modal-card {
     background: #ffffff;
     width: 100%;
-    max-width: 420px;
-    max-height: 80vh;
+    max-width: 380px;
+    max-height: 85vh;
     border-radius: 16px;
     padding: 16px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   }
 
   .caja-scroll-list {
@@ -115,11 +158,13 @@
     overflow-y: auto;
     margin: 10px 0;
     padding-right: 4px;
+    max-height: 250px;
   }
 
   .caja-scroll-list::-webkit-scrollbar {
     width: 6px;
   }
+  
   .caja-scroll-list::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
@@ -127,12 +172,12 @@
 </style>
 
 <div class="caja-container-box">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 2px;">
-    <div style="display: flex; flex-direction: column; justify-content: space-between; height: 44px;">
-      <h3 style="font-size: 1.05rem; color: #0f172a; font-weight: 800; margin: 0; line-height: 1;">💵 Caja Chica</h3>
-      <div id="lblFechaTrabajoCaja" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <h3 style="font-size: 1.7rem; color: #d9381e; font-weight: 800; margin: 0; line-height: 1.1; font-family: 'Segoe Script', cursive;">Caja Chica</h3>
+      <div class="lblFechaTrabajoCaja" style="font-size: 14px; color: #64748b; font-weight: 700; line-height: 1.2;">Fecha de Trabajo: -</div>
     </div>
-    <button onclick="window.cerrarVentanaModalCajaGen()" style="background: none; border: none; cursor: pointer; padding: 0;">
+    <button onclick="window.cerrarVentanaModalCajaGen()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
       <img src="icono.png" alt="Logo BMA" style="width: 44px; height: 44px; object-fit: contain;">
     </button>
   </div>
@@ -141,25 +186,32 @@
   <div id="cajaBloqueSaldoInicial" class="caja-card"></div>
 
   <!-- Total en Caja -->
-  <div style="background: #0f172a; color: white; border-radius: 12px; padding: 12px; margin-top: 8px; text-align: center;">
-    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">Saldo Total en Caja</span>
-    <div id="cajaSaldoActual" style="font-size: 1.4rem; font-weight: 800; margin-top: 2px;">$0</div>
+  <div style="background: #e2e8f0; border: 2px solid #d9381e; border-radius: 12px; padding: 14px; margin-top: 10px; text-align: center;">
+    <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: #d9381e;">Saldo Total en Caja</span>
+    <div id="cajaSaldoActual" style="font-size: 1.6rem; font-weight: 800; margin-top: 2px; color: #d9381e;">$0</div>
   </div>
 
   <!-- Registro de Nuevo Movimiento -->
   <div class="caja-card">
-    <strong style="font-size: 0.85rem; color: #0f172a; display: block; margin-bottom: 6px;">Nuevo Movimiento</strong>
+    <strong style="font-size: 14px; color: #0f172a; display: block; margin-bottom: 4px; text-transform: uppercase;">Nuevo Movimiento</strong>
+    
+    <label style="margin-top: 4px;">Tipo de Movimiento:</label>
     <select id="cajaTipo">
       <option value="Ingreso">📥 Ingreso</option>
       <option value="Egreso">📤 Egreso</option>
     </select>
-    <input type="text" id="cajaConcepto" placeholder="Concepto (ej: Vuelto, Gasto)">
-    <input type="number" id="cajaMonto" placeholder="Monto ($)" step="any">
-    <button class="caja-btn-main" style="background:#475569;" onclick="window.agregarMovimientoCaja()">➕ Registrar Movimiento</button>
+    
+    <label>Concepto:</label>
+    <input type="text" id="cajaConcepto" placeholder="Ej: Vuelto, Gasto de insumos...">
+    
+    <label>Monto ($):</label>
+    <input type="number" id="cajaMonto" placeholder="0.00" step="any">
+    
+    <button class="caja-btn-main" onclick="window.agregarMovimientoCaja()">➕ Registrar Movimiento</button>
   </div>
 
   <!-- Botón abrir Historial Flotante -->
-  <button class="caja-btn-secundario" style="background:#1e293b;" onclick="window.abrirModalMovimientos()">
+  <button class="caja-btn-historial" onclick="window.abrirModalMovimientos()">
     📋 Ver Historial de Movimientos
   </button>
 
@@ -170,15 +222,23 @@
 <div id="modalMovimientosCaja" class="caja-modal-overlay" onclick="if(event.target === this) window.cerrarModalMovimientos()">
   <div class="caja-modal-card">
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
-      <strong style="font-size: 1rem; color: #0f172a;">📋 Movimientos del Día</strong>
-      <button onclick="window.cerrarModalMovimientos()" style="background:none; border:none; font-size: 1.2rem; cursor:pointer; color:#64748b;">✕</button>
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <h3 style="font-size: 1.4rem; color: #d9381e; font-weight: 800; margin: 0; font-family: 'Segoe Script', cursive; line-height: 1.1;">Movimientos del Día</h3>
+        <div class="lblFechaTrabajoCaja" style="font-size: 12px; color: #64748b; font-weight: 700; line-height: 1.2;">Fecha de Trabajo: -</div>
+      </div>
+      <button onclick="window.cerrarModalMovimientos()" title="Volver" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+        <img src="icono.png" alt="Logo BMA" style="width: 36px; height: 36px; object-fit: contain;">
+      </button>
     </div>
 
     <div id="listaMovimientosCajaModal" class="caja-scroll-list"></div>
 
-    <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: auto;">
-      <button class="caja-btn-main" style="background:#0f172a; margin: 0;" onclick="window.cerrarModalMovimientos()">
-        Volver
+    <div style="border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: auto;">
+      <button class="caja-btn-print" onclick="window.imprimirCajaChica()">
+        🖨️ Imprimir / Guardar PDF
+      </button>
+      <button class="caja-btn-historial" style="margin-top: 6px; color: #d9381e;" onclick="window.cerrarModalMovimientos()">
+        ⬅️ Volver
       </button>
     </div>
   </div>
@@ -228,14 +288,20 @@
     let movimientosCajaList = obtenerDatosBma('bma_caja_chica', []);
     let saldoInicialData = obtenerDatosBma('bma_saldo_inicial_data', {});
 
+    function formatearFechaStock(fechaStr) {
+      if (!fechaStr) return '';
+      const partes = fechaStr.split('-');
+      return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
+    }
+
     window.habilitarEdicionSaldo = function() {
       const bloque = document.getElementById('cajaBloqueSaldoInicial');
       if (!bloque) return;
       bloque.innerHTML = `
-        <label>Saldo Inicial de hoy ($):</label>
-        <div style="display: flex; gap: 8px;">
+        <label style="margin-top:0;">Saldo Inicial de hoy ($):</label>
+        <div style="display: flex; gap: 8px; margin-top: 4px;">
           <input type="number" id="cajaInputSaldo" placeholder="Ej: 5000" style="margin-top:0;" step="any">
-          <button class="caja-btn-main" style="margin-top:0; width: auto; padding: 0 16px;" onclick="window.guardarSaldoInicial()">OK</button>
+          <button class="caja-btn-main" style="margin-top:0; width: auto; padding: 0 16px; border: 1.5px solid #000000;" onclick="window.guardarSaldoInicial()">OK</button>
         </div>
       `;
     };
@@ -279,12 +345,10 @@
     };
 
     window.renderizarCajaChica = function() {
-      const lblFecha = document.getElementById('lblFechaTrabajoCaja');
-      if (lblFecha) {
-        const partes = fechaSesion.split('-');
-        const fechaFmt = partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaSesion;
-        lblFecha.innerText = `Fecha: ${fechaFmt}`;
-      }
+      const lblsFecha = document.querySelectorAll('.lblFechaTrabajoCaja');
+      lblsFecha.forEach(el => {
+        el.innerText = 'Fecha de Trabajo: ' + formatearFechaStock(fechaSesion);
+      });
       
       const saldoIni = saldoInicialData[fechaSesion] !== undefined ? saldoInicialData[fechaSesion] : null;
       const bloqueSaldo = document.getElementById('cajaBloqueSaldoInicial');
@@ -292,9 +356,9 @@
       if (bloqueSaldo) {
         if (saldoIni !== null) {
           bloqueSaldo.innerHTML = `
-            <p style="font-size:0.85rem; text-align:center; margin:2px 0; color:#1e293b;">
-               Saldo inicial fijado: <strong>$${formatearMoneda(saldoIni)}</strong> 
-               <button onclick="window.habilitarEdicionSaldo()" style="background:none; border:none; color:#3b82f6; text-decoration:underline; cursor:pointer; font-size:0.8rem; font-weight:700; margin-left:6px;">Editar</button>
+            <p style="font-size:14px; text-align:center; margin:2px 0; color:#1e293b; font-weight: bold;">
+               Saldo inicial fijado: <span style="color:#d9381e;">$${formatearMoneda(saldoIni)}</span> 
+               <button onclick="window.habilitarEdicionSaldo()" style="background:none; border:none; color:#3b82f6; text-decoration:underline; cursor:pointer; font-size:13px; font-weight:700; margin-left:6px;">Editar</button>
             </p>`;
         } else {
           window.habilitarEdicionSaldo();
@@ -333,11 +397,11 @@
         html += `
           <div class="caja-mov-item">
             <div>
-              <strong style="font-size:0.85rem; color:#0f172a;">${m.concepto}</strong><br>
-              <small style="color:#64748b;">${m.tipo}</small>
+              <strong style="font-size:14px; color:#0f172a;">${m.concepto}</strong><br>
+              <small style="color:#64748b; font-size:12px; font-weight:bold;">${m.tipo}</small>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-weight:700; color:${m.tipo === 'Ingreso' ? '#16a34a' : '#dc2626'}">
+              <span style="font-weight:800; font-size:14px; color:${m.tipo === 'Ingreso' ? '#16a34a' : '#dc2626'}">
                 ${m.tipo === 'Ingreso' ? '+' : '-'}$${formatearMoneda(m.monto)}
               </span>
               <button class="caja-btn-del" onclick="window.eliminarMovimientoCaja(${m.id})">✕</button>
@@ -345,10 +409,93 @@
           </div>`;
       });
 
-      listaContainer.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top: 20px;">Sin movimientos hoy.</p>';
+      listaContainer.innerHTML = html || '<p style="text-align:center; color:#94a3b8; font-size:14px; margin-top: 20px;">Sin movimientos hoy.</p>';
     };
 
-    // Render inicial
+    window.imprimirCajaChica = function() {
+      const movimientosJornada = movimientosCajaList.filter(m => m.fecha === fechaSesion);
+      const saldoIni = saldoInicialData[fechaSesion] !== undefined ? saldoInicialData[fechaSesion] : 0;
+      
+      let saldoCalculado = saldoIni;
+      movimientosJornada.forEach(m => {
+        saldoCalculado += (m.tipo === 'Ingreso' ? m.monto : -m.monto);
+      });
+
+      let filas = movimientosJornada.map((m, idx) => {
+        return `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #cbd5e1; text-align: center;">${idx + 1}</td>
+            <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: bold;">${m.concepto}</td>
+            <td style="padding: 8px; border: 1px solid #cbd5e1; text-align: center;">${m.tipo}</td>
+            <td style="padding: 8px; border: 1px solid #cbd5e1; text-align: right; color: ${m.tipo === 'Ingreso' ? '#16a34a' : '#dc2626'}; font-weight: bold;">
+              ${m.tipo === 'Ingreso' ? '+' : '-'}$${formatearMoneda(m.monto)}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      if (filas === '') {
+        filas = `<tr><td colspan="4" style="padding: 15px; border: 1px solid #cbd5e1; text-align: center; color: #94a3b8;">No hay movimientos registrados hoy.</td></tr>`;
+      }
+
+      const fechaTxt = document.querySelector('.lblFechaTrabajoCaja')?.innerText || '';
+
+      const htmlPrint = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Caja Chica - BMA</title>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; color: #1e293b; }
+            h2 { color: #d9381e; margin-bottom: 4px; font-size: 1.5rem; }
+            .sub { color: #64748b; font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+            .resumen { background: #f8fafc; border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+            table { width: 100%; border-collapse: collapse; font-size: 14px; }
+            th { background: #0f172a; color: white; padding: 8px; text-align: left; border: 1px solid #0f172a; }
+            @media print {
+              @page { margin: 1cm; }
+            }
+          </style>
+        </head>
+        <body>
+          <h2>Caja Chica BMA</h2>
+          <div class="sub">${fechaTxt}</div>
+          <div class="resumen">
+            <div>Saldo Inicial: <strong>$${formatearMoneda(saldoIni)}</strong></div>
+            <div style="margin-top: 4px; font-size: 1.1rem; font-weight: bold; color: #0f172a;">Saldo Total en Caja: $${formatearMoneda(saldoCalculado)}</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 30px; text-align: center;">#</th>
+                <th>Concepto</th>
+                <th style="text-align: center;">Tipo</th>
+                <th style="text-align: right;">Monto ($)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filas}
+            </tbody>
+          </table>
+          <script>
+            window.onload = function() {
+              window.print();
+              setTimeout(function() { window.close(); }, 500);
+            };
+          <\/script>
+        </body>
+        </html>
+      `;
+
+      const win = window.open('', '_blank');
+      if (win) {
+        win.document.write(htmlPrint);
+        win.document.close();
+      } else {
+        alert('Por favor, permití las ventanas emergentes en el navegador para imprimir o guardar como PDF.');
+      }
+    };
+
     window.renderizarCajaChica();
   })();
 </script>

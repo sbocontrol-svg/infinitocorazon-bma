@@ -7,34 +7,79 @@
   <title>Cierre Z y Auditoría - B. M. A. Artesanías</title>
 
   <style>
-    :root { --primary-color: #111827; }
     * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
     
-    body { background: transparent; margin: 0; padding: 12px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+    .seccion-box { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
     
-    .container { background: transparent; width: 100%; max-width: 410px; padding: 0; }
-    .card-internal { background: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    /* Frame vidrioso gris tenue con marco rojo bermillón */
+    .seccion-resumen {
+      background: rgba(241, 245, 249, 0.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 2px solid #d9381e;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(217, 56, 30, 0.1);
+    }
+    .seccion-resumen .seccion-titulo { color: #d9381e !important; }
+    .seccion-resumen span { color: #334155 !important; }
+    .seccion-resumen strong { color: #0f172a !important; }
 
-    .dia-banner { background: #f1f5f9; color: #1e293b; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; text-align: center; margin-bottom: 12px; border: 1px solid #cbd5e1; text-transform: capitalize; }
+    .seccion-titulo { font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; }
 
-    .seccion-box { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 12px; }
-    .seccion-titulo { font-size: 0.85rem; font-weight: 800; color: #0f172a; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .lista-scroll { max-height: 140px; overflow-y: auto; padding-right: 4px; }
+    .lista-scroll::-webkit-scrollbar { width: 6px; }
+    .lista-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-    .lista-scroll { max-height: 140px; overflow-y: auto; }
-    .item-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; padding: 5px 4px; border-bottom: 1px solid #e2e8f0; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 4px; border-bottom: 1px solid #e2e8f0; color: #1e293b; }
     .item-row:last-child { border-bottom: none; }
 
-    .badge-stock { padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 0.7rem; background: #e2e8f0; color: #334155; }
+    .badge-stock { padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 12px; background: #e2e8f0; color: #334155; }
 
-    .btn-main { width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; border: none; margin-bottom: 6px; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; }
-    .btn-print { background: #1e293b; color: white; }
-    .btn-volver { background: #334155; color: white; }
-    .btn-volver img { width: 20px; height: 20px; }
+    .btn-main { width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; border: none; margin-top: 8px; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn-print { background: #475569; color: white; box-shadow: 0 2px 8px rgba(71,85,105,0.3); }
+    .btn-ticket-view { background: #cbd5e1; color: #0f172a; border: 1.5px solid #94a3b8; font-weight: 800; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .btn-volver { background: #0f172a; color: #d9381e; border: 1.5px solid #d9381e; font-weight: 800; }
 
-    /* Ocultar botones e interfaz innecesaria al exportar/imprimir en PDF */
+    /* Modal Estilo Ticket */
+    .caja-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 12px;
+    }
+
+    .caja-modal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 380px;
+      max-height: 85vh;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .ticket-papel {
+      background: #fffefb;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: #1e293b;
+      line-height: 1.4;
+    }
+
     @media print {
       body { padding: 0; background: white; }
-      .card-internal { box-shadow: none; border: none; padding: 0; }
       .btn-main, .no-print { display: none !important; }
       .lista-scroll { max-height: none; overflow: visible; }
     }
@@ -42,53 +87,72 @@
 </head>
 <body>
 
-  <div class="container">
-    <div class="card-internal">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <h2 style="margin: 0; font-size: 1.1rem; color: #1e293b;">⚡ Cierre Z & Auditoría</h2>
-        <button class="no-print" onclick="window.cerrarVentanaModalCierreZGen()" style="background:none; border:none; padding:0; cursor:pointer;">
-          <img src="icono.png" alt="Icono BMA" style="width: 32px; height: 32px; object-fit: contain;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <h3 style="font-size: 1.7rem; color: #d9381e; font-weight: 800; margin: 0; line-height: 1.1; font-family: 'Segoe Script', cursive;">Cierre Z</h3>
+      <div id="txtFechaCierre" style="font-size: 14px; color: #64748b; font-weight: 700; line-height: 1.2; text-transform: capitalize;">Fecha de Trabajo: -</div>
+    </div>
+    <button class="no-print" onclick="window.cerrarVentanaModalCierreZGen()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+      <img src="icono.png" alt="Logo BMA" style="width: 44px; height: 44px; object-fit: contain;">
+    </button>
+  </div>
+
+  <!-- RESUMEN DE CAJA -->
+  <div class="seccion-resumen">
+    <div class="seccion-titulo">💵 Resumen del Día</div>
+    <div style="font-size: 14px; display: flex; justify-content: space-between; padding: 4px 0;">
+      <span>Total Vendido:</span> <strong id="lblCierreVentas">$0</strong>
+    </div>
+    <div style="font-size: 14px; display: flex; justify-content: space-between; padding: 4px 0;">
+      <span>Operaciones:</span> <strong id="lblCierreOps">0</strong>
+    </div>
+  </div>
+
+  <!-- AUDITORÍA DE VENTAS POR ARTÍCULO -->
+  <div class="seccion-box">
+    <div class="seccion-titulo">
+      <span>📊 Artículos Vendidos</span>
+      <span id="lblTotalUnidades" style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: none;">0 u. total</span>
+    </div>
+    <div class="lista-scroll" id="listaVentasArticulos"></div>
+  </div>
+
+  <!-- AUDITORÍA DE STOCK RESTANTE -->
+  <div class="seccion-box">
+    <div class="seccion-titulo">
+      <span>📦 Stock Restante</span>
+    </div>
+    <div class="lista-scroll" id="listaAuditoriaStock"></div>
+  </div>
+
+  <button class="btn-main btn-ticket-view" onclick="window.abrirModalTicketZ()">🧾 Ver Cierre Z en Formato Ticket</button>
+  <button class="btn-main btn-print" onclick="window.print()">📄 Guardar Cierre / Exportar PDF</button>
+  <button onclick="window.cerrarVentanaModalCierreZGen()" class="btn-main btn-volver no-print">
+    Volver al Menú
+  </button>
+
+  <!-- Modal Vista Ticket Cierre Z -->
+  <div id="modalTicketZ" class="caja-modal-overlay" onclick="if(event.target === this) window.cerrarModalTicketZ()">
+    <div class="caja-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <h3 style="font-size: 1.4rem; color: #d9381e; font-weight: 800; margin: 0; font-family: 'Segoe Script', cursive; line-height: 1.1;">Reporte Ticket Z</h3>
+          <div class="txtFechaCierreSub" style="font-size: 12px; color: #64748b; font-weight: 700; line-height: 1.2;">-</div>
+        </div>
+        <button onclick="window.cerrarModalTicketZ()" title="Volver" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+          <img src="icono.png" alt="Logo BMA" style="width: 36px; height: 36px; object-fit: contain;">
         </button>
       </div>
-      
-      <div class="dia-banner" id="txtFechaCierre">Cargando...</div>
 
-      <!-- RESUMEN DE CAJA -->
-      <div class="seccion-box">
-        <div class="seccion-titulo">💵 Resumen de Caja del Día</div>
-        <div style="font-size: 0.8rem; display: flex; justify-content: space-between; padding: 3px 0;">
-          <span>Total Vendido:</span> <strong id="lblCierreVentas">$0</strong>
-        </div>
-        <div style="font-size: 0.8rem; display: flex; justify-content: space-between; padding: 3px 0;">
-          <span>Operaciones:</span> <strong id="lblCierreOps">0</strong>
-        </div>
+      <div class="lista-scroll" style="max-height: 310px; margin: 10px 0;">
+        <div id="contenidoTicketZ" class="ticket-papel"></div>
       </div>
 
-      <!-- AUDITORÍA DE VENTAS POR ARTÍCULO -->
-      <div class="seccion-box">
-        <div class="seccion-titulo">
-          <span>📊 Artículos Vendidos Hoy</span>
-          <span id="lblTotalUnidades" style="font-size: 0.75rem; color: #475569; font-weight: normal;">0 u. total</span>
-        </div>
-        <div class="lista-scroll" id="listaVentasArticulos">
-          <!-- Se llena por JS -->
-        </div>
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: auto;">
+        <button class="btn-main btn-volver" style="margin: 0;" onclick="window.cerrarModalTicketZ()">
+          ⬅️ Volver al Cierre Z
+        </button>
       </div>
-
-      <!-- AUDITORÍA DE STOCK RESTANTE -->
-      <div class="seccion-box">
-        <div class="seccion-titulo">
-          <span>📦 Stock Restante</span>
-        </div>
-        <div class="lista-scroll" id="listaAuditoriaStock">
-          <!-- Se llena por JS -->
-        </div>
-      </div>
-
-      <button class="btn-main btn-print" onclick="window.print()">📄 Guardar Cierre / Exportar PDF</button>
-      <button onclick="window.cerrarVentanaModalCierreZGen()" class="btn-main btn-volver no-print">
-        <img src="volver.png" alt="Volver"> Volver al Menú
-      </button>
     </div>
   </div>
 
@@ -124,15 +188,25 @@
         return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val || 0);
       }
 
-      // Exclusivo BMA
       const fechaSesion = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
 
       function formatearFechaLarga(fechaStr) {
-        if (!fechaStr) return 'Fecha no definida';
+        if (!fechaStr) return 'Fecha de Trabajo: -';
         const partes = fechaStr.split('-');
         if (partes.length === 3) {
           const d = new Date(partes[0], partes[1] - 1, partes[2]);
-          return d.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+          const fechaLimpia = d.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+          return 'Fecha de Trabajo: ' + fechaLimpia;
+        }
+        return 'Fecha de Trabajo: ' + fechaStr;
+      }
+
+      function formatearFechaSolo(fechaStr) {
+        if (!fechaStr) return '-';
+        const partes = fechaStr.split('-');
+        if (partes.length === 3) {
+          const d = new Date(partes[0], partes[1] - 1, partes[2]);
+          return d.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
         }
         return fechaStr;
       }
@@ -141,7 +215,9 @@
         const bannerFecha = document.getElementById('txtFechaCierre');
         if (bannerFecha) bannerFecha.innerText = formatearFechaLarga(fechaSesion);
 
-        // 1. Ventas del día y desglose por artículo (exclusivo bma_ventas)
+        const subFechas = document.querySelectorAll('.txtFechaCierreSub');
+        subFechas.forEach(el => el.innerText = formatearFechaSolo(fechaSesion));
+
         const ventas = obtenerDatosSafe('bma_ventas', []);
         const ventasDia = ventas.filter(v => v.fecha === fechaSesion);
         const totalVentasDinero = ventasDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
@@ -171,13 +247,13 @@
         let htmlVentasArt = '';
         const keysArticulos = Object.keys(mapaArticulos);
         if (keysArticulos.length === 0) {
-          htmlVentasArt = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hubo ventas de artículos hoy.</p>';
+          htmlVentasArt = '<p style="text-align:center; color:#94a3b8; font-size:13px; margin:12px 0;">No hubo ventas de artículos hoy.</p>';
         } else {
           keysArticulos.forEach(art => {
             htmlVentasArt += `
               <div class="item-row">
                 <span>${art}</span>
-                <strong>${mapaArticulos[art]} u.</strong>
+                <strong style="color: #0f172a;">${mapaArticulos[art]} u.</strong>
               </div>`;
           });
         }
@@ -185,12 +261,10 @@
         const contVentasArt = document.getElementById('listaVentasArticulos');
         if (contVentasArt) contVentasArt.innerHTML = htmlVentasArt;
 
-        // 2. Stock Restante (exclusivo bma_stock)
         const productos = obtenerDatosSafe('bma_stock', []);
-        
         let htmlStock = '';
         if (productos.length === 0) {
-          htmlStock = '<p style="text-align:center; color:#94a3b8; font-size:0.75rem; margin:8px 0;">No hay productos cargados en el sistema.</p>';
+          htmlStock = '<p style="text-align:center; color:#94a3b8; font-size:13px; margin:12px 0;">No hay productos cargados en el sistema.</p>';
         } else {
           productos.forEach(p => {
             const stockActual = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
@@ -206,6 +280,78 @@
         const contStock = document.getElementById('listaAuditoriaStock');
         if (contStock) contStock.innerHTML = htmlStock;
       }
+
+      window.abrirModalTicketZ = function() {
+        const ventas = obtenerDatosSafe('bma_ventas', []);
+        const ventasDia = ventas.filter(v => v.fecha === fechaSesion);
+        const totalVentasDinero = ventasDia.reduce((s, v) => s + (parseFloat(v.total) || 0), 0);
+
+        let totalUnidades = 0;
+        const mapaArticulos = {};
+        ventasDia.forEach(v => {
+          if (v.items && Array.isArray(v.items)) {
+            v.items.forEach(i => {
+              const cant = parseInt(i.cant || i.cantidad || 1);
+              const nombre = i.nombre || i.producto || i.descripcion || 'Artículo';
+              totalUnidades += cant;
+              mapaArticulos[nombre] = (mapaArticulos[nombre] || 0) + cant;
+            });
+          }
+        });
+
+        const productos = obtenerDatosSafe('bma_stock', []);
+
+        let htmlArticulosTicket = '';
+        Object.keys(mapaArticulos).forEach(art => {
+          htmlArticulosTicket += `<div>- ${art}: <b>${mapaArticulos[art]} u.</b></div>`;
+        });
+        if (!htmlArticulosTicket) htmlArticulosTicket = '<div>- Sin ventas registradas</div>';
+
+        let htmlStockTicket = '';
+        productos.forEach(p => {
+          const stockActual = p.cantidad !== undefined ? p.cantidad : (p.stock !== undefined ? p.stock : 0);
+          const nombreProd = p.producto || p.nombre || p.descripcion || 'Sin nombre';
+          htmlStockTicket += `<div>- ${nombreProd}: <b>${stockActual} un.</b></div>`;
+        });
+        if (!htmlStockTicket) htmlStockTicket = '<div>- Sin stock cargado</div>';
+
+        const contenedorTicket = document.getElementById('contenidoTicketZ');
+        if (contenedorTicket) {
+          contenedorTicket.innerHTML = `
+            <div style="text-align: center; font-weight: bold; font-size: 13px; margin-bottom: 2px;"> Infinito Corazón </div>
+            <div style="text-align: center; margin-bottom: 8px; font-size: 11px;">REPORTE DE CIERRE Z</div>
+            <div style="text-align: center; margin-bottom: 10px; font-size: 11px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 6px; text-transform: capitalize;">${formatearFechaSolo(fechaSesion)}</div>
+            
+            <div style="margin-bottom: 8px;">
+              <b>RESUMEN DE CAJA:</b><br>
+              - Operaciones: <b>${ventasDia.length}</b><br>
+              - Total Vendido: <b>$${formatearMoneda(totalVentasDinero)}</b>
+            </div>
+            
+            <div style="border-top: 1px dashed #cbd5e1; padding-top: 6px; margin-bottom: 8px;">
+              <b>ARTÍCULOS VENDIDOS (${totalUnidades} u. total):</b><br>
+              ${htmlArticulosTicket}
+            </div>
+            
+            <div style="border-top: 1px dashed #cbd5e1; padding-top: 6px; margin-bottom: 6px;">
+              <b>STOCK RESTANTE:</b><br>
+              ${htmlStockTicket}
+            </div>
+            
+            <div style="text-align: center; margin-top: 12px; font-size: 10px; color: #64748b; border-top: 1px dashed #cbd5e1; padding-top: 6px;">
+              *** FIN DE REPORTE ***
+            </div>
+          `;
+        }
+
+        const modal = document.getElementById('modalTicketZ');
+        if (modal) modal.style.display = 'flex';
+      };
+
+      window.cerrarModalTicketZ = function() {
+        const modal = document.getElementById('modalTicketZ');
+        if (modal) modal.style.display = 'none';
+      };
 
       cargarCierreZ();
     })();

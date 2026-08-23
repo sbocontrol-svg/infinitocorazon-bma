@@ -104,13 +104,13 @@
     .mono-icon { filter: grayscale(100%); display: inline-block; }
 
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; flex-shrink: 0; }
-    .modal-header h3 { font-size: 1rem; color: #000000; font-weight: 800; }
+    .modal-header h3 { font-size: 1rem; color: #d9381e; font-weight: 800; }
     .modal-desc { font-size: 0.78rem; color: #4b5563; margin-bottom: 8px; flex-shrink: 0; }
 
     .btn-volver-menu { background-color: #000000; color: white; border: none; padding: 9px; width: 100%; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: center; flex-shrink: 0; margin-top: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
     .btn-volver-menu:active { transform: scale(0.98); }
 
-    .btn-reiniciar-factory { background: #4e4b46; border: 1.5px solid #57534e; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; color: #f87171; font-weight: 800; font-size: 0.85rem; width: 100%; margin-top: 4px; }
+    .btn-reiniciar-factory { background: #4e4b46; border: 1.5px solid #57534e; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; color: #ffffff; font-weight: 800; font-size: 0.85rem; width: 100%; margin-top: 4px; }
     .btn-reiniciar-factory:hover { background: #57534e; }
 
     .footer-zocalo { 
@@ -195,8 +195,8 @@
         </div>
 
         <footer class="footer-zocalo">
-            <div class="footer-linea-1">Un producto de S. B. O. Control® - Todos los derechos reservados.</div>
-            <div class="footer-linea-2">Copyright 2026© - Versión: 1.0.0</div>
+            <div class="footer-linea-1">Un producto de S. B. O. Control® - Copyright© 2026 </div>
+            <div class="footer-linea-2"> Todos los derechos reservados - Prohibida su reproducción total o parcial.</div>
         </footer>
     </div>
 
@@ -223,24 +223,26 @@
 
     <!-- MODAL CONFIGURACIÓN -->
     <div class="modal-overlay" id="modal-config">
-        <div class="modal-container" style="max-width: 420px;">
+        <div class="modal-container" style="max-width: 410px;">
             <div class="modal-header">
                 <h3>Configuración del Sistema</h3>
                 <img src="icono.png" alt="Logo" style="width: 28px; height: 28px; border-radius: 6px; object-fit: cover; cursor: pointer;" id="btn-cerrar-config">
             </div>
-            <div class="modal-desc">Gestioná tus respaldos o ejecutá un reinicio limpio:</div>
+            <div class="modal-desc">Respaldos y gestión de datos locales:</div>
+            
             <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button class="btn-volver-menu" id="btn-instalar-pwa" style="margin-top: 0; background-color: #3b82f6; color: #ffffff; display: none;">📲 Instalar App PWA</button>
-                <button class="btn-volver-menu" id="btn-exportar" style="margin-top: 0; background-color: #e2e8f0; color: #000000;">📥 Exportar Datos (JSON)</button>
-                <label class="btn-volver-menu" style="background-color: #334155; text-align: center; cursor: pointer; display: block; margin-top: 0;">
+                <button class="btn-volver-menu" id="btn-exportar" style="margin-top: 0; background-color: #f8fafc; color: #1f2937; border: 1.5px solid #cbd5e1; box-shadow: none;">📥 Exportar Datos (JSON)</button>
+                
+                <label class="btn-volver-menu" style="background-color: #f8fafc; color: #1f2937; border: 1.5px solid #cbd5e1; text-align: center; cursor: pointer; display: block; margin-top: 0; box-shadow: none;">
                     📤 Restaurar Datos
                     <input type="file" id="input-importar" accept=".json" style="display: none;">
                 </label>
+                
                 <button class="btn-reiniciar-factory" onclick="window.reiniciarSistemaDeFabricaBMA()">
-                    ⚠️ Reiniciar Sistema de Fábrica
+                    Reiniciar Sistema de Fábrica
                 </button>
             </div>
-            <button class="btn-volver-menu" onclick="document.getElementById('modal-config').classList.remove('active')">Volver al Menú</button>
+            <button class="btn-volver-menu" style="color: #d9381e;" onclick="document.getElementById('modal-config').classList.remove('active')">Volver al Menú</button>
         </div>
     </div>
 
@@ -258,8 +260,6 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             diferirPromptPWA = e;
-            const btnPwa = document.getElementById('btn-instalar-pwa');
-            if (btnPwa) btnPwa.style.display = 'block';
         });
 
         (function() {
@@ -289,6 +289,7 @@
 
             window.actualizarEstadisticasMenu = function() {
                 const fechaSesion = localStorage.getItem('bma_fechaSesion') || localStorage.getItem('sbo_fechaSesion') || obtenerFechaLocal();
+                
                 const ventas = JSON.parse(localStorage.getItem('bma_ventas')) || JSON.parse(localStorage.getItem('sbo_ventas')) || [];
                 
                 datosVentasJornadaCache = ventas.filter(v => v.fecha === fechaSesion);
@@ -421,23 +422,6 @@
             document.addEventListener('DOMContentLoaded', () => {
                 window.actualizarEstadisticasMenu();
 
-                // Botón de instalación PWA desde Configuración
-                const btnInstalar = document.getElementById('btn-instalar-pwa');
-                if (btnInstalar) {
-                    btnInstalar.addEventListener('click', () => {
-                        if (diferirPromptPWA) {
-                            diferirPromptPWA.prompt();
-                            diferirPromptPWA.userChoice.then((choiceResult) => {
-                                if (choiceResult.outcome === 'accepted') {
-                                    console.log('El usuario aceptó instalar la PWA');
-                                }
-                                diferirPromptPWA = null;
-                                btnInstalar.style.display = 'none';
-                            });
-                        }
-                    });
-                }
-
                 const modalStat = document.getElementById('modal-stat-detalle');
                 if (modalStat) {
                     modalStat.addEventListener('click', (e) => {
@@ -456,7 +440,9 @@
                 const modalConfig = document.getElementById('modal-config');
                 const btnCerrarConfig = document.getElementById('btn-cerrar-config');
                 if (btnConfig && modalConfig && btnCerrarConfig) {
-                    btnConfig.addEventListener('click', () => modalConfig.classList.add('active'));
+                    btnConfig.addEventListener('click', () => {
+                        modalConfig.classList.add('active');
+                    });
                     btnCerrarConfig.addEventListener('click', () => modalConfig.classList.remove('active'));
                     modalConfig.addEventListener('click', (e) => {
                         if (e.target === modalConfig) modalConfig.classList.remove('active');

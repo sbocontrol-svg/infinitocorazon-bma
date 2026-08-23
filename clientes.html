@@ -1,47 +1,92 @@
-<!-- Encabezado Limpio del Modal -->
-<div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 2px;">
-  <div style="display: flex; flex-direction: column; justify-content: space-between; height: 44px;">
-    <h3 id="lblTituloForm" style="font-size: 1.05rem; color: #0f172a; font-weight: 800; margin: 0; line-height: 1;">👥 Registrar Cliente</h3>
-    <div id="lblFechaTrabajo" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
-  </div>
+<style>
+  .clientes-container * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+  .clientes-container label { font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px; }
+  .clientes-container input { width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #d9381e; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none; }
+  .clientes-container input:focus { border-color: #d9381e; background: #fff; box-shadow: 0 0 0 2px rgba(217, 56, 30, 0.15); }
+
+  .clientes-btn-main { background: #cbd5e1; color: #0f172a; border: 1.5px solid #94a3b8; padding: 12px; width: 100%; border-radius: 10px; font-weight: 800; font-size: 0.95rem; margin-top: 15px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .clientes-btn-list { background: #475569; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-top: 8px; cursor: pointer; }
+  .clientes-btn-print { background: #64748b; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-top: 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(100,116,139,0.3); }
+  .clientes-btn-clear { background: #94a3b8; color: white; border: none; padding: 8px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.85rem; margin-top: 8px; cursor: pointer; }
+  .clientes-btn-cancel { background: #dc2626; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.85rem; margin-top: 8px; cursor: pointer; display: none; }
   
-  <button onclick="window.cerrarVentanaModal()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
-    <img src="icono.png" alt="Logo BMA" style="width: 44px; height: 44px; object-fit: contain;">
-  </button>
-</div>
+  /* Botón Volver al Menú idéntico al módulo Ventas */
+  .clientes-btn-secundario { 
+    background: #0f172a; 
+    color: #d9381e; 
+    border: 1.5px solid #d9381e; 
+    padding: 12px; 
+    width: 100%; 
+    border-radius: 10px; 
+    font-weight: 800; 
+    font-size: 0.95rem; 
+    margin-top: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 6px; 
+    text-decoration: none; 
+  }
+  .clientes-btn-secundario:hover {
+    background: #1e293b;
+  }
 
-<!-- VISTA 1: FORMULARIO -->
-<div id="vista-formulario">
-  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">Nombre y Apellido / Razón Social:</label>
-  <input type="text" id="txtNombre" placeholder="Ej: Juan Pérez" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
+  .cliente-card { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem; }
+  .cliente-card-actions { display: flex; gap: 6px; align-items: center; }
+  .clientes-btn-action { border: none; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px; }
+  .btn-edit { background: #e0f2fe; color: #0369a1; }
+  .btn-delete { background: #fee2e2; color: #b91c1c; }
+</style>
 
-  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">Teléfono / WhatsApp:</label>
-  <input type="text" id="txtTelefono" placeholder="Ej: 2364123456" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
-
-  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">Localidad:</label>
-  <input type="text" id="txtLocalidad" placeholder="Ej: Junín" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
-
-  <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">E-mail:</label>
-  <input type="email" id="txtEmail" placeholder="Ej: juan@email.com" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
-
-  <button id="btnAccion" onclick="window.guardarCliente()" style="background: #0f172a; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.95rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,0.3);">➕ Registrar Cliente</button>
-  <button onclick="window.alternarVistaLista(true)" style="background: #475569; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-top: 8px; cursor: pointer;">📋 Mostrar Registros</button>
-  <button id="btnCancelarEdicion" onclick="window.cancelarEdicion()" style="background: #64748b; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.85rem; margin-top: 8px; cursor: pointer; display: none;">Cancelar Edición</button>
-  <button onclick="window.cerrarVentanaModal()" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">Volver al Menú</button>
-</div>
-
-<!-- VISTA 2: LISTADO -->
-<div id="vista-listado" style="display: none;">
-  <div style="margin-bottom: 8px;">
-    <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 0; text-align: left; text-transform: uppercase; letter-spacing: 0.5px;">🔍 Buscar Registro:</label>
-    <input type="text" id="txtBuscar" placeholder="Nombre, localidad, tel..." oninput="window.actualizarPantallaClientes()" style="width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none;">
+<div class="clientes-container">
+  <!-- Encabezado unificado BMA -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 4px;">
+    <div style="display: flex; flex-direction: column; justify-content: space-between; height: 48px;">
+      <h3 id="lblTituloForm" style="font-size: 1.60rem; color: #d9381e; font-weight: 800; margin: 0; line-height: 1; font-family: 'Segoe Script', cursive;">Registrar Clientes</h3>
+      <div id="lblFechaTrabajo" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
+    </div>
+    
+    <button onclick="window.cerrarVentanaModal()" title="Volver al Menú" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
+      <img src="icono.png" alt="Logo BMA" style="width: 50px; height: 50px; object-fit: contain;">
+    </button>
   </div>
 
-  <div id="listaClientes" style="margin-top: 8px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;">
-    <div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No hay clientes registrados.</div>
+  <!-- VISTA 1: FORMULARIO -->
+  <div id="vista-formulario">
+    <label>Nombre y Apellido / Razón Social:</label>
+    <input type="text" id="txtNombre" placeholder="Ej: Juan Pérez">
+
+    <label>Teléfono / WhatsApp:</label>
+    <input type="tel" id="txtTelefono" placeholder="Ej: 2364123456">
+
+    <label>Localidad:</label>
+    <input type="text" id="txtLocalidad" placeholder="Ej: Junín">
+
+    <label>E-mail:</label>
+    <input type="email" id="txtEmail" placeholder="Ej: juan@email.com">
+
+    <button id="btnAccion" onclick="window.guardarCliente()" class="clientes-btn-main">➕ Registrar Clientes</button>
+    <button id="btnLimpiarCampos" onclick="window.limpiarFormulario()" class="clientes-btn-clear">🧹 Limpiar Campos</button>
+    <button id="btnMostrarRegistros" onclick="window.alternarVistaLista(true)" class="clientes-btn-list">📋 Mostrar Registros (0)</button>
+    <button id="btnCancelarEdicion" onclick="window.cancelarEdicion()" class="clientes-btn-cancel">Cancelar Edición</button>
+    <button onclick="window.cerrarVentanaModal()" class="clientes-btn-secundario">Volver al Menú</button>
   </div>
 
-  <button onclick="window.alternarVistaLista(false)" style="background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer;">⬅️ Volver al Formulario</button>
+  <!-- VISTA 2: LISTADO -->
+  <div id="vista-listado" style="display: none;">
+    <div style="margin-bottom: 8px;">
+      <label style="margin-top: 0;">🔍 Buscar Registro:</label>
+      <input type="text" id="txtBuscar" placeholder="Nombre, localidad, teléfono o e-mail..." oninput="window.actualizarPantallaClientes()">
+    </div>
+
+    <div id="listaClientes" style="margin-top: 8px; max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;">
+      <div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No hay clientes registrados.</div>
+    </div>
+
+    <button onclick="window.imprimirClientes()" class="clientes-btn-print">🖨️ Imprimir / Guardar PDF</button>
+    <button onclick="window.alternarVistaLista(false)" class="clientes-btn-list">⬅️ Volver al Formulario</button>
+  </div>
 </div>
 
 <script>
@@ -68,18 +113,32 @@
       return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : fechaStr;
     }
 
-    // Exclusivo de BMA
     const fechaSesionLocal = localStorage.getItem('bma_fechaSesion') || obtenerFechaLocal();
     const lblFecha = document.getElementById('lblFechaTrabajo');
     if (lblFecha) lblFecha.innerText = `Fecha de Trabajo: ${formatearFechaLocal(fechaSesionLocal)}`;
 
     let clientes = [];
-    let editIndex = null;
+    let editId = null;
 
     function obtenerClientesSafe() {
       try {
         const guardados = localStorage.getItem('bma_clientes');
-        return guardados ? JSON.parse(guardados) : [];
+        let lista = guardados ? JSON.parse(guardados) : [];
+        let hubodecambio = false;
+
+        lista = lista.map((c) => {
+          if (!c.id) {
+            c.id = 'cli_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+            hubodecambio = true;
+          }
+          return c;
+        });
+
+        if (hubodecambio) {
+          localStorage.setItem('bma_clientes', JSON.stringify(lista));
+        }
+
+        return lista;
       } catch (e) {
         console.error("Error al cargar clientes BMA:", e);
         return [];
@@ -87,12 +146,31 @@
     }
 
     clientes = obtenerClientesSafe();
+    actualizarContadorBoton();
+
+    function actualizarContadorBoton() {
+      const btnReg = document.getElementById('btnMostrarRegistros');
+      if (btnReg) {
+        btnReg.innerText = `📋 Mostrar Registros (${clientes.length})`;
+      }
+    }
 
     window.alternarVistaLista = function(mostrarLista) {
       const vistaForm = document.getElementById('vista-formulario');
       const vistaList = document.getElementById('vista-listado');
+      const lblTit = document.getElementById('lblTituloForm');
+
       if (vistaForm) vistaForm.style.display = mostrarLista ? 'none' : 'block';
       if (vistaList) vistaList.style.display = mostrarLista ? 'block' : 'none';
+
+      if (lblTit) {
+        if (mostrarLista) {
+          lblTit.innerText = 'Mostrar Clientes';
+        } else {
+          lblTit.innerText = editId !== null ? 'Editar Clientes' : 'Registrar Clientes';
+        }
+      }
+
       if (mostrarLista) window.actualizarPantallaClientes();
     };
 
@@ -116,23 +194,23 @@
         listaContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 15px;">No se encontraron clientes.</div>';
       } else {
         filtrados.forEach((c) => {
-          const realIndex = clientes.indexOf(c);
+          const idCli = c.id;
           const nombreCli = c.nombre || c.cliente || c.AyN || 'Sin nombre';
-          const telCli = c.telefono || c.tel || 'Sin tel';
+          const telCli = c.telefono || c.tel || 'Sin teléfono';
           const locCli = c.localidad || 'Sin localidad';
-          const emailCli = c.email || 'Sin correo';
+          const emailCli = c.email || 'Sin e-mail';
 
           const item = document.createElement('div');
-          item.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem;";
+          item.className = 'cliente-card';
           item.innerHTML = `
             <div style="display: flex; flex-direction: column; gap: 2px;">
               <span style="font-weight: bold; color: #1e293b; font-size: 0.9rem;">${nombreCli}</span>
               <span style="font-size: 0.78rem; color: #64748b;">📞 ${telCli} | 📍 ${locCli}</span>
               <span style="font-size: 0.78rem; color: #64748b;">✉️ ${emailCli}</span>
             </div>
-            <div style="display: flex; gap: 6px; align-items: center;">
-              <button onclick="window.cargarEdicionCliente(${realIndex})" style="background: #e0f2fe; border: none; color: #0369a1; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Editar">✏️</button>
-              <button onclick="window.eliminarClienteItem(${realIndex})" style="background: #fee2e2; border: none; color: #b91c1c; font-size: 0.8rem; font-weight: bold; cursor: pointer; padding: 6px 8px; border-radius: 6px;" title="Eliminar">❌</button>
+            <div class="cliente-card-actions">
+              <button onclick="window.cargarEdicionCliente('${idCli}')" class="clientes-btn-action btn-edit" title="Editar">✏️</button>
+              <button onclick="window.eliminarClienteItem('${idCli}')" class="clientes-btn-action btn-delete" title="Eliminar">❌</button>
             </div>
           `;
           listaContainer.appendChild(item);
@@ -153,32 +231,49 @@
 
       if (!nombre) return alert('Por favor, ingresá el nombre del cliente.');
 
-      const clienteObj = { 
-        nombre, 
-        cliente: nombre, 
-        AyN: nombre, 
-        telefono, 
-        tel: telefono, 
-        localidad, 
-        email 
-      };
+      if (editId === null) {
+        const existe = clientes.some(c => (c.nombre || c.cliente || c.AyN || '').toLowerCase() === nombre.toLowerCase());
+        if (existe) {
+          const confirma = confirm(`⚠️ Ya existe un cliente registrado como "${nombre}". ¿Querés guardarlo de todas formas?`);
+          if (!confirma) return;
+        }
+      }
 
-      if (editIndex !== null) {
-        clientes[editIndex] = clienteObj;
+      if (editId !== null) {
+        const idx = clientes.findIndex(c => c.id === editId);
+        if (idx !== -1) {
+          clientes[idx] = {
+            id: editId,
+            nombre,
+            cliente: nombre,
+            AyN: nombre,
+            telefono,
+            tel: telefono,
+            localidad,
+            email
+          };
+        }
         window.cancelarEdicion();
       } else {
-        clientes.push(clienteObj);
-        if (txtNom) txtNom.value = '';
-        if (txtTel) txtTel.value = '';
-        if (txtLoc) txtLoc.value = '';
-        if (txtEm) txtEm.value = '';
+        const nuevoCliente = { 
+          id: 'cli_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          nombre, 
+          cliente: nombre, 
+          AyN: nombre, 
+          telefono, 
+          tel: telefono, 
+          localidad, 
+          email 
+        };
+        clientes.push(nuevoCliente);
+        window.limpiarFormulario();
       }
 
       guardarYActualizarClientes();
     };
 
-    window.cargarEdicionCliente = function(index) {
-      const c = clientes[index];
+    window.cargarEdicionCliente = function(id) {
+      const c = clientes.find(item => item.id === id);
       if (!c) return;
 
       if (document.getElementById('txtNombre')) document.getElementById('txtNombre').value = c.nombre || c.cliente || c.AyN || '';
@@ -186,13 +281,13 @@
       if (document.getElementById('txtLocalidad')) document.getElementById('txtLocalidad').value = c.localidad || '';
       if (document.getElementById('txtEmail')) document.getElementById('txtEmail').value = c.email || '';
 
-      editIndex = index;
+      editId = id;
       const lblTit = document.getElementById('lblTituloForm');
-      if (lblTit) lblTit.innerText = '✏️ Editar Cliente';
+      if (lblTit) lblTit.innerText = 'Editar Clientes';
       const btnAccion = document.getElementById('btnAccion');
       if (btnAccion) {
-        btnAccion.innerText = '💾 Actualizar Cliente';
-        btnAccion.style.background = '#3b82f6';
+        btnAccion.innerText = '💾 Actualizar Clientes';
+        btnAccion.style.background = '#2563eb';
       }
       const btnCanc = document.getElementById('btnCancelarEdicion');
       if (btnCanc) btnCanc.style.display = 'block';
@@ -200,40 +295,121 @@
       window.alternarVistaLista(false);
     };
 
-    window.cancelarEdicion = function() {
-      editIndex = null;
+    window.limpiarFormulario = function() {
       if (document.getElementById('txtNombre')) document.getElementById('txtNombre').value = '';
       if (document.getElementById('txtTelefono')) document.getElementById('txtTelefono').value = '';
       if (document.getElementById('txtLocalidad')) document.getElementById('txtLocalidad').value = '';
       if (document.getElementById('txtEmail')) document.getElementById('txtEmail').value = '';
+    };
+
+    window.cancelarEdicion = function() {
+      editId = null;
+      window.limpiarFormulario();
 
       const lblTit = document.getElementById('lblTituloForm');
-      if (lblTit) lblTit.innerText = '👥 Registrar Cliente';
+      if (lblTit) lblTit.innerText = 'Registrar Clientes';
       const btnAccion = document.getElementById('btnAccion');
       if (btnAccion) {
-        btnAccion.innerText = '➕ Registrar Cliente';
-        btnAccion.style.background = '#0f172a';
+        btnAccion.innerText = '➕ Registrar Clientes';
+        btnAccion.style.background = '';
       }
       const btnCanc = document.getElementById('btnCancelarEdicion');
       if (btnCanc) btnCanc.style.display = 'none';
     };
 
-    window.eliminarClienteItem = function(index) {
+    window.eliminarClienteItem = function(id) {
       if (confirm('¿Querés eliminar este cliente?')) {
-        if (editIndex === index) {
+        if (editId === id) {
           window.cancelarEdicion();
-        } else if (editIndex !== null && editIndex > index) {
-          editIndex--;
         }
-        clientes.splice(index, 1);
+        clientes = clientes.filter(c => c.id !== id);
         guardarYActualizarClientes();
         window.actualizarPantallaClientes();
       }
     };
 
+    window.imprimirClientes = function() {
+      if (clientes.length === 0) return alert('No hay clientes registrados para imprimir.');
+
+      const txtBuscar = document.getElementById('txtBuscar');
+      const filtro = txtBuscar ? txtBuscar.value.toLowerCase().trim() : '';
+      const listaAImprimir = clientes.filter(c => {
+        const nombre = (c.nombre || c.cliente || c.AyN || '').toLowerCase();
+        const localidad = (c.localidad || '').toLowerCase();
+        const telefono = (c.telefono || c.tel || '').toLowerCase();
+        const email = (c.email || '').toLowerCase();
+        return nombre.includes(filtro) || localidad.includes(filtro) || telefono.includes(filtro) || email.includes(filtro);
+      });
+
+      if (listaAImprimir.length === 0) return alert('No hay clientes que coincidan con la búsqueda.');
+
+      const fechaTxt = document.getElementById('lblFechaTrabajo')?.innerText || '';
+
+      let filas = listaAImprimir.map((c, idx) => `
+        <tr>
+          <td style="padding: 8px; border: 1px solid #cbd5e1; text-align: center;">${idx + 1}</td>
+          <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: bold;">${c.nombre || c.cliente || c.AyN || '-'}</td>
+          <td style="padding: 8px; border: 1px solid #cbd5e1;">${c.telefono || c.tel || '-'}</td>
+          <td style="padding: 8px; border: 1px solid #cbd5e1;">${c.localidad || '-'}</td>
+          <td style="padding: 8px; border: 1px solid #cbd5e1;">${c.email || '-'}</td>
+        </tr>
+      `).join('');
+
+      const htmlPrint = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Listado de Clientes - BMA</title>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; color: #1e293b; }
+            h2 { color: #d9381e; margin-bottom: 4px; font-size: 1.5rem; }
+            .sub { color: #64748b; font-size: 0.85rem; font-weight: bold; margin-bottom: 16px; }
+            table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+            th { background: #0f172a; color: white; padding: 8px; text-align: left; border: 1px solid #0f172a; }
+            @media print {
+              @page { margin: 1cm; }
+            }
+          </style>
+        </head>
+        <body>
+          <h2>Listado de Clientes BMA</h2>
+          <div class="sub">${fechaTxt} | Total: ${listaAImprimir.length} clientes</div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 30px; text-align: center;">#</th>
+                <th>Nombre y Apellido / Razón Social</th>
+                <th>Teléfono</th>
+                <th>Localidad</th>
+                <th>E-mail</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filas}
+            </tbody>
+          </table>
+          <script>
+            window.onload = function() {
+              window.print();
+              setTimeout(function() { window.close(); }, 500);
+            };
+          <\/script>
+        </body>
+        </html>
+      `;
+
+      const win = window.open('', '_blank');
+      if (win) {
+        win.document.write(htmlPrint);
+        win.document.close();
+      } else {
+        alert('Por favor, permití las ventanas emergentes en el navegador para imprimir o guardar como PDF.');
+      }
+    };
+
     function guardarYActualizarClientes() {
-      // Exclusivo de BMA
       localStorage.setItem('bma_clientes', JSON.stringify(clientes));
+      actualizarContadorBoton();
     }
   })();
 </script>

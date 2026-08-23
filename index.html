@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinito Corazón - Bienvenida</title>
+
+  <!-- PWA y Favicons -->
   <link rel="icon" type="image/png" href="icono.png">
   <link rel="apple-touch-icon" href="icono.png">
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#000000" id="themeColorMeta">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Infinito Corazón</title>
+  <meta name="theme-color" content="#0b1329">
   
   <style>
     :root {
-      --primary-color: #000000;
+      --primary-color: #0b1329;
+      --accent-color: #d9381e;
+      --silver-color: #94a3b8; /* Gris plata */
     }
     * { 
       box-sizing: border-box; 
@@ -24,73 +28,66 @@
     }
     
     body { 
-      background-color: #0f172a; 
+      background-color: #0b1329; 
       color: #f8fafc; 
       min-height: 100vh; 
       display: flex; 
       flex-direction: column;
       justify-content: center; 
       align-items: center; 
-      padding: 10px; 
+      padding: 12px; 
       overflow: hidden;
     }
     
     .container { 
-      background-color: #ffffff; 
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
       color: #1e293b;
       width: 100%; 
-      max-width: 370px; 
-      padding: 20px 14px; 
-      border-radius: 16px; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+      max-width: 380px; 
+      padding: 24px 18px; 
+      border-radius: 20px; 
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       align-items: center;
-      border: 1px solid #e2e8f0;
-      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.6);
       text-align: center;
     }
 
-    .top-content { 
-      text-align: center; 
-      width: 100%;
-    }
+    .top-content { width: 100%; }
     
     .brand-logo { 
-      width: 100%; 
-      max-height: 110px; 
-      object-fit: contain; 
-      margin-bottom: -10px; 
+      width: 85px; 
+      height: 85px; 
+      object-fit: cover; 
+      border-radius: 16px;
+      margin: 0 auto 10px auto; 
       display: block;
-      margin-left: auto;
-      margin-right: auto;
+      border: 1px solid #cbd5e1;
     }
     
     .brand-name { 
-      font-size: 1.65rem; 
+      font-size: 1.75rem; 
       font-weight: 800; 
-      color: #d9381e; 
+      color: var(--accent-color); 
       margin: 0; 
       font-family: 'Segoe script', cursive, sans-serif; 
-      line-height: 1.2;
+      line-height: 1.1;
     }
     
     .brand-slogan { 
-      font-size: 0.95rem; 
+      font-size: 0.9rem; 
       color: #4b5563; 
-      margin-top: -5px; 
-      margin-bottom: 0; 
+      margin-top: 2px; 
       font-weight: 600; 
-      letter-spacing: 0.5px; 
       font-family: 'Segoe script', cursive, sans-serif; 
     }
 
     .divider {
       border: 0;
-      border-top: 1.5px solid #000000;
-      margin: 8px 0;
-      opacity: 0.85;
+      border-top: 1.5px solid #e2e8f0;
+      margin: 12px 0;
       width: 100%;
     }
 
@@ -98,21 +95,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 4px 0;
       background: #f8fafc;
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1.5px solid #94a3b8;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
       width: 100%;
     }
 
     .date-label {
-      font-size: 0.80rem;
-      font-weight: 700;
-      color: #4b5563;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #475569;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .date-formatted-display {
@@ -122,41 +116,38 @@
       text-align: right;
     }
 
-    .client-display-section {
-      text-align: center;
-      margin: 4px 0;
-      background: #f8fafc;
-      padding: 6px;
-      border-radius: 8px;
-      border: 1px dashed #cbd5e1;
+    .welcome-box {
+      margin-top: 10px;
+      background: #f1f5f9;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
       width: 100%;
     }
 
-    .client-box-label {
-      font-size: 0.80rem;
+    .welcome-label {
+      font-size: 0.75rem;
       color: #64748b;
       text-transform: uppercase;
       font-weight: 700;
-      margin-bottom: 1px;
-      letter-spacing: 0.5px;
     }
 
-    .client-box-name {
-      font-size: 1.6rem;
+    .welcome-name {
+      font-size: 1.4rem;
       font-weight: 800;
       color: var(--primary-color);
       font-family: 'Segoe script', cursive, sans-serif;
     }
 
-    /* Ruedita de Carga (Spinner) */
+    /* Spinner en Gris Plata */
     .spinner {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border: 4px solid #f1f5f9;
-      border-top: 4px solid #d9381e;
+      border-top: 4px solid var(--silver-color);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 12px auto 8px auto;
+      animation: spin 0.8s linear infinite;
+      margin: 14px auto 10px auto;
     }
 
     @keyframes spin {
@@ -164,23 +155,23 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Marquesina Móvil de Derecha a Izquierda */
+    /* Marquesina Móvil de Derecha a Izquierda (Ancho Total) */
     .marquee-container {
       width: 100%;
       overflow: hidden;
       background: #f8fafc;
       border-radius: 8px;
       padding: 8px 0;
-      margin: 6px 0;
+      margin: 8px 0 12px 0;
       border: 1px solid #cbd5e1;
     }
 
     .marquee-text {
       display: inline-block;
       white-space: nowrap;
-      color: #d9381e;
+      color: var(--accent-color);
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
       animation: marquee 5s linear infinite;
     }
@@ -190,36 +181,27 @@
       100% { transform: translateX(-100%); }
     }
 
-    .bottom-actions {
-      margin-top: 6px;
-      width: 100%;
-    }
+    .bottom-actions { width: 100%; }
 
     .btn-ingresar { 
       background: var(--primary-color); 
       color: white; 
       border: none; 
-      padding: 8px; 
+      padding: 10px; 
       width: 100%; 
-      border-radius: 8px; 
-      font-weight: 600; 
-      font-size: 0.80rem; 
+      border-radius: 10px; 
+      font-weight: 700; 
+      font-size: 0.85rem; 
       cursor: pointer; 
-      box-shadow: 0 3px 8px rgba(0,0,0,0.3); 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
     }
-    .btn-ingresar:active { 
-      transform: scale(0.98); 
-    }
-    .btn-ingresar:hover {
-      background: #333333;
-    }
+    .btn-ingresar:active { transform: scale(0.98); }
 
     .footer-zocalo {
-      margin-top: 10px;
+      margin-top: 14px;
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: #64748b;
-      line-height: 1.3;
       font-weight: 600;
       width: 100%;
     }
@@ -229,31 +211,29 @@
 
   <div class="container">
     <div class="top-content">
-      <img id="lblLogoEmpresa" src="logobma.jpg" alt="Logo" class="brand-logo">
-      <h1 class="brand-name" id="lblNombreEmpresa">Infinito Corazón</h1>
-      <div class="brand-slogan" id="lblEsloganEmpresa">by Bijou Macramé Artesanal</div>
+      <img src="icono.png" alt="Logo BMA" class="brand-logo">
+      <h1 class="brand-name">Infinito Corazón</h1>
+      <div class="brand-slogan">by Bijou Macramé</div>
     </div>
     
     <hr class="divider">
 
     <div class="date-section">
-      <label class="date-label">📅 FECHA:</label>
-      <div id="lblFechaFormateada" class="date-formatted-display">--</div>
+      <span class="date-label">📅 FECHA:</span>
+      <span id="lblFechaFormateada" class="date-formatted-display">--</span>
     </div>
 
-    <hr class="divider">
-
-    <div class="client-display-section">
-      <div class="client-box-label">¡Bienvenido!</div>
-      <div class="client-box-name" id="lblNombreCliente">Juan Ma</div>
+    <div class="welcome-box">
+      <div class="welcome-label">¡Bienvenido!</div>
+      <div class="welcome-name">Juan Ma</div>
     </div>
 
-    <!-- Spinner de carga -->
+    <!-- Spinner Gris Plata -->
     <div class="spinner"></div>
 
     <!-- Marquesina móvil de derecha a izquierda -->
     <div class="marquee-container">
-      <div class="marquee-text">Preparando la interfase...</div>
+      <div class="marquee-text">Preparando el entorno para comenzar la jornada...</div>
     </div>
 
     <div class="bottom-actions">
@@ -261,7 +241,7 @@
     </div>
 
     <div class="footer-zocalo">
-      S. B. O Control™ © 2026<br>
+      Infinito Corazón® 2026<br>
       Todos los derechos reservados
     </div>
   </div>
@@ -277,8 +257,7 @@
       const mesIndex = parseInt(partes[1], 10) - 1;
       const dia = parseInt(partes[2], 10);
       const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-      if (mesIndex < 0 || mesIndex > 11) return fechaStr;
-      return `${dia} ${meses[mesIndex]} ${anio}`;
+      return `${dia} de ${meses[mesIndex] || ''} de ${anio}`;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -290,52 +269,22 @@
 
       document.getElementById('lblFechaFormateada').textContent = formatearFechaEntera(fechaActualSistema);
 
-      cargarClienteInfinito();
-
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-          .then(() => console.log("Service Worker registrado con éxito."))
-          .catch(err => console.log("Fallo al registrar el Service Worker:", err));
+        navigator.serviceWorker.register('sw.js').catch(err => console.error(err));
       }
 
-      // Temporizador de 5 segundos para redirigir automáticamente al menú
+      // Temporizador de 5 segundos para redirigir al menú
       setTimeout(() => {
         entrarAlSistema();
       }, 5000);
     });
 
-    function cargarClienteInfinito() {
-      const clientes = JSON.parse(localStorage.getItem('sbo_db_clientes')) || [];
-
-      let clienteTarget = clientes.find(c => 
-        c.nombreCliente && (
-          c.nombreCliente.toLowerCase().includes('infinito') || 
-          c.nombreCliente.toLowerCase().includes('bijou')
-        )
-      );
-
-      if (!clienteTarget) {
-        clienteTarget = clientes.find(c => 
-          c.licencia && (
-            c.licencia.toLowerCase().includes('vida') || 
-            c.licencia.toLowerCase().includes('vitalicia')
-          )
-        );
-      }
-
-      if (clienteTarget && clienteTarget.nombreCliente) {
-        document.getElementById('lblNombreCliente').textContent = clienteTarget.nombreCliente;
-      }
-    }
-
     function entrarAlSistema() {
-      const fechaFormateadaTexto = formatearFechaEntera(fechaActualSistema);
-      const nombreUsuario = document.getElementById('lblNombreCliente').textContent;
+      const fechaTexto = document.getElementById('lblFechaFormateada').textContent;
 
       localStorage.setItem('bma_fechaSesion', fechaActualSistema);
-      localStorage.setItem('sbo_fechaSesion', fechaActualSistema);
-      localStorage.setItem('bma_fechaSesionTexto', fechaFormateadaTexto);
-      localStorage.setItem('bma_nombre', nombreUsuario);
+      localStorage.setItem('bma_fechaSesionTexto', fechaTexto);
+      localStorage.setItem('bma_nombre', 'Juan Ma');
 
       window.location.href = 'menu.html';
     }
