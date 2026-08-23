@@ -2,8 +2,20 @@
   .ventas-container-box *, .ventas-modal-overlay * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
   .ventas-container-box label { font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px; }
   .ventas-container-box input, .ventas-container-box select { width: 100%; padding: 10px; margin-top: 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #f8fafc; color: #1e293b; outline: none; }
-  .ventas-container-box input:focus, .ventas-container-box select:focus { border-color: #3b82f6; background: #fff; }
+  .ventas-container-box input:focus, .ventas-container-box select:focus { border-color: #d9381e; background: #fff; }
   
+  /* Selects destacados en Rojo Bermellón */
+  #vCliente, #vProducto {
+    border: 2px solid #d9381e !important;
+    background-color: #fff5f5 !important;
+    color: #0f172a !important;
+    font-weight: 700;
+  }
+  #vCliente:focus, #vProducto:focus {
+    border-color: #b91c1c !important;
+    box-shadow: 0 0 0 3px rgba(217, 56, 30, 0.25);
+  }
+
   .ventas-importe-label { font-size: 0.75rem; color: #475569; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
   .ventas-input-monto { font-size: 1.6rem; font-weight: 800; color: #0f172a; width: 100%; text-align: center; border: 2px dashed #cbd5e1; border-radius: 10px; padding: 6px; background: #f8fafc; outline: none; }
   .ventas-input-monto:focus { border-color: #d9381e; background: #fff; }
@@ -11,9 +23,31 @@
   .ventas-btn-main { background: #0f172a; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 700; font-size: 0.95rem; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,0.3); }
   .ventas-btn-add { background: #475569; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; }
   .ventas-btn-historial { background: #475569; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; width: 100%; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .ventas-btn-secundario { background: #334155; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.95rem; margin-top: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+  
+  /* Botón Volver al Menú con fondo Gris Petróleo y letra/borde Bermellón */
+  .ventas-btn-secundario { 
+    background: #0f172a; 
+    color: #d9381e; 
+    border: 1.5px solid #d9381e; 
+    padding: 12px; 
+    width: 100%; 
+    border-radius: 10px; 
+    font-weight: 800; 
+    font-size: 0.95rem; 
+    margin-top: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 6px; 
+    text-decoration: none; 
+  }
+  .ventas-btn-secundario:hover {
+    background: #1e293b;
+  }
+
   .ventas-btn-qr { background: #ffffff; color: #0f172a; border: 1.5px solid #cbd5e1; padding: 10px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
-  .ventas-btn-qr:hover { background: #f8fafc; border-color: #3b82f6; }
+  .ventas-btn-qr:hover { background: #f8fafc; border-color: #d9381e; }
 
   .ventas-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; }
   .ventas-modal-overlay.active { display: flex; }
@@ -31,22 +65,24 @@
   .ventas-acciones { display: flex; gap: 6px; margin-top: 6px; border-top: 1px dashed #e2e8f0; padding-top: 6px; }
   .ventas-btn-action { flex: 1; padding: 6px; border-radius: 6px; border: none; font-size: 0.75rem; font-weight: bold; cursor: pointer; text-align: center; }
 
+  /* Marquesina invertida con letra 2px más grande (0.875rem) */
   .aviso-marquee-container {
-      background-color: #fef3c7;
-      border: 1.5px solid #fcd34d;
+      background-color: #fff5f5;
+      border: 1.5px solid #d9381e;
       border-radius: 10px;
       overflow: hidden;
       white-space: nowrap;
       width: 100%;
       padding: 8px 0;
       margin-top: 12px;
+      box-shadow: 0 2px 6px rgba(217, 56, 30, 0.15);
   }
   .marquee-text {
       display: inline-block;
       padding-left: 100%;
       animation: marquee 16s linear infinite;
-      font-size: 0.75rem;
-      color: #92400e;
+      font-size: 0.875rem;
+      color: #d9381e;
       font-weight: 700;
   }
   @keyframes marquee {
@@ -58,7 +94,7 @@
 <div class="ventas-container-box">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 4px;">
     <div style="display: flex; flex-direction: column; justify-content: space-between; height: 48px;">
-      <h3 style="font-size: 1.05rem; color: #0f172a; font-weight: 800; margin: 0; line-height: 1;">💳 Registrar Venta</h3>
+      <h3 style="font-size: 1.25rem; color: #d9381e; font-weight: 800; margin: 0; line-height: 1; font-family: 'Segoe Script', cursive;"> Registrar Venta</h3>
       <div id="lblFechaTrabajoVentas" style="font-size: 0.80rem; color: #64748b; font-weight: 700; line-height: 1;">Fecha de Trabajo: -</div>
     </div>
     
@@ -134,7 +170,7 @@
 
   <div class="aviso-marquee-container">
     <div class="marquee-text">
-      ⚠️ Recordatorio: Al finalizar la jornada realizá el Cierre Z y descargá el Backup diario en Configuración 💾
+      Recordatorio: Al finalizar la jornada realizá el Cierre Z y descargá el Backup diario en Configuración
     </div>
   </div>
 
@@ -164,7 +200,7 @@
         </div>
         <div style="flex: 1.2;">
           <label style="margin:0; font-size:10px; color:#334155; font-weight:bold;">Envío/Cadete ($)</label>
-          <input type="number" id="vCostoEnvio" value="0" min="0" oninput="window.renderCarritoVentas()" placeholder="0" style="margin-top:2px; padding:6px; font-size:12px; background:#fff; border-color: #3b82f6;">
+          <input type="number" id="vCostoEnvio" value="0" min="0" oninput="window.renderCarritoVentas()" placeholder="0" style="margin-top:2px; padding:6px; font-size:12px; background:#fff; border-color: #d9381e;">
         </div>
       </div>
 
@@ -172,7 +208,7 @@
     </div>
 
     <button class="ventas-btn-main" style="background:#16a34a; margin-top:12px;" onclick="window.confirmarVentaActual()">🚀 Confirmar Venta</button>
-    <button class="ventas-btn-secundario" style="background:#64748b;" onclick="window.cerrarModalCarritoFlotante()">Volver a Ventas</button>
+    <button class="ventas-btn-secundario" style="background:#f1f5f9; color:#475569; border: 1px solid #cbd5e1;" onclick="window.cerrarModalCarritoFlotante()">Volver a Ventas</button>
   </div>
 </div>
 
@@ -192,8 +228,8 @@
 <div id="modalTicketVentas" class="ventas-modal-overlay">
   <div class="ventas-modal-container" style="background: #fffdfa; font-family: monospace;">
     <div style="text-align: center; border-bottom: 2px dashed #000; padding-bottom: 8px; margin-bottom: 6px;">
-      <h3 id="tNombreEmpresa" style="margin:0; font-size:1.15rem; font-weight:800; color: #d9381e; font-family: 'Segoe script', cursive;">Infinito Corazón</h3>
-      <p id="tEsloganEmpresa" style="margin:2px 0 0; font-size:0.85rem; color:#4b5563; font-family: 'Segoe script', cursive;">by Bijou Macramé Artesanal</p>
+      <h3 id="tNombreEmpresa" style="margin:0; font-size:1.15rem; font-weight:800; color: #d9381e; font-family: 'Segoe Script', cursive;">Infinito Corazón</h3>
+      <p id="tEsloganEmpresa" style="margin:2px 0 0; font-size:0.85rem; color:#4b5563; font-family: 'Segoe Script', cursive;">by Bijou Macramé Artesanal</p>
       <p style="margin:4px 0 0; font-size:0.72rem; font-weight:600;">📱 WhatsApp: 2364716004</p>
       <p style="margin:4px 0 0; font-size:0.7rem;">----------------------------------</p>
       <p id="tNumComprobante" style="margin:2px 0; font-weight:bold; font-size:0.78rem;">COMPROBANTE N° 0001</p>
@@ -213,7 +249,7 @@
     <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
       <button class="ventas-btn-main" style="background:#16a34a; margin-top:0; padding: 10px;" id="btnWaTicket">💬 Compartir por WhatsApp</button>
       <button class="ventas-btn-main" style="background:#3b82f6; margin-top:0; padding: 10px;" onclick="window.print()">🖨️ Imprimir / Guardar</button>
-      <button class="ventas-btn-secundario" style="background:#64748b; margin-top:0;" onclick="window.cerrarTicketVentas()">Cerrar</button>
+      <button class="ventas-btn-secundario" style="background:#f1f5f9; color:#475569; border: 1px solid #cbd5e1; margin-top:0;" onclick="window.cerrarTicketVentas()">Cerrar</button>
     </div>
   </div>
 </div>

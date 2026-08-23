@@ -62,12 +62,12 @@
 <body>
 
 <div class="card">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px;">
-        <img src="icono.png" alt="Logo" style="width: 2.0rem; height: 2.0rem; object-fit: contain;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px;">
         <div style="text-align: left;">
             <h2 id="tituloNegocio" style="margin: 0; font-size: 2.0rem; color: #d9381e; font-weight: 800; line-height: 1.1;" class="font-segoe-script">Infinito Corazón</h2>
             <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Caja de Cobro QR</span>
         </div>
+        <img src="icono.png" alt="Logo" style="width: 2.0rem; height: 2.0rem; object-fit: contain;">
     </div>
     
     <div id="tagBilletera" class="billetera-tag" style="background: #e0f2fe; color: #0369a1;">Mercado Pago</div>
@@ -81,7 +81,7 @@
         <!-- El QR enmascarado se genera dinámicamente acá -->
     </div>
     
-    <button onclick="window.history.back()" style="margin-top: 16px; width: 100%; border:none; background:#334155; color:white; font-weight: 700; padding: 12px; border-radius: 10px; cursor:pointer; font-size: 0.95rem; font-family: system-ui, -apple-system, sans-serif;">Volver</button>
+    <button onclick="window.location.href='ventas.html'" style="margin-top: 16px; width: 100%; border:none; background:#334155; color:white; font-weight: 700; padding: 12px; border-radius: 10px; cursor:pointer; font-size: 0.95rem; font-family: system-ui, -apple-system, sans-serif;">Volver</button>
 </div>
 
 <script>
@@ -112,7 +112,6 @@
         return inputMonto.value.replace(/\D/g, '') || '0';
     }
 
-    // Inicializar con el monto que vino guardado
     inputMonto.value = formatearNumeroMoneda(String(montoInicial));
 
     function actualizarVista() {
@@ -163,9 +162,6 @@
     }
 
     inputMonto.addEventListener('input', function(e) {
-        const cursorPos = e.target.selectionStart;
-        const valorPrevio = e.target.value;
-        
         e.target.value = formatearNumeroMoneda(e.target.value);
         actualizarVista();
     });
