@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menú Principal - B. M. A. Artesanías</title>
+  <title>Menú Principal - Infinito Corazón</title>
 
   <!-- Vinculación del Manifest y compatibilidad PWA Mobile -->
   <link rel="manifest" href="manifest.json">
@@ -15,7 +15,8 @@
 
     :root {
       --primary-color: #000000;
-      --accent-color: #3b82f6;
+      --accent-color: #d9381e;
+      --taupe-gray: #2d3748;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
     
@@ -112,6 +113,66 @@
 
     .btn-reiniciar-factory { background: #4e4b46; border: 1.5px solid #57534e; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; color: #ffffff; font-weight: 800; font-size: 0.85rem; width: 100%; margin-top: 4px; }
     .btn-reiniciar-factory:hover { background: #57534e; }
+
+    /* Modulo Biometría dentro de Configuración */
+    .biometria-box {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .biometria-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .biometria-title-row span {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #1e293b;
+    }
+    .biometria-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .biometria-badge.act { background: #dcfce7; color: #166534; }
+    .biometria-badge.des { background: #fee2e2; color: #991b1b; }
+
+    /* Botón Activar Biometría (Fondo Bermellón + Letras Gris Topo) */
+    .btn-biometria-cfg {
+      background: #d9381e;
+      color: #2d3748;
+      border: none;
+      padding: 9px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: center;
+      width: 100%;
+    }
+    .btn-biometria-cfg:active { transform: scale(0.98); }
+
+    /* Botón Desactivar Biometría */
+    .btn-biometria-desactivar {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 9px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: center;
+      width: 100%;
+    }
+    .btn-biometria-desactivar:active { transform: scale(0.98); }
 
     .footer-zocalo { 
         margin-top: 12px;
@@ -228,6 +289,18 @@
                 <h3>Configuración del Sistema</h3>
                 <img src="icono.png" alt="Logo" style="width: 28px; height: 28px; border-radius: 6px; object-fit: cover; cursor: pointer;" id="btn-cerrar-config">
             </div>
+            
+            <!-- MODULITO DE BIOMETRÍA -->
+            <div class="biometria-box">
+              <div class="biometria-title-row">
+                <span>👆 Acceso Biométrico</span>
+                <span id="badgeEstadoBiometria" class="biometria-badge des">Desactivada</span>
+              </div>
+              <div id="contenedorAccionBiometria">
+                <button class="btn-biometria-cfg" onclick="window.activarBiometriaConfig()">👆 Activar Biometría</button>
+              </div>
+            </div>
+
             <div class="modal-desc">Respaldos y gestión de datos locales:</div>
             
             <div style="display: flex; flex-direction: column; gap: 8px;">
@@ -261,6 +334,96 @@
             e.preventDefault();
             diferirPromptPWA = e;
         });
+
+        // --- FUNCIONES HELPER PARA WEBAUTHN / BIOMETRÍA ---
+        function bufferToBase64(buffer) {
+          let binary = '';
+          const bytes = new Uint8Array(buffer);
+          for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+          }
+          return window.btoa(binary);
+        }
+
+        window.actualizarUIBiometriaConfig = function() {
+          const badge = document.getElementById('badgeEstadoBiometria');
+          const contenedor = document.getElementById('contenedorAccionBiometria');
+          const estaHabilitada = localStorage.getItem('bma_biometria_habilitada') === 'true';
+
+          if (!badge || !contenedor) return;
+
+          if (estaHabilitada) {
+            badge.textContent = 'Activada';
+            badge.className = 'biometria-badge act';
+            contenedor.innerHTML = `
+              <button class="btn-biometria-desactivar" onclick="window.desactivarBiometriaConfig()">❌ Desactivar Biometría</button>
+            `;
+          } else {
+            badge.textContent = 'Desactivada';
+            badge.className = 'biometria-badge des';
+            contenedor.innerHTML = `
+              <button class="btn-biometria-cfg" onclick="window.activarBiometriaConfig()">👆 Activar Biometría</button>
+            `;
+          }
+        };
+
+        window.activarBiometriaConfig = async function() {
+          if (!window.PublicKeyCredential) {
+            alert("⚠️ Tu dispositivo no soporta autenticación biométrica.");
+            return;
+          }
+
+          try {
+            const challenge = new Uint8Array(32);
+            window.crypto.getRandomValues(challenge);
+
+            const userId = new Uint8Array(16);
+            window.crypto.getRandomValues(userId);
+
+            const publicKeyCredentialCreationOptions = {
+              challenge: challenge,
+              rp: {
+                name: "Infinito Corazón",
+                id: window.location.hostname
+              },
+              user: {
+                id: userId,
+                name: "juanma",
+                displayName: "Juan Ma"
+              },
+              pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+              authenticatorSelection: {
+                authenticatorAttachment: "platform",
+                userVerification: "required"
+              },
+              timeout: 60000
+            };
+
+            const credential = await navigator.credentials.create({
+              publicKey: publicKeyCredentialCreationOptions
+            });
+
+            if (credential) {
+              const credentialIdB64 = bufferToBase64(credential.rawId);
+              localStorage.setItem('bma_biometria_habilitada', 'true');
+              localStorage.setItem('bma_credential_id', credentialIdB64);
+              alert("✅ ¡Biometría activada con éxito!");
+              window.actualizarUIBiometriaConfig();
+            }
+          } catch (err) {
+            console.error("Error al activar biometría:", err);
+            alert("⚠️ No se pudo activar la biometría.");
+          }
+        };
+
+        window.desactivarBiometriaConfig = function() {
+          if (confirm("¿Querés desactivar el acceso por huella digital?")) {
+            localStorage.removeItem('bma_biometria_habilitada');
+            localStorage.removeItem('bma_credential_id');
+            alert("🔒 Biometría desactivada.");
+            window.actualizarUIBiometriaConfig();
+          }
+        };
 
         (function() {
             let datosVentasJornadaCache = [];
@@ -441,6 +604,7 @@
                 const btnCerrarConfig = document.getElementById('btn-cerrar-config');
                 if (btnConfig && modalConfig && btnCerrarConfig) {
                     btnConfig.addEventListener('click', () => {
+                        window.actualizarUIBiometriaConfig();
                         modalConfig.classList.add('active');
                     });
                     btnCerrarConfig.addEventListener('click', () => modalConfig.classList.remove('active'));

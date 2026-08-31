@@ -187,7 +187,7 @@
     }
     .btn-ingresar:active { transform: scale(0.98); }
 
-    /* Estilo por defecto: Activar Biometría (Bermellón + Letras Gris Topo) */
+    /* Estado inicial: Activar Biometría (Fondo Bermellón + Letras Gris Topo) */
     .btn-biometria {
       background: var(--accent-color);
       color: var(--taupe-gray);
@@ -205,11 +205,11 @@
       gap: 6px;
     }
 
-    /* Estilo cuando ya está activada: Ingresar con Huella (Verde + Letras Blancas) */
+    /* Estado activo: Ingresar con Huella (Invertido: Fondo Gris Topo + Letras Bermellón) */
     .btn-biometria.activo {
-      background: #059669;
-      color: #ffffff;
-      box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+      background: var(--taupe-gray);
+      color: var(--accent-color);
+      box-shadow: 0 4px 10px rgba(45, 55, 72, 0.3);
     }
 
     .btn-biometria:active { transform: scale(0.98); }
